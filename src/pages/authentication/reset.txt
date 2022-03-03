@@ -1,0 +1,31 @@
+Passwords must not contain:
+
+1. Your username
+
+2. Your first and/or last name
+
+3. Dictionary words with or without (i) numbers or special characters at the beginning or end, or (ii) letters, numbers, or character exchanges (e.g. Summer2017, ?Happyman, H3llofr!end?)
+
+4. Words or numbers connected with you such as family names, pet names, birthdays, addresses, or phone numbers
+
+5. Common terminology, acronyms, or names associated with the Deloitte Firms or their clients
+
+6. Any sequencing of letters and numbers that follow the order of a keyboard (i.e. keyboard walk patterns such as 1234qwerASDF, 1qazXSW@3edc)
+
+7. You cannot reuse your last 24 passwords
+
+
+HasErrors
+At least 10 characters in length.
+
+HasErrors
+English uppercase letters: A, B, C... Z
+
+HasErrors
+English lowercase letters: a, b, c... z
+
+HasErrors
+Westernized Arabic numerals: 0, 1, 2... 9
+
+HasErrors
+Special characters: !, @, #, %, &, *, etc.
