@@ -278,7 +278,7 @@ const CpaDetailsUser = (props) => {
             startIcon={<UserIcon fontSize="small" />}
             sx={{ mt: 1 }}
             variant="text"
-            href="/account"
+            href="/error/501"
           >
             Update Details
           </Button>

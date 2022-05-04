@@ -13,12 +13,15 @@ let board = {
 };
 
 class KanbanApi {
+//
+// GET Board for project or user
+//
   getBoard(userId, caseId) {
     let apiUrl = '';
     if (userId !== null) {
-        apiUrl = serverConnection.baseUrl + serverConnection.actionClientUrl + serverConnection.slash + userId;
+        apiUrl = serverConnection.baseUrl + serverConnection.actionUrl;
     } else if (caseId !== null) {
-        apiUrl = serverConnection.baseUrl + serverConnection.projectClientUrl + serverConnection.slash + caseId;
+        apiUrl = serverConnection.baseUrl + serverConnection.actionProjectUrl + serverConnection.slash + caseId;
     } else {
         return new Promise((reject) => {
             reject(new Error('Missing input parameters'));
@@ -53,6 +56,14 @@ class KanbanApi {
         }
       });
   }
+
+//
+// COLUMNS
+//  - Add
+//  - Update
+//  - Clear   <-- NOT USED
+//  - Delete
+//
 
   createColumn({ name }) {
     return new Promise((resolve, reject) => {
@@ -165,50 +176,66 @@ class KanbanApi {
     });
   }
 
-  createCard({ columnId, name }) {
+//
+// CARDS
+//  - Create - create with columnID, title and description, rest user info and defualts
+//  - Update - update values from front-end
+//  - Move   - update the position  and/or the column
+//  - Delete - remove from DB
+//
+
+  createCard(columnID, caseID, title) {
+    const apiUrl = serverConnection.baseUrl + serverConnection.actionUrl;
+    console.log(columnID);
+    console.log(caseID);
+    console.log(title);
+
     return new Promise((resolve, reject) => {
-      try {
-        // Make a deep copy
-        const clonedBoard = deepCopy(board);
+        const accessToken = window.localStorage.getItem('accessToken');
 
-        // Find the column where the new card will be added
-        const column = clonedBoard.columns.find((_column) => _column.id === columnId);
+        if (accessToken) {
+          const tokenTitle = 'token: ';
+          const Authorization = tokenTitle + accessToken;
 
-        if (!column) {
-          reject(new Error('Column not found'));
-          return;
+          const theHeaders = {
+            headers: {
+              Accept: '*',
+              Authorization
+            }
+          };
+
+          const theBody = JSON.stringify(
+            {
+                data: {
+                    caseID,
+                    title,
+                    description: null,
+                    isSubscribed: false,
+                    columnID,
+                    position: null,
+                    clientID: null,
+                    cpaID: null,
+                    cover: null,
+                    createdAt: null,
+                    dateDue: null,
+                    dateComplete: null,
+                }
+            }
+          );
+
+          axios.post(apiUrl, theBody, theHeaders)
+            .then((response) => {
+              resolve(deepCopy(response.data));
+            })
+            .catch((response) => {
+              console.log('Fail update card');
+              reject(new Error(response));
+            });
+        } else {
+          console.log('Fail no token');
+          reject(new Error('No token'));
         }
-
-        // Create the new card
-        const card = {
-          id: createResourceId(),
-          attachments: [],
-          checklists: [],
-          comments: [],
-          cover: null,
-          description: null,
-          due: null,
-          isSubscribed: false,
-          columnId,
-          memberIds: [],
-          name
-        };
-
-        // Add the new card
-        clonedBoard.cards.push(card);
-
-        // Add the cardId reference to the column
-        column.cardIds.push(card.id);
-
-        // Save changes
-        board = clonedBoard;
-
-        resolve(deepCopy(card));
-      } catch (err) {
-        console.error('[Kanban Api]: ', err);
-        reject(new Error('Internal server error'));
-      }
-    });
+      });
   }
 
   updateCard({ cardId, update }) {
@@ -229,6 +256,7 @@ class KanbanApi {
           };
 
           const data = update;
+          console.log(data);
           const theBody = JSON.stringify(
             {
               data
@@ -292,43 +320,40 @@ class KanbanApi {
   }
 
   deleteCard(cardId) {
+    const apiUrl = serverConnection.baseUrl + serverConnection.actionUrl + serverConnection.slash + cardId;
+
     return new Promise((resolve, reject) => {
-      try {
-        // Make a deep copy
-        const clonedBoard = deepCopy(board);
+        const accessToken = window.localStorage.getItem('accessToken');
 
-        // Find the card that will be removed
-        const card = clonedBoard.cards.find((_card) => _card.id === cardId);
+        if (accessToken) {
+          const tokenTitle = 'token: ';
+          const Authorization = tokenTitle + accessToken;
 
-        if (!card) {
-          reject(new Error('Card not found'));
-          return;
+          const theHeaders = {
+            headers: {
+              Accept: '*',
+              Authorization
+            }
+          };
+
+          axios.delete(apiUrl, theHeaders)
+            .then((response) => {
+              console.log(response.data);
+              resolve(true);
+            })
+            .catch((response) => {
+              console.log('Fail to remove card');
+              reject(new Error(response));
+            });
+        } else {
+          console.log('Fail no token');
+          reject(new Error('No token'));
         }
-
-        // Remove the card from board
-        clonedBoard.cards = clonedBoard.cards.filter((_card) => _card.id !== cardId);
-
-        // Find the column using the columnId reference
-        const column = clonedBoard.columns.find((_column) => _column.id === card.columnId);
-
-        // If for some reason it does not exist, there's no problem. Maybe something broke before.
-        if (column) {
-          column.cardIds = column.cardIds.filter((_cardId) => _cardId !== cardId);
-        }
-
-        // Save changes
-        board = clonedBoard;
-
-        resolve(true);
-      } catch (err) {
-        console.error('[Kanban Api]: ', err);
-        reject(new Error('Internal server error'));
-      }
-    });
+      });
   }
 
   addComment({ cardId, message, userId }) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.commentClientUrl;
+    const apiUrl = serverConnection.baseUrl + serverConnection.actionCommentUrl;
 
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
@@ -368,6 +393,12 @@ class KanbanApi {
         }
       });
   }
+
+  //
+  //
+  // NOT IMPLEMENTED, only face and not used bu the application, still in the reduces, nees to be removed
+  //
+  //
 
   addChecklist({ cardId, name }) {
     return new Promise((resolve, reject) => {

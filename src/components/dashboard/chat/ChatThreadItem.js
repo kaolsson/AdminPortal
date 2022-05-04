@@ -41,7 +41,7 @@ const ChatThreadItem = (props) => {
 
   // We hardcode the current user ID because the mocked that is not in sync with the auth provider.
   // When implementing this app with a real database, replace this ID with the ID from Auth Context.
-  const details = getDetails(thread, user.customerID);
+  const details = getDetails(thread, user.id);
 
   return (
     <ListItem

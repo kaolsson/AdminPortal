@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 // import { Link as RouterLink } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Box, Breadcrumbs, Button, Container, Grid, Typography } from '@material-ui/core';
+import { Box, Breadcrumbs, Button, Container, Grid, Link, Typography } from '@material-ui/core';
 // import { Box, Breadcrumbs, Button, Container, Grid, Link, Typography } from '@material-ui/core';
 import { customerApi } from '../../__fakeApi__/customerApi';
 import { CustomerListTable } from '../../components/dashboard/customer';
@@ -13,6 +13,7 @@ import PlusIcon from '../../icons/Plus';
 import useSettings from '../../hooks/useSettings';
 import gtm from '../../lib/gtm';
 import useAuth from '../../hooks/useAuth';
+import { Link as RouterLink } from 'react-router-dom';
 
 const CustomerList = () => {
   const mounted = useMounted();
@@ -70,26 +71,32 @@ const CustomerList = () => {
                 separator={<ChevronRightIcon fontSize="small" />}
                 sx={{ mt: 1 }}
               >
-                <Typography
-                  color="textSecondary"
+                <Link
+                  color="textPrimary"
+                  component={RouterLink}
+                  to="#"
                   variant="subtitle2"
                 >
-                  SmartMaster Admin
-                </Typography>
-                <Typography
-                  color="textSecondary"
+                  Engagements
+                </Link>
+                <Link
+                  color="textPrimary"
+                  component={RouterLink}
+                  to="#"
                   variant="subtitle2"
                 >
                   Clients
-                </Typography>
+                </Link>
               </Breadcrumbs>
             </Grid>
             <Grid item>
               <Box sx={{ m: -1 }}>
                 <Button
                   color="primary"
+                  component={RouterLink}
                   startIcon={<PlusIcon fontSize="small" />}
                   sx={{ m: 1 }}
+                  to="/clients/new"
                   variant="contained"
                 >
                   Add Client

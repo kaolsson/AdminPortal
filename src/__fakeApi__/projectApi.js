@@ -1,4 +1,5 @@
 import axios from 'axios';
+import deepCopy from '../utils/deepCopy';
 import {
     serverConnection,
 } from './connectionData';
@@ -113,8 +114,8 @@ class ProjectApi {
     });
   }
 
-  getProjects(customerID) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.clientUrl + serverConnection.slash + customerID;
+  getProjects() {
+    const apiUrl = serverConnection.baseUrl + serverConnection.projectUrl;
 
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
@@ -132,6 +133,7 @@ class ProjectApi {
 
           axios.get(apiUrl, theHeaders)
             .then((response) => {
+              console.log(response.data);
               resolve(response.data);
             })
             .catch((response) => {
@@ -146,7 +148,7 @@ class ProjectApi {
     }
 
     getProject(caseID) {
-        const apiUrl = serverConnection.baseUrl + serverConnection.caseUrl + serverConnection.slash + caseID;
+        const apiUrl = serverConnection.baseUrl + serverConnection.projectUrl + serverConnection.slash + caseID;
 
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');
@@ -168,6 +170,83 @@ class ProjectApi {
                 })
                 .catch((response) => {
                   console.log('Fail response');
+                  reject(new Error(response));
+                });
+            } else {
+              console.log('Fail no token');
+              reject(new Error('No token'));
+            }
+        });
+    }
+
+    createProject(project) {
+        const apiUrl = serverConnection.baseUrl + serverConnection.projectUrl;
+        console.log(project);
+        return new Promise((resolve, reject) => {
+            const accessToken = window.localStorage.getItem('accessToken');
+
+            if (accessToken) {
+              const tokenTitle = 'token: ';
+              const Authorization = tokenTitle + accessToken;
+
+              const theHeaders = {
+                headers: {
+                  Accept: '*',
+                  Authorization
+                }
+              };
+
+              const theBody = JSON.stringify(
+                {
+                    project
+                }
+              );
+
+              axios.post(apiUrl, theBody, theHeaders)
+                .then((response) => {
+                  resolve(deepCopy(response.data));
+                })
+                .catch((response) => {
+                  console.log('Fail to create project');
+                  reject(new Error(response));
+                });
+            } else {
+              console.log('Fail no token');
+              reject(new Error('No token'));
+            }
+        });
+    }
+
+    updateProject(project) {
+        const apiUrl = serverConnection.baseUrl + serverConnection.projectUrl + serverConnection.slash + project.caseID;
+
+        console.log(project);
+        return new Promise((resolve, reject) => {
+            const accessToken = window.localStorage.getItem('accessToken');
+
+            if (accessToken) {
+              const tokenTitle = 'token: ';
+              const Authorization = tokenTitle + accessToken;
+
+              const theHeaders = {
+                headers: {
+                  Accept: '*',
+                  Authorization
+                }
+              };
+
+              const theBody = JSON.stringify(
+                {
+                    project
+                }
+              );
+
+              axios.put(apiUrl, theBody, theHeaders)
+                .then((response) => {
+                  resolve(deepCopy(response.data));
+                })
+                .catch((response) => {
+                  console.log('Fail update project');
                   reject(new Error(response));
                 });
             } else {

@@ -11,11 +11,13 @@ import ChevronRightIcon from '../../icons/ChevronRight';
 // import UploadIcon from '../../icons/Upload';
 import PlusIcon from '../../icons/Plus';
 import gtm from '../../lib/gtm';
+import useAuth from '../../hooks/useAuth';
 
 const ProductList = () => {
   const mounted = useMounted();
   const { settings } = useSettings();
   const [products, setProducts] = useState([]);
+  const { user } = useAuth();
 
   useEffect(() => {
     gtm.push({ event: 'page_view' });
@@ -23,7 +25,7 @@ const ProductList = () => {
 
   const getProducts = useCallback(async () => {
     try {
-      const data = await productApi.getProducts();
+      const data = await productApi.getProducts(user.accountID);
 
       if (mounted.current) {
         setProducts(data);
@@ -79,6 +81,12 @@ const ProductList = () => {
                 >
                   Products
                 </Typography>
+                <Typography
+                  color="textSecondary"
+                  variant="subtitle2"
+                >
+                  List
+                </Typography>
               </Breadcrumbs>
             </Grid>
             <Grid item>
@@ -91,7 +99,7 @@ const ProductList = () => {
                   to="/products/new"
                   variant="contained"
                 >
-                  New Product
+                  Create Product
                 </Button>
               </Box>
             </Grid>

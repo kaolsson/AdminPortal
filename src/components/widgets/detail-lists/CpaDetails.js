@@ -150,6 +150,8 @@ const CpaDetails = () => {
                   {', '}
                   {user.state}
                   {', '}
+                  {user.zipCode}
+                  {', '}
                   {user.country}
                 </Typography>
               </TableCell>
@@ -223,7 +225,7 @@ const CpaDetails = () => {
             startIcon={<UserIcon fontSize="small" />}
             sx={{ mt: 1 }}
             variant="text"
-            href="/account"
+            href="/update"
           >
             Update Details
           </Button>

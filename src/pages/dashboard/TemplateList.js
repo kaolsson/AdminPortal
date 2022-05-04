@@ -2,8 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Box, Breadcrumbs, Button, Container, Grid, Typography } from '@material-ui/core';
-import { productApi } from '../../__fakeApi__/productApi';
-import { ProductListTable } from '../../components/dashboard/product';
+import { templateApi } from '../../__fakeApi__/templateApi';
+import { TemplateListTable } from '../../components/dashboard/template';
 import useMounted from '../../hooks/useMounted';
 import useSettings from '../../hooks/useSettings';
 import ChevronRightIcon from '../../icons/ChevronRight';
@@ -11,22 +11,24 @@ import ChevronRightIcon from '../../icons/ChevronRight';
 // import UploadIcon from '../../icons/Upload';
 import PlusIcon from '../../icons/Plus';
 import gtm from '../../lib/gtm';
+import useAuth from '../../hooks/useAuth';
 
 const TemplateList = () => {
   const mounted = useMounted();
   const { settings } = useSettings();
-  const [products, setProducts] = useState([]);
+  const [templates, setTemplates] = useState([]);
+  const { user } = useAuth();
 
   useEffect(() => {
     gtm.push({ event: 'page_view' });
   }, []);
 
-  const getProducts = useCallback(async () => {
+  const getTemplates = useCallback(async () => {
     try {
-      const data = await productApi.getProducts();
+      const data = await templateApi.getTemplates(user.accountID);
 
       if (mounted.current) {
-        setProducts(data);
+        setTemplates(data);
       }
     } catch (err) {
       console.error(err);
@@ -34,9 +36,8 @@ const TemplateList = () => {
   }, [mounted]);
 
   useEffect(() => {
-    getProducts();
-  }, [getProducts]);
-
+    getTemplates();
+  }, [getTemplates]);
   return (
     <>
       <Helmet>
@@ -77,7 +78,13 @@ const TemplateList = () => {
                   color="textSecondary"
                   variant="subtitle2"
                 >
-                  Order Templates
+                  Templates
+                </Typography>
+                <Typography
+                  color="textSecondary"
+                  variant="subtitle2"
+                >
+                  List
                 </Typography>
               </Breadcrumbs>
             </Grid>
@@ -91,13 +98,13 @@ const TemplateList = () => {
                   to="/templates/new"
                   variant="contained"
                 >
-                  New Template
+                  Create Order Template
                 </Button>
               </Box>
             </Grid>
           </Grid>
           <Box sx={{ mt: 3 }}>
-            <ProductListTable products={products} />
+            <TemplateListTable templates={templates} />
           </Box>
         </Container>
       </Box>

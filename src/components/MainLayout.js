@@ -2,9 +2,10 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Outlet } from 'react-router-dom';
 import { experimentalStyled } from '@material-ui/core/styles';
-import Footer from './Footer';
-import MainNavbar from './MainNavbar';
+// import Footer from './Footer';
+// import MainNavbar from './MainNavbar';
 import MainSidebar from './MainSidebar';
+import DashboardNavbar from './dashboard/DashboardNavbar';
 
 const MainLayoutRoot = experimentalStyled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -17,13 +18,12 @@ const MainLayout = ({ children }) => {
 
   return (
     <MainLayoutRoot>
-      <MainNavbar onSidebarMobileOpen={() => setIsSidebarMobileOpen(true)} />
+      <DashboardNavbar onSidebarMobileOpen={() => setIsSidebarMobileOpen(true)} />
       <MainSidebar
         onMobileClose={() => setIsSidebarMobileOpen(false)}
         openMobile={isSidebarMobileOpen}
       />
       {children || <Outlet />}
-      <Footer />
     </MainLayoutRoot>
   );
 };

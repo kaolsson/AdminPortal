@@ -6,13 +6,13 @@ import { createCard } from '../../../slices/kanban';
 import { useDispatch } from '../../../store';
 
 const KanbanCardAdd = (props) => {
-  const { columnId, ...other } = props;
+  const { columnId, caseId, ...other } = props;
   const dispatch = useDispatch();
   const [isExpanded, setIsExpanded] = useState(false);
-  const [name, setName] = useState('');
+  const [title, setTitle] = useState('');
 
   const handleChange = (event) => {
-    setName(event.target.value);
+    setTitle(event.target.value);
   };
 
   const handleAddInit = () => {
@@ -21,14 +21,14 @@ const KanbanCardAdd = (props) => {
 
   const handleAddCancel = () => {
     setIsExpanded(false);
-    setName('');
+    setTitle('');
   };
 
   const handleAddConfirm = async () => {
     try {
-      await dispatch(createCard(columnId, name || 'Untitled Card'));
+      await dispatch(createCard(columnId, caseId, title || 'Untitled Card'));
       setIsExpanded(false);
-      setName('');
+      setTitle('');
       toast.success('Card created!');
     } catch (err) {
       console.error(err);
@@ -46,7 +46,7 @@ const KanbanCardAdd = (props) => {
               label="Title"
               name="cardName"
               onChange={handleChange}
-              value={name}
+              value={title}
               variant="outlined"
             />
             <Box
@@ -94,7 +94,8 @@ const KanbanCardAdd = (props) => {
 };
 
 KanbanCardAdd.propTypes = {
-  columnId: PropTypes.string.isRequired
+  columnId: PropTypes.string.isRequired,
+  caseId: PropTypes.string.isRequired
 };
 
 export default KanbanCardAdd;

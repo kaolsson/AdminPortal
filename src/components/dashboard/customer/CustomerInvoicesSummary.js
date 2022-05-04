@@ -15,28 +15,10 @@ import CurrencyDollarIcon from '../../../icons/CurrencyDollar';
 
 const CustomerInvoicesSummary = (props) => (
   <Card {...props}>
-    <CardHeader title="Invoices/CheckoutBilling" />
+    <CardHeader title="Orders/Invoices" />
     <Divider />
     <Table>
       <TableBody>
-        <TableRow>
-          <TableCell>
-            <Typography
-              color="textPrimary"
-              variant="subtitle2"
-            >
-              Credit Card
-            </Typography>
-          </TableCell>
-          <TableCell>
-            <Typography
-              color="textSecondary"
-              variant="body2"
-            >
-              **** **** **** **** 4142
-            </Typography>
-          </TableCell>
-        </TableRow>
         <TableRow>
           <TableCell>
             <Typography
@@ -61,7 +43,7 @@ const CustomerInvoicesSummary = (props) => (
               color="textPrimary"
               variant="subtitle2"
             >
-              Draft
+              Unpaid
             </Typography>
           </TableCell>
           <TableCell>
@@ -69,7 +51,7 @@ const CustomerInvoicesSummary = (props) => (
               color="textSecondary"
               variant="body2"
             >
-              1 ($5.00)
+              1 ($12.00)
             </Typography>
           </TableCell>
         </TableRow>
@@ -79,7 +61,7 @@ const CustomerInvoicesSummary = (props) => (
               color="textPrimary"
               variant="subtitle2"
             >
-              Unpaid/Due
+              Expired/Over Due
             </Typography>
           </TableCell>
           <TableCell>
@@ -142,7 +124,7 @@ const CustomerInvoicesSummary = (props) => (
         startIcon={<CurrencyDollarIcon fontSize="small" />}
         variant="text"
       >
-        Create Invoice
+        Create Order
       </Button>
       <Button
         color="inherit"
@@ -150,7 +132,7 @@ const CustomerInvoicesSummary = (props) => (
         sx={{ mt: 1 }}
         variant="text"
       >
-        Resend Due Invoices
+        Send Due Order Reminders
       </Button>
     </Box>
   </Card>

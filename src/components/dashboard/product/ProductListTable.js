@@ -8,9 +8,9 @@ import {
   Card,
 //  Checkbox,
 //  FormControlLabel,
-  IconButton,
+//  IconButton,
   InputAdornment,
-  Link,
+//  Link,
 //  Switch,
   Table,
   TableBody,
@@ -20,9 +20,9 @@ import {
   TableRow,
   TextField
 } from '@material-ui/core';
-import ArrowRightIcon from '../../../icons/ArrowRight';
+// import ArrowRightIcon from '../../../icons/ArrowRight';
 // import ImageIcon from '../../../icons/Image';
-import PencilAltIcon from '../../../icons/PencilAlt';
+// import PencilAltIcon from '../../../icons/PencilAlt';
 import SearchIcon from '../../../icons/Search';
 import Label from '../../Label';
 import Scrollbar from '../../Scrollbar';
@@ -341,7 +341,7 @@ const ProductListTable = (props) => {
             <TableHead>
               <TableRow>
                 <TableCell>
-                  Product Name
+                  Name
                 </TableCell>
                 <TableCell>
                   Status
@@ -350,13 +350,13 @@ const ProductListTable = (props) => {
                   Description
                 </TableCell>
                 <TableCell>
-                  Product Owner
+                  Created By
+                </TableCell>
+                <TableCell>
+                  Quanity
                 </TableCell>
                 <TableCell>
                   Price
-                </TableCell>
-                <TableCell align="right">
-                  Actions
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -370,18 +370,12 @@ const ProductListTable = (props) => {
                     hover
                     key={product.productID}
                     selected={isProductSelected}
+                    style={{ textDecoration: 'none' }}
+                    component={RouterLink}
+                    to={['/products/details/?pid=', product.productID].join('')}
                   >
                     <TableCell>
-                        <Link
-                          color="textPrimary"
-                          component={RouterLink}
-                          to="#"
-                          underline="none"
-                          sx={{ ml: 2 }}
-                          variant="subtitle2"
-                        >
-                          {product.productName}
-                        </Link>
+                      {product.productName}
                     </TableCell>
                     <TableCell>
                       {getInventoryLabel(product.productStatus)}
@@ -393,16 +387,11 @@ const ProductListTable = (props) => {
                       {product.productOwner}
                     </TableCell>
                     <TableCell>
+                      {product.productQuantity}
+                    </TableCell>
+                    <TableCell>
                       {numeral(product.productPrice)
                         .format(`${product.priceCurrency}0,0.00`)}
-                    </TableCell>
-                    <TableCell align="right">
-                      <IconButton>
-                        <PencilAltIcon fontSize="small" />
-                      </IconButton>
-                      <IconButton>
-                        <ArrowRightIcon fontSize="small" />
-                      </IconButton>
                     </TableCell>
                   </TableRow>
                 );

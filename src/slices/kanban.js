@@ -169,7 +169,7 @@ export const { reducer } = slice;
 
 export const getBoard = (userId) => async (dispatch) => {
   const data = await kanbanApi.getBoard(userId, null);
-  console.log(data);
+
   dispatch(slice.actions.getBoard(data));
 };
 
@@ -179,7 +179,7 @@ export const getBoardProject = (caseId) => async (dispatch) => {
     dispatch(slice.actions.getBoard(data));
   };
 
-  export const createColumn = (name) => async (dispatch) => {
+export const createColumn = (name) => async (dispatch) => {
   const data = await kanbanApi.createColumn({ name });
 
   dispatch(slice.actions.createColumn(data));
@@ -203,8 +203,12 @@ export const deleteColumn = (columnId) => async (dispatch) => {
   dispatch(slice.actions.deleteColumn(columnId));
 };
 
-export const createCard = (columnId, name) => async (dispatch) => {
-  const data = await kanbanApi.createCard({ columnId, name });
+export const createCard = (columnId, caseId, title) => async (dispatch) => {
+  console.log(columnId);
+  console.log(caseId);
+  console.log(title);
+
+  const data = await kanbanApi.createCard(columnId, caseId, title);
 
   dispatch(slice.actions.createCard(data));
 };

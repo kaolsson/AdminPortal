@@ -75,7 +75,7 @@ const Account = () => {
                   color="textSecondary"
                   variant="subtitle2"
                 >
-                  General
+                  My User
                 </Typography>
                 <Typography
                   color="textSecondary"

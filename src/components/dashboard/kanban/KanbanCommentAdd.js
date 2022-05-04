@@ -19,7 +19,7 @@ const KanbanCommentAdd = (props) => {
   const handleKeyUp = async (event) => {
     try {
       if (event.code === 'Enter' && message) {
-        await dispatch(addComment(cardId, message, user.customerID));
+        await dispatch(addComment(cardId, message, user.id));
         setMessage('');
         toast.success('Comment added!');
       }

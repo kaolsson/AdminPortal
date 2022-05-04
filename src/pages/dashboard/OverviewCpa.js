@@ -1,11 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
 import {
   Box,
-//  Button,
-//  Card,
-//  CardActions,
-//  CardContent,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Avatar,
 //  CardHeader,
   Container,
   Grid,
@@ -22,14 +23,33 @@ import useSettings from '../../hooks/useSettings';
 import gtm from '../../lib/gtm';
 import useAuth from '../../hooks/useAuth';
 import CpaDetails from '../../components/widgets/detail-lists/CpaDetails';
-import OrgDetails from '../../components/widgets/detail-lists/OrgDetails';
+// import OrgDetails from '../../components/widgets/detail-lists/OrgDetails';
 // import ActiveProjectDashboard from '../../components/widgets/grouped-lists/ActiveProjectDashboard';
 // import NotPaidOrderDashboard from '../../components/widgets/grouped-lists/NotPaidOrderDashboard';
 import WidgetPreviewer from '../../components/WidgetPreviewer';
+import useMounted from '../../hooks/useMounted';
+import { authApi } from '../../__fakeApi__/authApi';
 
 const Overview = () => {
   const { settings } = useSettings();
   const { user } = useAuth();
+  const [avatar, setAvatar] = useState(null);
+  const mounted = useMounted();
+
+  const getAvatar = useCallback(async () => {
+    try {
+        const data = await authApi.getAvatar();
+        if (mounted.current) {
+            setAvatar(data);
+        }
+    } catch (err) {
+        console.error(err);
+    }
+  }, [mounted]);
+
+  useEffect(() => {
+    getAvatar();
+  }, [getAvatar]);
 
   useEffect(() => {
     gtm.push({ event: 'page_view' });
@@ -65,7 +85,7 @@ const Overview = () => {
                   color="textSecondary"
                   variant="overline"
                 >
-                  Dashboard
+                  Account
                 </Typography>
                 <Typography
                   color="textPrimary"
@@ -91,13 +111,72 @@ const Overview = () => {
             </Grid>
             <Grid
               item
-              md={6}
+              md={3}
               xs={12}
             >
-              <WidgetPreviewer
-                element={<CpaDetails />}
-                name="My Account"
-              />
+        <Card>
+          <CardContent>
+            <Box
+              sx={{
+                alignItems: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                textAlign: 'center'
+              }}
+            >
+              <Box
+                sx={{
+                  p: 1,
+                  border: (theme) => `1px dashed ${theme.palette.divider}`,
+                  borderRadius: '50%'
+                }}
+              >
+                <Avatar
+                  src={avatar}
+                  sx={{
+                    height: 200,
+                    width: 200
+                  }}
+                />
+              </Box>
+              <Typography
+                color="textPrimary"
+                sx={{ mt: 1 }}
+                variant="subtitle2"
+              >
+                {user.firstName}
+                {' '}
+                {user.lastName}
+              </Typography>
+              <Typography
+                color="textSecondary"
+                variant="body2"
+              >
+                {user.city}
+                {', '}
+                {user.state}
+              </Typography>
+              <Typography
+                color="textSecondary"
+                variant="body2"
+              >
+                {'User Level: '}
+                {user.userRole.toUpperCase()}
+              </Typography>
+            </Box>
+          </CardContent>
+          <CardActions>
+            <Button
+              color="primary"
+              fullWidth
+              variant="text"
+            >
+                {
+                    // Upload Picture
+                }
+            </Button>
+          </CardActions>
+        </Card>
             </Grid>
             <Grid
               item
@@ -105,8 +184,8 @@ const Overview = () => {
               xs={12}
             >
               <WidgetPreviewer
-                element={<OrgDetails />}
-                name="Organization Account"
+                element={<CpaDetails />}
+                name="My Account"
               />
             </Grid>
           </Grid>

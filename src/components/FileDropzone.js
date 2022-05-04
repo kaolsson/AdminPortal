@@ -94,14 +94,14 @@ const FileDropzone = (props) => {
             color="textPrimary"
             variant="h6"
           >
-            {`Click to select file${(maxFiles && maxFiles === 1) ? '' : 's'}`}
+            {`Click to select file${(maxFiles && maxFiles === 1) ? '' : ''}`}
           </Typography>
           <Box sx={{ mt: 2 }}>
             <Typography
               color="textPrimary"
               variant="body1"
             >
-              {`Or drag and drop file${(maxFiles && maxFiles === 1) ? '' : 's'}`}
+              {`Or drag and drop file${(maxFiles && maxFiles === 1) ? '' : ''}`}
               {' '}
               {' '}
               from your computer

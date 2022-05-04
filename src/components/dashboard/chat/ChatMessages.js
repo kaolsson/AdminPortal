@@ -37,7 +37,8 @@ const ChatMessages = (props) => {
           let senderType;
           // Since chat mock db is not synced with external auth providers
           // we set the user details from user auth state instead of thread participants
-          if (message.senderId === user.customerID) {
+          console.log(user);
+          if (message.senderId === user.id) {
             senderAvatar = user.avatar;
             senderName = 'Me';
             senderType = 'user';

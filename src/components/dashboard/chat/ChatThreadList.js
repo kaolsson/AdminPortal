@@ -17,7 +17,7 @@ const ChatThreadList = (props) => {
       threadKey = thread.id;
     } else {
       const otherParticipant = thread.participants.find((participant) => (participant.id
-        !== user.customerID));
+        !== user.id));
       threadKey = otherParticipant.username;
       console.log(threadKey);
     }

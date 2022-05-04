@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import toast from 'react-hot-toast';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
@@ -6,18 +6,18 @@ import {
   Box,
   ClickAwayListener,
   Divider,
-  // IconButton,
-  // Menu,
-  // MenuItem,
+  IconButton,
+  Menu,
+  MenuItem,
   Paper,
   TextField,
   Typography
 } from '@material-ui/core';
-// import DotsHorizontalIcon from '../../../icons/DotsHorizontal';
-import { updateColumn } from '../../../slices/kanban';
+import DotsHorizontalIcon from '../../../icons/DotsHorizontal';
+import { clearColumn, deleteColumn, updateColumn } from '../../../slices/kanban';
 import { useDispatch, useSelector } from '../../../store';
 import KanbanCard from './KanbanCard';
-// import KanbanCardAdd from './KanbanCardAdd';
+import KanbanCardAdd from './KanbanCardAdd';
 
 const columnSelector = (state, columnId) => {
   const { columns } = state.kanban;
@@ -26,13 +26,21 @@ const columnSelector = (state, columnId) => {
 };
 
 const KanbanColumn = (props) => {
-  const { columnId, ...other } = props;
+  const { columnId, caseId, ...other } = props;
   const dispatch = useDispatch();
-  // const moreRef = useRef(null);
+  const moreRef = useRef(null);
   const column = useSelector((state) => columnSelector(state, columnId));
-  // const [openMenu, setOpenMenu] = useState(false);
+  const [openMenu, setOpenMenu] = useState(false);
   const [name, setName] = useState(column.name);
   const [isRenaming, setIsRenaming] = useState(false);
+
+  const handleMenuOpen = () => {
+    setOpenMenu(true);
+  };
+
+  const handleMenuClose = () => {
+    setOpenMenu(false);
+  };
 
   const handleChange = (event) => {
     setName(event.target.value);
@@ -40,7 +48,7 @@ const KanbanColumn = (props) => {
 
   const handleRenameInit = () => {
     setIsRenaming(true);
-    // setOpenMenu(false);
+    setOpenMenu(false);
   };
 
   const handleRename = async () => {
@@ -62,6 +70,28 @@ const KanbanColumn = (props) => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      setOpenMenu(false);
+      await dispatch(deleteColumn(column.id));
+      toast.success('Column deleted!');
+    } catch (err) {
+      console.error(err);
+      toast.error('Something went wrong!');
+    }
+  };
+
+  const handleClear = async () => {
+    try {
+      setOpenMenu(false);
+      await dispatch(clearColumn(column.id));
+      toast.success('Column cleared!');
+    } catch (err) {
+      console.error(err);
+      toast.error('Something went wrong!');
+    }
+  };
+
   return (
     <div {...other}>
       <Paper
@@ -74,7 +104,7 @@ const KanbanColumn = (props) => {
           overflowY: 'hidden',
           width: {
             xs: 300,
-            sm: 480
+            sm: 380
           }
         }}
       >
@@ -108,6 +138,14 @@ const KanbanColumn = (props) => {
               </Typography>
             )}
           <Box sx={{ flexGrow: 1 }} />
+          <IconButton
+            color="inherit"
+            edge="end"
+            onClick={handleMenuOpen}
+            ref={moreRef}
+          >
+            <DotsHorizontalIcon fontSize="small" />
+          </IconButton>
         </Box>
         <Divider />
         <Droppable
@@ -151,13 +189,40 @@ const KanbanColumn = (props) => {
           )}
         </Droppable>
         <Divider />
+        <Box sx={{ p: 2 }}>
+          <KanbanCardAdd
+            columnId={column.id}
+            caseId={caseId}
+          />
+        </Box>
+        <Menu
+          anchorEl={moreRef.current}
+          anchorOrigin={{
+            horizontal: 'center',
+            vertical: 'bottom'
+          }}
+          keepMounted
+          onClose={handleMenuClose}
+          open={openMenu}
+        >
+          <MenuItem onClick={handleRenameInit}>
+            Rename
+          </MenuItem>
+          <MenuItem onClick={handleClear}>
+            Clear
+          </MenuItem>
+          <MenuItem onClick={handleDelete}>
+            Delete
+          </MenuItem>
+        </Menu>
       </Paper>
     </div>
   );
 };
 
 KanbanColumn.propTypes = {
-  columnId: PropTypes.string.isRequired
+  columnId: PropTypes.string.isRequired,
+  caseId: PropTypes.string.isRequired
 };
 
 export default KanbanColumn;

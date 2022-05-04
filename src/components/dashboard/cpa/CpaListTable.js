@@ -4,13 +4,14 @@ import { useState } from 'react';
 // import numeral from 'numeral';
 import PropTypes from 'prop-types';
 import {
+  Avatar,
   Box,
   Card,
   CardHeader,
 //  Checkbox,
   Divider,
 //  IconButton,
-//  Link,
+  Link,
   Table,
   TableBody,
   TableCell,
@@ -26,6 +27,7 @@ import Label from '../../Label';
 import Scrollbar from '../../Scrollbar';
 // import OrderListBulkActions from './OrderListBulkActions';
 import { Link as RouterLink } from 'react-router-dom';
+import getInitials from '../../../utils/getInitials';
 
 const getStatusLabel = (paymentStatus) => {
   const map = {
@@ -104,6 +106,42 @@ const CpaListTable = (props) => {
                       component={RouterLink}
                       to={['/cpas/details/?cid=', cpa.id].join('')}
                     >
+                      <TableCell>
+                      <Box
+                        sx={{
+                          alignItems: 'center',
+                          display: 'flex'
+                        }}
+                      >
+                        <Avatar
+                          src={cpa.avatar}
+                          sx={{
+                            height: 42,
+                            width: 42
+                          }}
+                        >
+                          {getInitials(`${cpa.firstName}, ${cpa.lastName}`)}
+                        </Avatar>
+                        <Box sx={{ ml: 1 }}>
+                          <Link
+                            color="inherit"
+                            component={RouterLink}
+                            to="/dashboard/customers/1"
+                            variant="subtitle2"
+                          >
+                            {cpa.firstName}
+                            {' '}
+                            {cpa.lastName}
+                          </Link>
+                          <Typography
+                            color="textSecondary"
+                            variant="body2"
+                          >
+                            {cpa.emailAddress}
+                          </Typography>
+                        </Box>
+                      </Box>
+                      </TableCell>
                       <TableCell>
                         <Typography
                           color="textPrimary"

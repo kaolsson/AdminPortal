@@ -6,10 +6,11 @@ import { OrderItems, OrderSummary } from '../../components/dashboard/order';
 import useMounted from '../../hooks/useMounted';
 import useSettings from '../../hooks/useSettings';
 import ChevronRightIcon from '../../icons/ChevronRight';
-import ChatAlt from '../../icons/ChatAlt';
+import UpdateIcon from '../../icons/Update';
 import gtm from '../../lib/gtm';
 import { parse } from 'query-string';
 import useAuth from '../../hooks/useAuth';
+import { Link as RouterLink } from 'react-router-dom';
 
 function findArrayElementById(array, id) {
     return array.find((element) => (element.id === id));
@@ -24,9 +25,9 @@ const OrderDetails = () => {
 
   const getOrders = useCallback(async () => {
     try {
-      const data = await orderApi.getOrders(user.customerID);
+      const data = await orderApi.getOrders(user.accountID);
       if (mounted.current) {
-        const thisOrder = findArrayElementById(data.orders.order, orderId);
+        const thisOrder = findArrayElementById(data.orders, orderId);
         setOrder(thisOrder);
       }
     } catch (err) {
@@ -80,7 +81,7 @@ const OrderDetails = () => {
                   color="textSecondary"
                   variant="subtitle2"
                 >
-                  General
+                  Engagements
                 </Typography>
                 <Typography
                   color="textSecondary"
@@ -92,9 +93,7 @@ const OrderDetails = () => {
                   color="textSecondary"
                   variant="subtitle2"
                 >
-                  Order
-                  {' '}
-                  {order.id}
+                  Details
                 </Typography>
               </Breadcrumbs>
             </Grid>
@@ -102,11 +101,13 @@ const OrderDetails = () => {
               <Box sx={{ m: -1 }}>
                 <Button
                   color="primary"
-                  startIcon={<ChatAlt fontSize="small" />}
+                  component={RouterLink}
+                  startIcon={<UpdateIcon fontSize="small" />}
                   sx={{ m: 1 }}
+                  to={['/order/update/?oid=', order.id].join('')}
                   variant="contained"
                 >
-                  Contact Accounting
+                  Update Order
                 </Button>
               </Box>
             </Grid>
@@ -119,7 +120,7 @@ const OrderDetails = () => {
               <Grid
                 item
                 md={4}
-                xl={3}
+                xl={4}
                 xs={12}
               >
                 <OrderSummary order={order} />
@@ -127,7 +128,7 @@ const OrderDetails = () => {
               <Grid
                 item
                 md={8}
-                xl={9}
+                xl={8}
                 xs={12}
               >
                 <OrderItems ordercarts={order.carts} />

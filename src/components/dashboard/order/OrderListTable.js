@@ -28,6 +28,7 @@ import {
 import SearchIcon from '../../../icons/Search';
 // import getInitials from '../../../utils/getInitials';
 import Scrollbar from '../../Scrollbar';
+import Label from '../../Label';
 
 const tabs = [
   {
@@ -35,64 +36,142 @@ const tabs = [
     value: 'all'
   },
   {
+    label: 'New',
+    value: 'new'
+  },
+  {
     label: 'Active',
-    value: 'hasAcceptedMarketing'
+    value: 'active'
   },
   {
     label: 'Completed',
-    value: 'isReturning'
+    value: 'completed'
   },
   {
-    label: 'Prospect',
-    value: 'isProspect'
+    label: 'Stopped',
+    value: 'stopped'
   }
 ];
 
 const sortOptions = [
   {
     label: 'Last Added (newest)',
-    value: 'updatedAt|desc'
+    value: 'orderDate|desc'
   },
   {
     label: 'Last added (oldest)',
-    value: 'updatedAt|asc'
-  },
-  {
-    label: 'Total cases (highest)',
-    value: 'orders|desc'
-  },
-  {
-    label: 'Total cases (lowest)',
-    value: 'orders|asc'
+    value: 'orderDate|asc'
   }
 ];
+
+const paymentStatusOptions = [
+    {
+      label: 'All',
+      value: 'all'
+    },
+    {
+      label: 'Paid',
+      value: 'paid'
+    },
+    {
+      label: 'Unpaid',
+      value: 'unpaid'
+    },
+    {
+      label: 'Over Due',
+      value: 'due'
+    }
+];
+
+const paymentMethodOptions = [
+    {
+      label: 'All',
+      value: 'all'
+    },
+    {
+      label: 'Card',
+      value: 'card'
+    },
+    {
+      label: 'Check',
+      value: 'check'
+    },
+    {
+      label: 'Bank Deposit',
+      value: 'bank'
+    },
+    {
+      label: 'Cash',
+      value: 'cash'
+    }
+];
+
+const getPaymentStatusLabel = (paymentStatusType) => {
+    const map = {
+      paid: {
+        text: 'Paid',
+        color: 'success'
+      },
+      unpaid: {
+        text: 'Unpaid',
+        color: 'warning'
+      },
+      due: {
+        text: 'Over Due',
+        color: 'error'
+      }
+    };
+
+    const { text, color } = map[paymentStatusType];
+
+    return (
+      <Label color={color}>
+        {text}
+      </Label>
+    );
+  };
 
 const applyFilters = (orders, query, filters) => orders
   .filter((order) => {
     let matches = true;
+    let containsQuery = false;
 
-    if (query) {
-      const properties = ['email', 'name'];
-      let containsQuery = false;
-
-      properties.forEach((property) => {
-        if (order[property].toLowerCase().includes(query.toLowerCase())) {
-          containsQuery = true;
-        }
-      });
-
-      if (!containsQuery) {
+    if (order.customer.firstName.toLowerCase().includes(query.toLowerCase())) {
+        containsQuery = true;
+    }
+    if (order.customer.lastName.toLowerCase().includes(query.toLowerCase())) {
+        containsQuery = true;
+    }
+    if (!containsQuery) {
         matches = false;
-      }
     }
 
-    Object.keys(filters).forEach((key) => {
-      const value = filters[key];
-
-      if (value && order[key] !== value) {
+    if (filters.paymentStatus && order.paymentStatus !== filters.paymentStatus) {
         matches = false;
-      }
-    });
+    }
+
+    if (filters.paymentMethod && order.paymentMethod !== filters.paymentMethod) {
+        matches = false;
+    }
+
+    if (filters.orderStatus && order.orderStatus !== filters.orderStatus) {
+        matches = false;
+    }
+
+//    if (query) {
+//      const properties = ['email', 'name'];
+//      let containsQuery = false;
+//
+//      properties.forEach((property) => {
+//        if (order[property].toLowerCase().includes(query.toLowerCase())) {
+//          containsQuery = true;
+//        }
+//      });
+//
+//      if (!containsQuery) {
+//        matches = false;
+//      }
+//   }
 
     return matches;
   });
@@ -143,26 +222,51 @@ const OrderListTable = (props) => {
   const [query, setQuery] = useState('');
   const [sort, setSort] = useState(sortOptions[0].value);
   const [filters, setFilters] = useState({
-    hasAcceptedMarketing: null,
-    isProspect: null,
-    isReturning: null
+    orderStatus: null,
+    paymentStatus: null,
+    paymentMethod: null
   });
 
   const handleTabsChange = (event, value) => {
-    const updatedFilters = {
-      ...filters,
-      hasAcceptedMarketing: null,
-      isProspect: null,
-      isReturning: null
-    };
+    let newValue = null;
 
     if (value !== 'all') {
-      updatedFilters[value] = true;
+      newValue = value;
     }
 
-    setFilters(updatedFilters);
+    setFilters((prevFilters) => ({
+        ...prevFilters,
+        orderStatus: newValue
+      }));
+
     setSelectedOrders([]);
     setCurrentTab(value);
+  };
+
+  const handlePaymentStatusChange = (event) => {
+    let value = null;
+
+    if (event.target.value !== 'all') {
+      value = event.target.value;
+    }
+
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      paymentStatus: value
+    }));
+  };
+
+  const handlePaymentMethodChange = (event) => {
+    let value = null;
+
+    if (event.target.value !== 'all') {
+      value = event.target.value;
+    }
+
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      paymentMethod: value
+    }));
   };
 
   const handleQueryChange = (event) => {
@@ -248,7 +352,7 @@ const OrderListTable = (props) => {
               )
             }}
             onChange={handleQueryChange}
-            placeholder="Search orders"
+            placeholder="Search First or Last Name"
             value={query}
             variant="outlined"
           />
@@ -274,6 +378,60 @@ const OrderListTable = (props) => {
                 value={option.value}
               >
                 {option.label}
+              </option>
+            ))}
+          </TextField>
+        </Box>
+        <Box
+          sx={{
+            m: 1,
+            maxWidth: '100%',
+            width: 240
+          }}
+        >
+          <TextField
+            fullWidth
+            label="Payment Status"
+            name="paymentStatus"
+            onChange={handlePaymentStatusChange}
+            select
+            SelectProps={{ native: true }}
+            value={filters.paymentStatus || 'all'}
+            variant="outlined"
+          >
+            {paymentStatusOptions.map((paymentStatusOption) => (
+              <option
+                key={paymentStatusOption.value}
+                value={paymentStatusOption.value}
+              >
+                {paymentStatusOption.label}
+              </option>
+            ))}
+          </TextField>
+        </Box>
+        <Box
+          sx={{
+            m: 1,
+            maxWidth: '100%',
+            width: 240
+          }}
+        >
+          <TextField
+            fullWidth
+            label="Payment Method"
+            name="paymentMethod"
+            onChange={handlePaymentMethodChange}
+            select
+            SelectProps={{ native: true }}
+            value={filters.paymentMethod || 'all'}
+            variant="outlined"
+          >
+            {paymentMethodOptions.map((paymentMethodOption) => (
+              <option
+                key={paymentMethodOption.value}
+                value={paymentMethodOption.value}
+              >
+                {paymentMethodOption.label}
               </option>
             ))}
           </TextField>
@@ -309,19 +467,25 @@ const OrderListTable = (props) => {
                   Date
                 </TableCell>
                 <TableCell>
-                  Title
+                  Product
                 </TableCell>
                 <TableCell>
                   Client Name
                 </TableCell>
                 <TableCell>
-                  Amount
-                </TableCell>
-                <TableCell align="right">
                   Order Status
                 </TableCell>
-                <TableCell align="right">
+                <TableCell>
                   Payment Status
+                </TableCell>
+                <TableCell>
+                  Payment Method
+                </TableCell>
+                <TableCell align="right">
+                  Prodcut Price
+                </TableCell>
+                <TableCell align="right">
+                  Sales Amount
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -342,23 +506,27 @@ const OrderListTable = (props) => {
                       {order.orderDate.substring(0, 10)}
                     </TableCell>
                     <TableCell>
-                      {`${order.city}, ${order.state}, ${order.country}`}
+                      {order.carts[0].product[0].productName}
                     </TableCell>
                     <TableCell>
-                      {`${order.title} ${order.firstName} ${order.lastName}`}
+                      {`${order.customer.title} ${order.customer.firstName} ${order.customer.lastName}`}
                     </TableCell>
                     <TableCell>
-                      {order.totalOrders}
+                      {order.orderStatus.toUpperCase()}
                     </TableCell>
                     <TableCell>
-                      {numeral(order.salesAmount / 100)
+                      {getPaymentStatusLabel(order.paymentStatus)}
+                    </TableCell>
+                    <TableCell>
+                      {order.paymentMethod.toUpperCase()}
+                    </TableCell>
+                    <TableCell align="right">
+                      {numeral(order.carts[0].product[0].productPrice / 100)
                         .format(`${order.currency}0,0.00`)}
                     </TableCell>
-                    <TableCell>
-                      {order.totalOrders}
-                    </TableCell>
-                    <TableCell>
-                      {order.name}
+                    <TableCell align="right">
+                      {numeral(order.salesAmount / 100)
+                        .format(`${order.currency}0,0.00`)}
                     </TableCell>
                   </TableRow>
                 );

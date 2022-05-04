@@ -1,4 +1,3 @@
-import { useState, useEffect, useCallback } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { format } from 'date-fns';
 import {
@@ -14,32 +13,14 @@ import {
   TablePagination,
   TableRow
 } from '@material-ui/core';
-import { customerApi } from '../../../__fakeApi__/customerApi';
-import useMounted from '../../../hooks/useMounted';
 import ArrowRightIcon from '../../../icons/ArrowRight';
 import Label from '../../Label';
 import MoreMenu from '../../MoreMenu';
 import Scrollbar from '../../Scrollbar';
+import PropTypes from 'prop-types';
 
-const CustomerInvoices = (props) => {
-  const mounted = useMounted();
-  const [invoices, setInvoices] = useState([]);
-
-  const getInvoices = useCallback(async () => {
-    try {
-      const data = await customerApi.getCustomerInvoices();
-
-      if (mounted.current) {
-        setInvoices(data);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }, [mounted]);
-
-  useEffect(() => {
-    getInvoices();
-  }, []);
+const CustomerCases = (props) => {
+    const { cases } = props;
 
   return (
     <Card {...props}>
@@ -77,7 +58,7 @@ const CustomerInvoices = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {invoices.map((invoice) => (
+              {cases.map((invoice) => (
                 <TableRow key={invoice.id}>
                   <TableCell>
                     #
@@ -117,7 +98,7 @@ const CustomerInvoices = (props) => {
       </Scrollbar>
       <TablePagination
         component="div"
-        count={invoices.length}
+        count={cases.length}
         onPageChange={() => {
         }}
         onRowsPerPageChange={() => {
@@ -130,4 +111,7 @@ const CustomerInvoices = (props) => {
   );
 };
 
-export default CustomerInvoices;
+CustomerCases.propTypes = {
+    cases: PropTypes.array.isRequired
+  };
+export default CustomerCases;

@@ -16,7 +16,7 @@ import UserIcon from '../../../icons/User';
 import Label from '../../Label';
 
 const CustomerContactDetails = (props) => {
-  const { address1, address2, country, email, isVerified, phone, state, ...other } = props;
+  const { customer, isVerified, ...other } = props;
 
   return (
     <Card {...other}>
@@ -38,7 +38,7 @@ const CustomerContactDetails = (props) => {
                 color="textSecondary"
                 variant="body2"
               >
-                {email}
+                {customer.email}
               </Typography>
               <Label color={isVerified ? 'success' : 'error'}>
                 {isVerified ? 'Email verified' : 'Email not verified'}
@@ -59,7 +59,7 @@ const CustomerContactDetails = (props) => {
                 color="textSecondary"
                 variant="body2"
               >
-                {phone}
+                {customer.phone}
               </Typography>
             </TableCell>
           </TableRow>
@@ -69,7 +69,7 @@ const CustomerContactDetails = (props) => {
                 color="textPrimary"
                 variant="subtitle2"
               >
-                Country
+                User Name
               </Typography>
             </TableCell>
             <TableCell>
@@ -77,7 +77,7 @@ const CustomerContactDetails = (props) => {
                 color="textSecondary"
                 variant="body2"
               >
-                {country}
+                {customer.userName}
               </Typography>
             </TableCell>
           </TableRow>
@@ -87,7 +87,7 @@ const CustomerContactDetails = (props) => {
                 color="textPrimary"
                 variant="subtitle2"
               >
-                State/Region
+                Address
               </Typography>
             </TableCell>
             <TableCell>
@@ -95,7 +95,21 @@ const CustomerContactDetails = (props) => {
                 color="textSecondary"
                 variant="body2"
               >
-                {state}
+                {customer.address1}
+                {' '}
+                {customer.address2}
+              </Typography>
+              <Typography
+                color="textSecondary"
+                variant="body2"
+              >
+                {customer.city}
+                {', '}
+                {customer.state}
+                {' '}
+                {customer.zipCode}
+                {' '}
+                {customer.country}
               </Typography>
             </TableCell>
           </TableRow>
@@ -105,7 +119,7 @@ const CustomerContactDetails = (props) => {
                 color="textPrimary"
                 variant="subtitle2"
               >
-                Address 1
+                Signup Date
               </Typography>
             </TableCell>
             <TableCell>
@@ -113,7 +127,7 @@ const CustomerContactDetails = (props) => {
                 color="textSecondary"
                 variant="body2"
               >
-                {address1}
+                {customer.dateAdded}
               </Typography>
             </TableCell>
           </TableRow>
@@ -123,7 +137,7 @@ const CustomerContactDetails = (props) => {
                 color="textPrimary"
                 variant="subtitle2"
               >
-                Address 2
+                Last Login
               </Typography>
             </TableCell>
             <TableCell>
@@ -131,7 +145,27 @@ const CustomerContactDetails = (props) => {
                 color="textSecondary"
                 variant="body2"
               >
-                {address2}
+                {customer.lastLoginDate}
+                {' at '}
+                {customer.lastLoginTime}
+              </Typography>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>
+              <Typography
+                color="textPrimary"
+                variant="subtitle2"
+              >
+                Client Status
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                color="textSecondary"
+                variant="body2"
+              >
+                {customer.status.toUpperCase()}
               </Typography>
             </TableCell>
           </TableRow>
@@ -150,7 +184,7 @@ const CustomerContactDetails = (props) => {
           startIcon={<LockIcon fontSize="small" />}
           variant="text"
         >
-          Reset &amp; Send Password
+          Send Password Reset
         </Button>
         <Button
           color="inherit"
@@ -166,13 +200,8 @@ const CustomerContactDetails = (props) => {
 };
 
 CustomerContactDetails.propTypes = {
-  address1: PropTypes.string,
-  address2: PropTypes.string,
-  country: PropTypes.string,
-  email: PropTypes.string.isRequired,
-  isVerified: PropTypes.bool.isRequired,
-  phone: PropTypes.string,
-  state: PropTypes.string
+  customer: PropTypes.object.isRequired,
+  isVerified: PropTypes.bool.isRequired
 };
 
 export default CustomerContactDetails;

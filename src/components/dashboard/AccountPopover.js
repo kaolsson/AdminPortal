@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import {
@@ -15,13 +15,18 @@ import {
 } from '@material-ui/core';
 import useAuth from '../../hooks/useAuth';
 import CogIcon from '../../icons/Cog';
+import ChatAltIcon from '../../icons/ChatAlt';
 // import UserIcon from '../../icons/User';
+import useMounted from '../../hooks/useMounted';
+import { authApi } from '../../__fakeApi__/authApi';
 
 const AccountPopover = () => {
   const anchorRef = useRef(null);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [avatar, setAvatar] = useState(null);
+  const mounted = useMounted();
 
   const handleOpen = () => {
     setOpen(true);
@@ -42,6 +47,21 @@ const AccountPopover = () => {
     }
   };
 
+  const getAvatar = useCallback(async () => {
+    try {
+        const data = await authApi.getAvatar();
+        if (mounted.current) {
+            setAvatar(data);
+        }
+    } catch (err) {
+        console.error(err);
+    }
+  }, [mounted]);
+
+  useEffect(() => {
+    getAvatar();
+  }, [getAvatar]);
+
   return (
     <>
       <Box
@@ -50,16 +70,27 @@ const AccountPopover = () => {
         ref={anchorRef}
         sx={{
           alignItems: 'center',
-          display: 'flex'
+          display: 'flex',
+          gap: 1,
         }}
       >
         <Avatar
-          src={user.avatar}
+          src={avatar}
           sx={{
             height: 32,
             width: 32
           }}
         />
+          <Typography
+            color="white"
+            variant="subtitle1"
+          >
+            {user.firstName}
+            {' '}
+            {user.middleInitial}
+            {' '}
+            {user.lastName}
+          </Typography>
       </Box>
       <Popover
         anchorEl={anchorRef.current}
@@ -77,7 +108,7 @@ const AccountPopover = () => {
         <Box sx={{ p: 2 }}>
           <Typography
             color="textPrimary"
-            variant="subtitle2"
+            variant="h6"
           >
             {user.firstName}
             {' '}
@@ -102,6 +133,24 @@ const AccountPopover = () => {
                   variant="subtitle2"
                 >
                   Account
+                </Typography>
+              )}
+            />
+          </MenuItem>
+          <MenuItem
+            component={RouterLink}
+            to="/chat"
+          >
+            <ListItemIcon>
+              <ChatAltIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText
+              primary={(
+                <Typography
+                  color="textPrimary"
+                  variant="subtitle2"
+                >
+                  Messages
                 </Typography>
               )}
             />

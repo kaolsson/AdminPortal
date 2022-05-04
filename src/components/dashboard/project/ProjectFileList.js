@@ -153,11 +153,12 @@ const ProjectFileList = (props) => {
   };
 
   function MyDropZone() {
-      if (projectStatus === 'new' || projectStatus === 'ongoing') {
+      if (projectStatus === 'new' || projectStatus === 'active') {
           return (
             <Card>
               <CardContent>
                 <FileDropzone
+                  maxFiles={1}
                   onDrop={onDrop}
                 />
               </CardContent>

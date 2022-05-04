@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
-import ProjectBrief from './ProjectBrief';
+// import ProjectBrief from './ProjectBrief';
 import ProjectMembers from './ProjectMembers';
+import ProjectDetailsWidget from '../../widgets/detail-lists/ProjectDetailsWidget';
 // import ProjectMetadata from './ProjectMetadata';
 
 const ProjectOverview = (props) => {
@@ -19,11 +20,7 @@ const ProjectOverview = (props) => {
         xl={9}
         xs={12}
       >
-        <ProjectBrief
-          title={project.title}
-          description={project.description}
-          tags={project.tags}
-        />
+        <ProjectDetailsWidget project={project} />
       </Grid>
       <Grid
         item
@@ -31,7 +28,10 @@ const ProjectOverview = (props) => {
         xl={3}
         xs={12}
       >
-        <ProjectMembers owner={project.owner} />
+        <ProjectMembers
+          owner={project.owner}
+          client={project.client}
+        />
       </Grid>
     </Grid>
   );

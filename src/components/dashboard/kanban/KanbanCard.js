@@ -1,8 +1,8 @@
 import { forwardRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Avatar,
-  AvatarGroup,
+//  Avatar,
+//  AvatarGroup,
   Box,
   Card,
   CardContent,
@@ -15,10 +15,38 @@ import DocumentTextIcon from '../../../icons/DocumentText';
 import EyeIcon from '../../../icons/Eye';
 import { useSelector } from '../../../store';
 import KanbanCardModal from './KanbanCardModal';
+import Label from '../../Label';
+
+const getActionLabel = (actionType) => {
+    console.log(actionType);
+    const map = {
+      client: {
+        text: 'client',
+        color: 'success'
+      },
+      cpa: {
+        text: 'cpa',
+        color: 'error'
+      },
+      none: {
+        text: 'none',
+        color: 'invisible'
+      }
+    };
+
+    const { text, color } = map[actionType];
+
+    return (
+      <Label color={color}>
+        {text}
+      </Label>
+    );
+  };
 
 const cardSelector = (state, cardId) => {
   const { cards, members } = state.kanban;
   const card = cards.byId[cardId];
+
   return {
     ...card,
     members: card.memberIds.map((memberId) => members.byId[memberId])
@@ -88,17 +116,7 @@ const KanbanCard = forwardRef((props, ref) => {
             {card.checklists.length > 0 && <CheckIcon fontSize="small" />}
             {card.comments.length > 0 && <ChatAltIcon fontSize="small" />}
             <Box sx={{ flexGrow: 1 }} />
-            {card.members.length > 0 && (
-              <AvatarGroup max={5}>
-                {console.log(card.members)}
-                {card.members.map((member) => (
-                  <Avatar
-                    key={member.id}
-                    src={member.avatar}
-                  />
-                ))}
-              </AvatarGroup>
-            )}
+            {getActionLabel(card.actionOwner)}
           </Box>
         </CardContent>
       </Card>

@@ -12,7 +12,7 @@ const MarkdownWrapper = experimentalStyled('div')(({ theme }) => ({
 }));
 
 const ProjectBrief = (props) => {
-  const { description, tags, title, ...other } = props;
+  const { description, note, tags, title, ...other } = props;
   console.log(tags);
 
   return (
@@ -70,6 +70,32 @@ const ProjectBrief = (props) => {
             <Markdown source={description} />
           </MarkdownWrapper>
         </Box>
+        <Box sx={{ mt: 3 }}>
+          <Typography
+              color="textSecondary"
+              variant="overline"
+          >
+              Order
+          </Typography>
+          <Typography
+              color="textPrimary"
+              variant="subtitle2"
+          >
+              {note}
+          </Typography>
+        </Box>
+        <Box sx={{ mt: 3 }}>
+          <Typography
+            color="textSecondary"
+            sx={{ mb: 2 }}
+            variant="overline"
+          >
+            Notes
+          </Typography>
+          <MarkdownWrapper>
+            <Markdown source={note} />
+          </MarkdownWrapper>
+        </Box>
       </CardContent>
     </Card>
   );
@@ -78,7 +104,8 @@ const ProjectBrief = (props) => {
 ProjectBrief.propTypes = {
   description: PropTypes.string.isRequired,
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
-  title: PropTypes.string.isRequired
+  title: PropTypes.string.isRequired,
+  note: PropTypes.string.isRequired
 };
 
 export default ProjectBrief;

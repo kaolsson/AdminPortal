@@ -70,6 +70,7 @@ const ProjectActivity2 = (props) => {
           {columns.allIds.map((columnId) => (
             <KanbanColumn
               columnId={columnId}
+              caseId={caseID}
               key={columnId}
             />
           ))}

@@ -146,7 +146,7 @@ const VendorDetails = () => {
             startIcon={<HomeIcon fontSize="small" />}
             sx={{ mt: 1 }}
             variant="text"
-            href="/account"
+            href="/organization"
           >
             Update Details
           </Button>

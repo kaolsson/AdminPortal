@@ -1,27 +1,58 @@
 import PropTypes from 'prop-types';
 import toast from 'react-hot-toast';
-// import debounce from 'lodash/debounce';
-import { Box, Dialog, Grid, Typography } from '@material-ui/core';
+import debounce from 'lodash/debounce';
+import {
+    Box,
+    Dialog,
+    Divider,
+    FormControlLabel,
+    Grid,
+    Radio,
+    RadioGroup,
+    TextField,
+    Typography
+} from '@material-ui/core';
 import LabelIcon from '@material-ui/icons/Label';
-// import ArchiveIcon from '../../../icons/Archive';
-// import ArrowRightIcon from '../../../icons/ArrowRight';
+import ArchiveIcon from '../../../icons/Archive';
+import ArrowRightIcon from '../../../icons/ArrowRight';
 import CheckIcon from '../../../icons/Check';
-// import DocumentTextIcon from '../../../icons/DocumentText';
-// import DuplicateIcon from '../../../icons/Duplicate';
+import DocumentTextIcon from '../../../icons/DocumentText';
+import DuplicateIcon from '../../../icons/Duplicate';
 import EyeIcon from '../../../icons/Eye';
 import EyeOffIcon from '../../../icons/EyeOff';
-// import TemplateIcon from '../../../icons/Template';
+import TemplateIcon from '../../../icons/Template';
 import UsersIcon from '../../../icons/Users';
-import { addChecklist, updateCard } from '../../../slices/kanban';
+import { addChecklist, deleteCard, updateCard } from '../../../slices/kanban';
 import { useDispatch } from '../../../store';
 import KanbanCardAction from './KanbanCardAction';
 import KanbanChecklist from './KanbanChecklist';
 import KanbanComment from './KanbanComment';
 import KanbanCommentAdd from './KanbanCommentAdd';
 
+const ownerOptions = [
+    {
+      label: 'CPA',
+      value: 'cpa'
+    },
+    {
+      label: 'Client',
+      value: 'client'
+    }
+  ];
+
 const KanbanCardModal = (props) => {
   const { card, column, onClose, open, ...other } = props;
   const dispatch = useDispatch();
+
+  const handleDetailsUpdate = debounce(async (update) => {
+    try {
+      await dispatch(updateCard(card.id, update));
+      toast.success('Card updated!');
+    } catch (err) {
+      console.error(err);
+      toast.error('Something went wrong!');
+    }
+  }, 1000);
 
   const handleSubscribe = async () => {
     try {
@@ -47,13 +78,23 @@ const KanbanCardModal = (props) => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      await dispatch(deleteCard(card.id));
+      toast.success('Card archived!');
+    } catch (err) {
+      console.error(err);
+      toast.error('Something went wrong!');
+    }
+  };
+
   const handleAddChecklist = async () => {
     try {
       await dispatch(addChecklist(card.id, 'Untitled Checklist'));
       toast.success('Checklist added!');
     } catch (err) {
       console.error(err);
-//      toast.error('Something went wrong!');
+      toast.error('Something went wrong!');
     }
   };
 
@@ -75,33 +116,50 @@ const KanbanCardModal = (props) => {
             sm={8}
             xs={12}
           >
-            <Typography
-              color="textPrimary"
-              variant="h6"
-            >
-              Title
-            </Typography>
-            <Typography
-              sx={{
-                mb: 3
-              }}
-              color="textPrimary"
-              variant="body1"
-            >
-              {card.title}
-            </Typography>
-            <Typography
-              color="textPrimary"
-              variant="h6"
-            >
-              Action Description
-            </Typography>
-            <Typography
-              color="textPrimary"
-              variant="body1"
-            >
-              {card.description}
-            </Typography>
+            <TextField
+              defaultValue={card.title}
+              fullWidth
+              label="Title"
+              onChange={(event) => handleDetailsUpdate({ title: event.target.value })}
+              variant="outlined"
+            />
+            <Box sx={{ mt: 3 }}>
+              <TextField
+                defaultValue={card.description}
+                fullWidth
+                multiline
+                onChange={(event) => handleDetailsUpdate({ description: event.target.value })}
+                placeholder="Leave a message"
+                label="Description"
+                rows={6}
+                variant="outlined"
+              />
+            </Box>
+            <Box sx={{ mt: 3 }}>
+                <RadioGroup
+                    name="actionOwner"
+                    defaultValue={card.actionOwner}
+                    onChange={(event) => handleDetailsUpdate({ actionOwner: event.target.value })}
+                    sx={{ flexDirection: 'row' }}
+                    value={card.activityOwner}
+                >
+                    {ownerOptions.map((ownerOption) => (
+                        <FormControlLabel
+                            control={<Radio color="primary" />}
+                            key={ownerOption.value}
+                            label={(
+                                <Typography
+                                    color="textPrimary"
+                                    variant="body1"
+                                >
+                                    {ownerOption.label}
+                                </Typography>
+                            )}
+                            value={ownerOption.value}
+                        />
+                    ))}
+                </RadioGroup>
+            </Box>
             {card.checklists.length > 0 && (
               <Box sx={{ mt: 5 }}>
                 {card.checklists.map((checklist) => (
@@ -119,7 +177,7 @@ const KanbanCardModal = (props) => {
                 color="textPrimary"
                 variant="h6"
               >
-                Comments and Activity
+                Comments
               </Typography>
               <Box sx={{ mt: 2 }}>
                 <KanbanCommentAdd cardId={card.id} />
@@ -152,10 +210,9 @@ const KanbanCardModal = (props) => {
               }}
               variant="overline"
             >
-              Add to action
+              Add to card
             </Typography>
             <KanbanCardAction
-              disabled
               icon={<CheckIcon fontSize="small" />}
               onClick={handleAddChecklist}
             >
@@ -173,6 +230,12 @@ const KanbanCardModal = (props) => {
             >
               Labels
             </KanbanCardAction>
+            <KanbanCardAction
+              disabled
+              icon={<DocumentTextIcon fontSize="small" />}
+            >
+              Attachments
+            </KanbanCardAction>
             <Box sx={{ mt: 3 }}>
               <Typography
                 color="textPrimary"
@@ -185,6 +248,25 @@ const KanbanCardModal = (props) => {
               >
                 Actions
               </Typography>
+              <KanbanCardAction
+                disabled
+                icon={<ArrowRightIcon fontSize="small" />}
+              >
+                Move
+              </KanbanCardAction>
+              <KanbanCardAction
+                disabled
+                icon={<DuplicateIcon fontSize="small" />}
+              >
+                Copy
+              </KanbanCardAction>
+              <KanbanCardAction
+                disabled
+                icon={<TemplateIcon fontSize="small" />}
+              >
+                Make Template
+              </KanbanCardAction>
+              <Divider sx={{ my: 2 }} />
               {(card.isSubscribed === 'True')
                 ? (
                   <KanbanCardAction
@@ -202,6 +284,12 @@ const KanbanCardModal = (props) => {
                     Watch
                   </KanbanCardAction>
                 )}
+              <KanbanCardAction
+                icon={<ArchiveIcon fontSize="small" />}
+                onClick={handleDelete}
+              >
+                Archive
+              </KanbanCardAction>
             </Box>
           </Grid>
         </Grid>

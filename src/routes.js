@@ -13,19 +13,26 @@ const Loadable = (Component) => (props) => (
 
 // SmartMaster pages
 
-const Overview = Loadable(lazy(() => import('./pages/dashboard/Overview')));
-const Account = Loadable(lazy(() => import('./pages/dashboard/Account')));
+// const Overview = Loadable(lazy(() => import('./pages/dashboard/Overview')));
+const UpdateAccount = Loadable(lazy(() => import('./pages/dashboard/Account')));
+const CpaAccount = Loadable(lazy(() => import('./pages/dashboard/OverviewCpa')));
+const OrgAccount = Loadable(lazy(() => import('./pages/dashboard/OverviewOrg')));
+const Organization = Loadable(lazy(() => import('./pages/dashboard/Organization')));
 const OrderList = Loadable(lazy(() => import('./pages/dashboard/OrderList')));
 const OrderDetails = Loadable(lazy(() => import('./pages/dashboard/OrderDetails')));
+const OrderUpdate = Loadable(lazy(() => import('./pages/dashboard/OrderUpdate')));
 const CpaList = Loadable(lazy(() => import('./pages/dashboard/CpaList')));
 const CpaUserDetails = Loadable(lazy(() => import('./pages/dashboard/CpaUserDetails')));
 const CustomerList = Loadable(lazy(() => import('./pages/dashboard/CustomerList')));
+const CustomerDetails = Loadable(lazy(() => import('./pages/dashboard/CustomerDetails')));
 const ProjectBrowse = Loadable(lazy(() => import('./pages/dashboard/ProjectBrowse2')));
+const ProjectCreate = Loadable(lazy(() => import('./pages/dashboard/ProjectCreate')));
 const ProjectDetails = Loadable(lazy(() => import('./pages/dashboard/ProjectDetails')));
 const ProductList = Loadable(lazy(() => import('./pages/dashboard/ProductList')));
 const ProductCreate = Loadable(lazy(() => import('./pages/dashboard/ProductCreate')));
 const TemplateList = Loadable(lazy(() => import('./pages/dashboard/TemplateList')));
 const TemplateCreate = Loadable(lazy(() => import('./pages/dashboard/TemplateCreate')));
+const TemplateDetails = Loadable(lazy(() => import('./pages/dashboard/TemplateDetails')));
 const Chat = Loadable(lazy(() => import('./pages/dashboard/Chat')));
 const Calendar = Loadable(lazy(() => import('./pages/dashboard/Calendar')));
 const Kanban = Loadable(lazy(() => import('./pages/dashboard/Kanban')));
@@ -43,6 +50,7 @@ const VerifyCode = Loadable(lazy(() => import('./pages/authentication/VerifyCode
 
 const AuthorizationRequired = Loadable(lazy(() => import('./pages/AuthorizationRequired')));
 const NotFound = Loadable(lazy(() => import('./pages/NotFound')));
+const UnderConstruction = Loadable(lazy(() => import('./pages/UnderConstruction')));
 const ServerError = Loadable(lazy(() => import('./pages/ServerError')));
 
 const routes = [
@@ -89,11 +97,23 @@ const routes = [
     children: [
       {
         path: '/',
-        element: <Overview />
+        element: <CpaAccount />
+      },
+      {
+          path: 'update',
+          element: <UpdateAccount />
       },
       {
         path: 'account',
-        element: <Account />
+        element: <CpaAccount />
+      },
+      {
+        path: 'orgaccount',
+        element: <OrgAccount />
+      },
+      {
+        path: 'organization',
+        element: <Organization />
       },
       {
         path: 'calendar',
@@ -134,6 +154,15 @@ const routes = [
         ]
       },
       {
+        path: 'order',
+        children: [
+          {
+            path: ':oId',
+            element: <OrderUpdate />
+          }
+        ]
+      },
+      {
         path: 'cpas',
         children: [
           {
@@ -154,8 +183,12 @@ const routes = [
             element: <CustomerList />
           },
           {
-            path: ':oId',
-            element: <OrderDetails />
+            path: 'new',
+            element: <ProjectCreate />
+          },
+          {
+            path: ':cid',
+            element: <CustomerDetails />
           }
         ]
       },
@@ -167,8 +200,21 @@ const routes = [
             element: <ProjectBrowse />
           },
           {
+            path: 'new',
+            element: <ProjectCreate />
+          },
+          {
             path: ':cid',
             element: <ProjectDetails />
+          }
+        ]
+      },
+      {
+        path: 'project',
+        children: [
+          {
+            path: ':pid',
+            element: <ProjectCreate />
           }
         ]
       },
@@ -180,7 +226,7 @@ const routes = [
             element: <ProductList />
           },
           {
-            path: 'new',
+            path: ':pid',
             element: <ProductCreate />
           }
         ]
@@ -195,6 +241,10 @@ const routes = [
           {
             path: 'new',
             element: <TemplateCreate />
+          },
+          {
+            path: ':tid',
+            element: <TemplateDetails />
           }
         ]
       },
@@ -215,6 +265,10 @@ const routes = [
       {
         path: '500',
         element: <ServerError />
+      },
+      {
+        path: '501',
+        element: <UnderConstruction />
       },
       {
         path: '*',

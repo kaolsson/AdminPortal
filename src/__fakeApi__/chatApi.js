@@ -152,9 +152,12 @@ class ChatApi {
 
         axios.get(apiUrl, theHeaders)
             .then((response) => {
-                console.log(response.data.data.threads);
+                console.log(response.data.data);
                 const thread = findThreadById(response.data.data.threads, threadKey);
+                console.log(thread);
+                console.log(threadKey);
                 if (thread) {
+                    console.log(thread.participants);
                     participants.push(...thread.participants);
                 } else {
                     const contact = findContactByUsername(response.data.data.contacts, threadKey);
@@ -168,6 +171,7 @@ class ChatApi {
                         });
                     }
                 }
+                console.log(participants);
                 resolve(deepCopy(participants));
             })
             .catch((response) => {
@@ -314,6 +318,7 @@ class ChatApi {
     // 2) By specifying the other user id (if ONE_TO_ONE thread), thread might exist
     // 3) By specifying a list of recipients, thread might already exist
     const apiUrl = serverConnection.baseUrl + serverConnection.chatUrl;
+    console.log(threadId, participants, body);
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
 
@@ -333,7 +338,7 @@ class ChatApi {
             attachments: [],
             body,
             contentType: 'text',
-            receiverID: participants[0].id
+            participants
           };
 
           const theBody = JSON.stringify(

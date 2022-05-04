@@ -20,6 +20,7 @@ import { experimentalStyled } from '@material-ui/core/styles';
 // import PhoneIcon from '../../../icons/Phone';
 // import DotsHorizontalIcon from '../../../icons/DotsHorizontal';
 // import TrashIcon from '../../../icons/Trash';
+import useAuth from '../../../hooks/useAuth';
 
 const ParticipantAvatar = experimentalStyled(Avatar)(({ styleProps }) => {
   if (styleProps.small) {
@@ -37,13 +38,14 @@ const ParticipantAvatar = experimentalStyled(Avatar)(({ styleProps }) => {
 
 const ChatThreadToolbar = (props) => {
   const { participants, ...other } = props;
+  const { user } = useAuth();
 //  const moreRef = useRef(null);
 //  const [openMenu, setOpenMenu] = useState(false);
 
   // We hardcode the current user ID because the mocked that is not in sync with the auth provider.
   // When implementing this app with a real database, replace this ID with the ID from Auth Context.
   const otherParticipants = participants.filter((participant) => (participant.id
-    !== '5e86809283e28b96d2d38537'));
+    !== user.id));
   const displayNames = otherParticipants.reduce((names, participant) => [
     ...names,
     participant.name

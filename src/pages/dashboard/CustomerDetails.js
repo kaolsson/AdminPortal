@@ -1,6 +1,7 @@
 import { useCallback, useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { parse } from 'query-string';
 import {
   Box,
   Breadcrumbs,
@@ -17,28 +18,33 @@ import { customerApi } from '../../__fakeApi__/customerApi';
 import {
   CustomerContactDetails,
   CustomerDataManagement,
-  CustomerEmailsSummary,
-  CustomerInvoices,
+  CustomerOrders,
+//  CustomerCases,
   CustomerInvoicesSummary,
-  CustomerLogs
+  CustomerNotes
 } from '../../components/dashboard/customer';
+import { ProjectListTable } from '../../components/dashboard/project';
 import useMounted from '../../hooks/useMounted';
 import ChevronRightIcon from '../../icons/ChevronRight';
-import PencilAltIcon from '../../icons/PencilAlt';
+// import PencilAltIcon from '../../icons/PencilAlt';
+import ArrowLeftIcon from '../../icons/ArrowLeft';
 import gtm from '../../lib/gtm';
 import useSettings from '../../hooks/useSettings';
 
 const tabs = [
   { label: 'Details', value: 'details' },
-  { label: 'Invoices', value: 'invoices' },
-  { label: 'Logs', value: 'logs' }
+  { label: 'Orders', value: 'orders' },
+  { label: 'Cases', value: 'cases' },
+  { label: 'Notes', value: 'notes' }
 ];
 
 const CustomerDetails = () => {
   const mounted = useMounted();
   const { settings } = useSettings();
   const [customer, setCustomer] = useState(null);
+  const [cases, setCases] = useState([]);
   const [currentTab, setCurrentTab] = useState('details');
+  const [customerId] = useState(parse(window.location.search).cid);
 
   useEffect(() => {
     gtm.push({ event: 'page_view' });
@@ -46,10 +52,12 @@ const CustomerDetails = () => {
 
   const getCustomer = useCallback(async () => {
     try {
-      const data = await customerApi.getCustomer();
+      const data = await customerApi.getCustomer(customerId);
 
       if (mounted.current) {
-        setCustomer(data);
+        setCustomer(data.user);
+        setCases(data.cases);
+        console.log(data);
       }
     } catch (err) {
       console.error(err);
@@ -91,7 +99,13 @@ const CustomerDetails = () => {
                 color="textPrimary"
                 variant="h5"
               >
-                {customer.name}
+                {customer.title}
+                {' '}
+                {customer.firstName}
+                {' '}
+                {customer.middleInitial}
+                {' '}
+                {customer.lastName}
               </Typography>
               <Breadcrumbs
                 aria-label="breadcrumb"
@@ -101,25 +115,27 @@ const CustomerDetails = () => {
                 <Link
                   color="textPrimary"
                   component={RouterLink}
-                  to="/dashboard"
+                  to="/clients/browse"
                   variant="subtitle2"
                 >
-                  Dashboard
+                  Engagements
                 </Link>
                 <Link
                   color="textPrimary"
                   component={RouterLink}
-                  to="/dashboard"
+                  to="/clients/browse"
                   variant="subtitle2"
                 >
-                  Management
+                  Clients
                 </Link>
-                <Typography
+                <Link
                   color="textSecondary"
+                  component={RouterLink}
+                  to="#"
                   variant="subtitle2"
                 >
-                  Customers
-                </Typography>
+                  Details
+                </Link>
               </Breadcrumbs>
             </Grid>
             <Grid item>
@@ -127,12 +143,12 @@ const CustomerDetails = () => {
                 <Button
                   color="primary"
                   component={RouterLink}
-                  startIcon={<PencilAltIcon fontSize="small" />}
+                  startIcon={<ArrowLeftIcon fontSize="small" />}
                   sx={{ m: 1 }}
-                  to="/dashboard/customers/1/edit"
-                  variant="contained"
+                  to="/clients/browse"
+                  variant="outlined"
                 >
-                  Edit
+                  Back
                 </Button>
               </Box>
             </Grid>
@@ -170,13 +186,8 @@ const CustomerDetails = () => {
                   xs={12}
                 >
                   <CustomerContactDetails
-                    address1={customer.address1}
-                    address2={customer.address2}
-                    country={customer.country}
-                    email={customer.email}
-                    isVerified={customer.isVerified}
-                    phone={customer.phone}
-                    state={customer.state}
+                    customer={customer}
+                    isVerified={1}
                   />
                 </Grid>
                 <Grid
@@ -195,21 +206,13 @@ const CustomerDetails = () => {
                   xl={settings.compact ? 6 : 3}
                   xs={12}
                 >
-                  <CustomerEmailsSummary />
-                </Grid>
-                <Grid
-                  item
-                  lg={settings.compact ? 6 : 4}
-                  md={6}
-                  xl={settings.compact ? 6 : 3}
-                  xs={12}
-                >
                   <CustomerDataManagement />
                 </Grid>
               </Grid>
             )}
-            {currentTab === 'invoices' && <CustomerInvoices />}
-            {currentTab === 'logs' && <CustomerLogs />}
+            {currentTab === 'orders' && <CustomerOrders orders={customer.orders} />}
+            {currentTab === 'cases' && <ProjectListTable projects={cases} />}
+            {currentTab === 'notes' && <CustomerNotes customer={customer} />}
           </Box>
         </Container>
       </Box>

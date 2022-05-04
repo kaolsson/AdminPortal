@@ -17,33 +17,33 @@ import Label from '../../Label';
 
 const getStatusLabel = (paymentStatus) => {
   const map = {
-    NEW: {
-        color: 'success',
-        text: 'New'
+    paid: {
+      color: 'success',
+      text: 'Paid'
     },
-      unpaid: {
-      color: 'error',
+    unpaid: {
+      color: 'warning',
       text: 'UnPaid'
     },
-    paid: {
-        color: 'success',
-        text: 'Paid'
-      },
-      canceled: {
-        color: 'error',
-        text: 'Canceled'
-      },
-      completed: {
-      color: 'success',
-      text: 'Completed'
-    },
-    pending: {
-      color: 'warning',
-      text: 'Pending'
-    },
-    rejected: {
+    due: {
       color: 'error',
-      text: 'Rejected'
+      text: 'Over Due'
+    },
+    new: {
+        color: 'primary',
+        text: 'New'
+    },
+    active: {
+        color: 'success',
+        text: 'Active'
+    },
+    completed: {
+        color: 'success',
+        text: 'Completed'
+    },
+    stopped: {
+        color: 'error',
+        text: 'Stopped'
     }
   };
 
@@ -56,55 +56,101 @@ const getStatusLabel = (paymentStatus) => {
   );
 };
 
-const Receipt = () => (
-    <TableRow>
-      <TableCell>
-        <Typography
-        color="textPrimary"
-        variant="subtitle2"
-        >
-        Receipt
-        </Typography>
-      </TableCell>
-      <TableCell>
-        <Button
-          color="primary"
-          startIcon={<ReceiptIcon fontSize="small" />}
-          variant="text"
-        >
-          Download Receipt
-        </Button>
-      </TableCell>
-    </TableRow>
-  );
+const SquareInfo = (props) => {
+    const { order, ...other } = props;
+    return (
+      <Card {...other}>
+        <CardHeader title="Square Payment Info" />
+        <Divider />
+        <Table>
+        <TableBody>
 
-const PayOrder = () => (
-    <TableRow>
-      <TableCell>
+        <TableRow>
+        <TableCell>
         <Typography
-        color="textPrimary"
-        variant="subtitle2"
+            color="textPrimary"
+            variant="subtitle2"
         >
-        Pay
+            Square Payment Status
         </Typography>
-      </TableCell>
-      <TableCell>
+        </TableCell>
+        <TableCell>
+        {order.payment_square.square_payment_status}
+        </TableCell>
+        </TableRow>
+        <TableRow>
+        <TableCell>
+        <Typography
+            color="textPrimary"
+            variant="subtitle2"
+        >
+            Square Approved Amount
+        </Typography>
+        </TableCell>
+        <TableCell>
+        {numeral(order.payment_square.square_approved_amount / 100)
+            .format(`${order.currency}0,0.00`)}
+        </TableCell>
+        </TableRow>
+        <TableRow>
+        <TableCell>
+        <Typography
+            color="textPrimary"
+            variant="subtitle2"
+        >
+            Square Payment ID
+        </Typography>
+        </TableCell>
+        <TableCell>
+        {order.payment_square.square_payment_id}
+        </TableCell>
+        </TableRow>
+        </TableBody>
+        </Table>
+        <SendReceipt />
+      </Card>
+    );
+};
+
+const SendReceipt = () => (
+        <div>
+            <CardActions>
+            <Button
+            color="primary"
+            startIcon={<ReceiptIcon fontSize="small" />}
+            variant="text"
+            >
+            Send Customer Receipt
+            </Button>
+            </CardActions>
+            <CardActions>
+            <Button
+            color="primary"
+            startIcon={<ReceiptIcon fontSize="small" />}
+            variant="text"
+            >
+            Download Customer Receipt
+            </Button>
+            </CardActions>
+        </div>
+);
+
+const SendReminder = () => (
         <Button
           color="primary"
           startIcon={<ReceiptIcon fontSize="small" />}
           variant="text"
         >
-          Pay Order
+          Send Payment Reminder
         </Button>
-      </TableCell>
-    </TableRow>
-  );
+);
 
 const OrderSummary = (props) => {
   const { order, ...other } = props;
   console.log(order);
 
   return (
+    <div>
     <Card {...other}>
       <CardHeader title="Order info" />
       <Divider />
@@ -116,11 +162,37 @@ const OrderSummary = (props) => {
                 color="textPrimary"
                 variant="subtitle2"
               >
-                Id
+                Order ID
               </Typography>
             </TableCell>
             <TableCell>
               {order.id}
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>
+              <Typography
+                color="textPrimary"
+                variant="subtitle2"
+              >
+                Order Date
+              </Typography>
+            </TableCell>
+            <TableCell>
+              {order.orderDate}
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>
+              <Typography
+                color="textPrimary"
+                variant="subtitle2"
+              >
+                Order Status
+              </Typography>
+            </TableCell>
+            <TableCell>
+              {getStatusLabel(order.orderStatus)}
             </TableCell>
           </TableRow>
           <TableRow>
@@ -134,7 +206,19 @@ const OrderSummary = (props) => {
             </TableCell>
             <TableCell>
               <div>
-                QomoTax
+                {order.vendor.organization}
+              </div>
+              <div>
+                {order.vendor.address1}
+                {' '}
+                {order.vendor.address2}
+              </div>
+              <div>
+                {order.vendor.city}
+                {', '}
+                {order.vendor.state}
+                {' '}
+                {order.vendor.zipCode}
               </div>
             </TableCell>
           </TableRow>
@@ -149,6 +233,8 @@ const OrderSummary = (props) => {
             </TableCell>
             <TableCell>
               <div>
+                {order.customer.title}
+                {' '}
                 {order.customer.firstName}
                 {' '}
                 {order.customer.middleInitial}
@@ -157,12 +243,15 @@ const OrderSummary = (props) => {
               </div>
               <div>
                 {order.customer.address1}
+                {' '}
+                {order.customer.address2}
               </div>
               <div>
                 {order.customer.city}
-              </div>
-              <div>
-                {order.customer.country}
+                {', '}
+                {order.customer.state}
+                {' '}
+                {order.customer.zipCode}
               </div>
             </TableCell>
           </TableRow>
@@ -172,20 +261,7 @@ const OrderSummary = (props) => {
                 color="textPrimary"
                 variant="subtitle2"
               >
-                Date
-              </Typography>
-            </TableCell>
-            <TableCell>
-              {order.orderDate}
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>
-              <Typography
-                color="textPrimary"
-                variant="subtitle2"
-              >
-                Subscription
+                Subscription Rate
               </Typography>
             </TableCell>
             <TableCell>
@@ -212,11 +288,30 @@ const OrderSummary = (props) => {
                 color="textPrimary"
                 variant="subtitle2"
               >
+                Discount
+              </Typography>
+            </TableCell>
+            <TableCell>
+            <Typography
+                color="red"
+                variant="subtitle2"
+            >
+              {numeral(order.salesDiscount / 100)
+                .format(`${order.currency}0,0.00`)}
+            </Typography>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>
+              <Typography
+                color="textPrimary"
+                variant="subtitle2"
+              >
                 Payment Method
               </Typography>
             </TableCell>
             <TableCell>
-              {order.paymentMethod}
+              {order.paymentMethod.toUpperCase()}
             </TableCell>
           </TableRow>
           <TableRow>
@@ -232,24 +327,25 @@ const OrderSummary = (props) => {
               {getStatusLabel(order.paymentStatus)}
             </TableCell>
           </TableRow>
-          {order.paymentStatus === 'unpaid' ? <PayOrder /> : <Receipt />}
         </TableBody>
       </Table>
       <CardActions>
-        <Button
-          color="primary"
-          startIcon={<ReceiptIcon fontSize="small" />}
-          variant="text"
-        >
-          Download Order
-        </Button>
+        {order.paymentStatus === 'paid' ? <div> </div> : <SendReminder /> }
       </CardActions>
     </Card>
+    <Card {...other}>
+      {order.paymentStatus === 'paid' ? <SquareInfo order={order} /> : <div> </div> }
+    </Card>
+    </div>
   );
 };
 
 OrderSummary.propTypes = {
   order: PropTypes.object.isRequired
 };
+
+SquareInfo.propTypes = {
+    order: PropTypes.object.isRequired
+  };
 
 export default OrderSummary;

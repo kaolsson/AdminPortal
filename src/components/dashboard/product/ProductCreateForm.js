@@ -17,26 +17,39 @@ import {
   Typography
 } from '@material-ui/core';
 import FileDropzone from '../../FileDropzone';
-import QuillEditor from '../../QuillEditor';
+// import QuillEditor from '../../QuillEditor';
 import { productApi } from '../../../__fakeApi__/productApi';
+import PropTypes from 'prop-types';
 
 const categoryOptions = [
   {
-    value: 'tax',
-    label: 'Tax'
+    value: '',
+    label: ''
+  },
+  {
+    label: 'Tax',
+    value: 'tax'
   },
   {
     label: 'Accounting',
     value: 'accounting'
   },
   {
-    label: 'Payrole',
-    value: 'payrole'
+    label: 'Payroll',
+    value: 'payroll'
+  },
+  {
+    label: 'Other',
+    value: 'other'
   }
 ];
 
 const statusOptions = [
     {
+        value: '',
+        label: ''
+      },
+        {
       label: 'Active',
       value: 'active'
     },
@@ -51,6 +64,7 @@ const statusOptions = [
     ];
 
 const ProductCreateForm = (props) => {
+  const { product } = props;
   const navigate = useNavigate();
   const [files, setFiles] = useState([]);
 
@@ -70,15 +84,18 @@ const ProductCreateForm = (props) => {
   return (
     <Formik
       initialValues={{
-        productCategory: '',
-        productDescription: '',
+        productID: product.productID,
+        accountID: product.accountID,
+        productStatus: product.productStatus,
+        productCategory: product.productCategory,
+        productDescription: product.productDescription,
         productPictureUrl: [],
-        productName: '',
-        productPrice: '',
-        productQuantity: '',
-        productSubCategory: '',
-        productOwner: '',
-        note: '',
+        productName: product.productName,
+        productPrice: product.productPrice,
+        productQuantity: product.productQuantity,
+        productSubCategory: product.productSubCategory,
+        productOwner: product.productOwner,
+        note: product.note,
         priceCurrency: 'USD', // hardcode USD for now
         submit: null
       }}
@@ -99,10 +116,10 @@ const ProductCreateForm = (props) => {
         try {
           // NOTE: Make API request
           console.log(values);
-          await productApi.newProduct(values);
+          await productApi.editProduct(values);
           setStatus({ success: true });
           setSubmitting(false);
-          toast.success('Product created!');
+          toast.success('Product updated/created!');
           navigate('/products/browse');
         } catch (err) {
           console.error(err);
@@ -119,7 +136,7 @@ const ProductCreateForm = (props) => {
         handleChange,
         handleSubmit,
         isSubmitting,
-        setFieldValue,
+//        setFieldValue,
         touched,
         values
       }) => (
@@ -138,6 +155,7 @@ const ProductCreateForm = (props) => {
               xs={12}
             >
               <Card>
+                <CardHeader title="Product Description" />
                 <CardContent>
                   <TextField
                     error={Boolean(touched.productName && errors.productName)}
@@ -150,54 +168,61 @@ const ProductCreateForm = (props) => {
                     value={values.productName}
                     variant="outlined"
                   />
-                  <Typography
-                    color="textSecondary"
-                    sx={{
-                      mb: 2,
-                      mt: 3
-                    }}
-                    variant="subtitle2"
-                  >
-                    Product Description
-                  </Typography>
-                  <QuillEditor
-                    onChange={(value) => setFieldValue('productDescription', value)}
-                    placeholder="Write..."
-                    sx={{ height: 150 }}
+                  <Box sx={{ mt: 3 }}>
+                  <TextField
+                    error={Boolean(touched.productDescription && errors.productDescription)}
+                    fullWidth
+                    helperText={touched.productDescription && errors.productDescription}
+                    label="Product Description"
+                    name="productDescription"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
                     value={values.productDescription}
+                    variant="outlined"
                   />
-                  {(touched.productDescription && errors.productDescription) && (
-                    <Box sx={{ mt: 2 }}>
-                      <FormHelperText error>
-                        {errors.productDescription}
-                      </FormHelperText>
-                    </Box>
-                  )}
-                  <Typography
-                    color="textSecondary"
-                    sx={{
-                      mb: 2,
-                      mt: 3
-                    }}
-                    variant="subtitle2"
-                  >
-                    Internal Product Note
-                  </Typography>
-                  <QuillEditor
-                    onChange={(value) => setFieldValue('note', value)}
-                    placeholder="Write..."
-                    sx={{ height: 150 }}
+                  </Box>
+                  <Box sx={{ mt: 3 }}>
+                  <TextField
+                    error={Boolean(touched.note && errors.note)}
+                    fullWidth
+                    helperText={touched.note && errors.note}
+                    label="Internal Product Note"
+                    name="note"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
                     value={values.note}
+                    variant="outlined"
                   />
-                  {(touched.note && errors.note) && (
-                    <Box sx={{ mt: 2 }}>
-                      <FormHelperText error>
-                        {errors.note}
-                      </FormHelperText>
-                    </Box>
-                  )}
+                  </Box>
                 </CardContent>
               </Card>
+              <Box sx={{ mt: 3 }}>
+              <Card>
+                <CardHeader title="Tracking" />
+                <CardContent>
+                <Typography
+                    color="inherit"
+                    sx={{ ml: 1 }}
+                    variant="subtitle2"
+                >
+                    Date Added:
+                    {' '}
+                    {product.dateAdded.substring(0, 10)}
+                </Typography>
+                <Box sx={{ mt: 3 }}>
+                  <Typography
+                    color="inherit"
+                    sx={{ ml: 1 }}
+                    variant="subtitle2"
+                  >
+                    Date Updated:
+                    {' '}
+                    {product.dateUpdated.substring(0, 10)}
+                  </Typography>
+                </Box>
+                </CardContent>
+              </Card>
+              </Box>
               <Box sx={{ mt: 3 }}>
                 <Card>
                   <CardHeader title="Upload Image" />
@@ -338,7 +363,7 @@ const ProductCreateForm = (props) => {
                   type="submit"
                   variant="contained"
                 >
-                  Create Product
+                  Save Product
                 </Button>
               </Box>
             </Grid>
@@ -348,5 +373,9 @@ const ProductCreateForm = (props) => {
     </Formik>
   );
 };
+
+ProductCreateForm.propTypes = {
+    product: PropTypes.array.isRequired
+  };
 
 export default ProductCreateForm;

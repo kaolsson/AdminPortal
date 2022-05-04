@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from 'react';
+// import { useCallback, useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -15,34 +15,13 @@ import {
 // import LockIcon from '../../../icons/Lock';
 // import UsersIcon from '../../../icons/Users';
 import HomeIcon from '../../../icons/Home';
-import useMounted from '../../../hooks/useMounted';
-import { vendorApi } from '../../../__fakeApi__/vendorApi';
-import useAuth from '../../../hooks/useAuth';
+// import useMounted from '../../../hooks/useMounted';
+// import { vendorApi } from '../../../__fakeApi__/vendorApi';
+// import useAuth from '../../../hooks/useAuth';
+import PropTypes from 'prop-types';
 
-const OrgDetails = () => {
-  const mounted = useMounted();
-  const [vendor, setVendor] = useState(null);
-  const { user } = useAuth();
-
-  const getVendor = useCallback(async () => {
-    try {
-      const data = await vendorApi.getVendor(user.accountID);
-
-      if (mounted.current) {
-        setVendor(data.vendor);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }, [mounted]);
-
-  useEffect(() => {
-    getVendor();
-  }, [getVendor]);
-
-  if (!vendor) {
-    return null;
-  }
+const OrgDetails = (props) => {
+  const { vendor } = props;
 
   return (
     <Box
@@ -54,7 +33,7 @@ const OrgDetails = () => {
     >
       <Card>
         <Divider />
-        <Table>
+        <Table sx={{ minWidth: 1200 }}>
           <TableBody>
             <TableRow>
               <TableCell>
@@ -71,24 +50,6 @@ const OrgDetails = () => {
                   variant="body2"
                 >
                   {vendor.organization}
-                </Typography>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>
-                <Typography
-                  color="textPrimary"
-                  variant="subtitle2"
-                >
-                  Org Number
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  color="textSecondary"
-                  variant="body2"
-                >
-                  {vendor.orgNumber}
                 </Typography>
               </TableCell>
             </TableRow>
@@ -206,6 +167,8 @@ const OrgDetails = () => {
                   {', '}
                   {vendor.state}
                   {', '}
+                  {vendor.zipCode}
+                  {', '}
                   {vendor.country}
                 </Typography>
               </TableCell>
@@ -252,24 +215,6 @@ const OrgDetails = () => {
                   color="textPrimary"
                   variant="subtitle2"
                 >
-                 Logo Url
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  color="textSecondary"
-                  variant="body2"
-                >
-                  {vendor.logoUrl}
-                </Typography>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>
-                <Typography
-                  color="textPrimary"
-                  variant="subtitle2"
-                >
                  Payment Ref
                 </Typography>
               </TableCell>
@@ -279,24 +224,6 @@ const OrgDetails = () => {
                   variant="body2"
                 >
                   {vendor.paymentRef}
-                </Typography>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>
-                <Typography
-                  color="textPrimary"
-                  variant="subtitle2"
-                >
-                 Date Created
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  color="textSecondary"
-                  variant="body2"
-                >
-                  {vendor.dateAdded.substring(0, 10)}
                 </Typography>
               </TableCell>
             </TableRow>
@@ -315,7 +242,7 @@ const OrgDetails = () => {
             startIcon={<HomeIcon fontSize="small" />}
             sx={{ mt: 1 }}
             variant="text"
-            href="/account"
+            href="/organization"
           >
             Update Details
           </Button>
@@ -324,5 +251,9 @@ const OrgDetails = () => {
     </Box>
   );
 };
+
+OrgDetails.propTypes = {
+    vendor: PropTypes.object.isRequired
+  };
 
 export default OrgDetails;

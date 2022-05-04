@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 // import { Link as RouterLink } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Box, Breadcrumbs, Button, Container, Grid, Typography } from '@material-ui/core';
@@ -29,7 +30,7 @@ const OrderList = () => {
       const data = await orderApi.getOrders(user.accountID);
 
       if (mounted.current) {
-        setOrders(data);
+        setOrders(data.orders);
       }
     } catch (err) {
       console.error(err);
@@ -74,13 +75,19 @@ const OrderList = () => {
                   color="textSecondary"
                   variant="subtitle2"
                 >
-                  SmartMaster Admin
+                  Engagements
                 </Typography>
                 <Typography
                   color="textSecondary"
                   variant="subtitle2"
                 >
-                  Clients
+                  Orders
+                </Typography>
+                <Typography
+                  color="textSecondary"
+                  variant="subtitle2"
+                >
+                  List
                 </Typography>
               </Breadcrumbs>
             </Grid>
@@ -88,11 +95,13 @@ const OrderList = () => {
               <Box sx={{ m: -1 }}>
                 <Button
                   color="primary"
+                  component={RouterLink}
                   startIcon={<PlusIcon fontSize="small" />}
                   sx={{ m: 1 }}
+                  to="/templates/new"
                   variant="contained"
                 >
-                  Create Order
+                  Create Order Template
                 </Button>
               </Box>
             </Grid>

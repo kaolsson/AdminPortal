@@ -8,9 +8,9 @@ import {
   Card,
 //  Checkbox,
 //  FormControlLabel,
-  IconButton,
+//  IconButton,
   InputAdornment,
-  Link,
+//  Link,
 //  Switch,
   Table,
   TableBody,
@@ -20,9 +20,9 @@ import {
   TableRow,
   TextField
 } from '@material-ui/core';
-import ArrowRightIcon from '../../../icons/ArrowRight';
+// import ArrowRightIcon from '../../../icons/ArrowRight';
 // import ImageIcon from '../../../icons/Image';
-import PencilAltIcon from '../../../icons/PencilAlt';
+// import PencilAltIcon from '../../../icons/PencilAlt';
 import SearchIcon from '../../../icons/Search';
 import Label from '../../Label';
 import Scrollbar from '../../Scrollbar';
@@ -33,33 +33,33 @@ const categoryOptions = [
     value: 'all'
   },
   {
-    label: 'Tax',
-    value: 'tax'
+    label: 'Active',
+    value: 'active'
   },
   {
-    label: 'Payroll',
-    value: 'payroll'
+    label: 'On Hold',
+    value: 'onhold'
   },
   {
-    label: 'Accounting',
-    value: 'accounting'
+    label: 'Inactive',
+    value: 'inactive'
   },
   {
-    label: 'Other',
-    value: 'other'
+    label: 'Obsolete',
+    value: 'obsolete'
   }
 ];
 
-const availabilityOptions = [
-  {
-    label: 'All',
-    value: 'all'
-  },
-  {
-    label: 'Active',
-    value: 'active'
-  }
-];
+// const availabilityOptions = [
+//  {
+//    label: 'All',
+//    value: 'all'
+//  },
+//  {
+//    label: 'Active',
+//    value: 'active'
+//  }
+// ];
 
 const sortOptions = [
   {
@@ -86,11 +86,15 @@ const getInventoryLabel = (inventoryType) => {
       text: 'Active',
       color: 'success'
     },
-    inactive: {
-      text: 'In Active',
+    onhold: {
+      text: 'On Hold',
       color: 'warning'
     },
-    obsolete: {
+    inactive: {
+        text: 'Inactive',
+        color: 'warning'
+      },
+      obsolete: {
       text: 'Obsolete',
       color: 'error'
     }
@@ -105,47 +109,47 @@ const getInventoryLabel = (inventoryType) => {
   );
 };
 
-const applyFilters = (products, query, filters) => products
-  .filter((product) => {
+const applyFilters = (templates, query, filters) => templates
+  .filter((template) => {
     let matches = true;
 
-    if (query && !product.productName.toLowerCase().includes(query.toLowerCase())) {
+    if (query && !template.templateName.toLowerCase().includes(query.toLowerCase())) {
       matches = false;
     }
 
-    if (filters.category && product.productCategory !== filters.category) {
+    if (filters.category && template.templateStatus !== filters.category) {
       matches = false;
     }
 
     if (filters.availability && ![
         'active'
-       ].includes(product.productStatus)) {
+       ].includes(template.templateStatus)) {
         matches = false;
     }
 
     // if (filters.availability) {
-    //   if (filters.availability === 'available' && !product.productStatus === 'active') {
+    //   if (filters.availability === 'available' && !template.templateStatus === 'active') {
     //    matches = false;
     //  }
 
-    //  if (filters.availability === 'unavailable' && product.productStatus !== 'active') {
+    //  if (filters.availability === 'unavailable' && template.templateStatus !== 'active') {
     //    matches = false;
     //  }
     // }
 
-    // if (filters.isShippable && !product.isShippable) {
+    // if (filters.isShippable && !template.isShippable) {
     //  matches = false;
     // }
 
     return matches;
   });
 
-const applyPagination = (products, page, limit) => products
+const applyPagination = (templates, page, limit) => templates
   .slice(page * limit, page * limit + limit);
 
 const TemplateListTable = (props) => {
-  const { products, ...other } = props;
-//  const [selectedProducts, setSelectedProducts] = useState([]);
+  const { templates, ...other } = props;
+//  const [selectedTemplates, setSelectedTemplates] = useState([]);
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(10);
   const [query, setQuery] = useState('');
@@ -174,34 +178,34 @@ const TemplateListTable = (props) => {
     }));
   };
 
-  const handleAvailabilityChange = (event) => {
-    let value = null;
+//  const handleAvailabilityChange = (event) => {
+//    let value = null;
 
-    if (event.target.value !== 'all') {
-      value = event.target.value;
-    }
+//    if (event.target.value !== 'all') {
+//      value = event.target.value;
+//    }
 
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      availability: value
-    }));
-  };
+//    setFilters((prevFilters) => ({
+//      ...prevFilters,
+//      availability: value
+//    }));
+//  };
 
   const handleSortChange = (event) => {
     setSort(event.target.value);
   };
 
-//  const handleSelectAllProducts = (event) => {
-//    setSelectedProducts(event.target.checked
-//      ? products.map((product) => product.productID)
+//  const handleSelectAllTemplates = (event) => {
+//    setSelectedTemplates(event.target.checked
+//      ? templates.map((template) => template.templateID)
 //      : []);
 //  };
 
-//  const handleSelectOneProduct = (event, productId) => {
-//    if (!selectedProducts.includes(productId)) {
-//     setSelectedProducts((prevSelected) => [...prevSelected, productId]);
+//  const handleSelectOneTemplate = (event, templateId) => {
+//    if (!selectedTemplates.includes(templateId)) {
+//     setSelectedTemplates((prevSelected) => [...prevSelected, templateId]);
 //    } else {
-//      setSelectedProducts((prevSelected) => prevSelected.filter((id) => id !== productId));
+//      setSelectedTemplates((prevSelected) => prevSelected.filter((id) => id !== templateId));
 //    }
 //  };
 
@@ -214,12 +218,12 @@ const TemplateListTable = (props) => {
   };
 
   // Usually query is done on backend with indexing solutions
-  const filteredProducts = applyFilters(products, query, filters);
-  const paginatedProducts = applyPagination(filteredProducts, page, limit);
-  // const enableBulkActions = selectedProducts.length > 0;
-  // const selectedSomeProducts = selectedProducts.length > 0
-  //  && selectedProducts.length < products.length;
-  // const selectedAllProducts = selectedProducts.length === products.length;
+  const filteredTemplates = applyFilters(templates, query, filters);
+  const paginatedTemplates = applyPagination(filteredTemplates, page, limit);
+  // const enableBulkActions = selectedTemplates.length > 0;
+  // const selectedSomeTemplates = selectedTemplates.length > 0
+  //  && selectedTemplates.length < templates.length;
+  // const selectedAllTemplates = selectedTemplates.length === templates.length;
 
   return (
     <Card {...other}>
@@ -249,7 +253,7 @@ const TemplateListTable = (props) => {
               )
             }}
             onChange={handleQueryChange}
-            placeholder="Search products"
+            placeholder="Search templates (Name)"
             value={query}
             variant="outlined"
           />
@@ -289,7 +293,7 @@ const TemplateListTable = (props) => {
         >
           <TextField
             fullWidth
-            label="Category"
+            label="Status"
             name="category"
             onChange={handleCategoryChange}
             select
@@ -307,33 +311,6 @@ const TemplateListTable = (props) => {
             ))}
           </TextField>
         </Box>
-        <Box
-          sx={{
-            m: 1,
-            maxWidth: '100%',
-            width: 240
-          }}
-        >
-          <TextField
-            fullWidth
-            label="Availability"
-            name="availability"
-            onChange={handleAvailabilityChange}
-            select
-            SelectProps={{ native: true }}
-            value={filters.availability || 'all'}
-            variant="outlined"
-          >
-            {availabilityOptions.map((availabilityOption) => (
-              <option
-                key={availabilityOption.value}
-                value={availabilityOption.value}
-              >
-                {availabilityOption.label}
-              </option>
-            ))}
-          </TextField>
-        </Box>
       </Box>
       <Scrollbar>
         <Box sx={{ minWidth: 1200 }}>
@@ -341,7 +318,7 @@ const TemplateListTable = (props) => {
             <TableHead>
               <TableRow>
                 <TableCell>
-                  Product Name
+                  Name
                 </TableCell>
                 <TableCell>
                   Status
@@ -350,59 +327,62 @@ const TemplateListTable = (props) => {
                   Description
                 </TableCell>
                 <TableCell>
-                  Product Owner
+                 Created By
                 </TableCell>
                 <TableCell>
-                  Price
+                  Product Name
                 </TableCell>
-                <TableCell align="right">
-                  Actions
+                <TableCell>
+                 Product Price
+                </TableCell>
+                <TableCell>
+                 Quanity
+                </TableCell>
+                <TableCell>
+                  Sales Price
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {paginatedProducts.map((product) => {
-                const isProductSelected = false;
-//                const isProductSelected = selectedProducts.includes(product.productID);
+              {paginatedTemplates.map((template) => {
+                const isTemplateSelected = false;
+                console.log(paginatedTemplates);
+//                const isTemplateSelected = selectedTemplates.includes(template.templateID);
 
                 return (
                   <TableRow
                     hover
-                    key={product.productID}
-                    selected={isProductSelected}
+                    key={template.templateID}
+                    selected={isTemplateSelected}
+                    style={{ textDecoration: 'none' }}
+                    component={RouterLink}
+                    to={['/templates/details/?tid=', template.templateID].join('')}
                   >
                     <TableCell>
-                        <Link
-                          color="textPrimary"
-                          component={RouterLink}
-                          to="#"
-                          underline="none"
-                          sx={{ ml: 2 }}
-                          variant="subtitle2"
-                        >
-                          {product.productName}
-                        </Link>
+                      {template.templateName}
                     </TableCell>
                     <TableCell>
-                      {getInventoryLabel(product.productStatus)}
+                      {getInventoryLabel(template.templateStatus)}
                     </TableCell>
                     <TableCell>
-                      {product.productDescription}
+                      {template.templateDescription}
                     </TableCell>
                     <TableCell>
-                      {product.productOwner}
+                      {template.templateCreator}
                     </TableCell>
                     <TableCell>
-                      {numeral(product.productPrice)
-                        .format(`${product.priceCurrency}0,0.00`)}
+                      {template.productName}
                     </TableCell>
-                    <TableCell align="right">
-                      <IconButton>
-                        <PencilAltIcon fontSize="small" />
-                      </IconButton>
-                      <IconButton>
-                        <ArrowRightIcon fontSize="small" />
-                      </IconButton>
+                    <TableCell>
+                      {numeral(template.productPrice / 100)
+                        .format(`${template.Currency}0,0.00`)}
+                    </TableCell>
+                    <TableCell>
+                      {template.productQuantity}
+                    </TableCell>
+                    <TableCell>
+                      {numeral(template.salesAmount / 100)
+                        .format(`${template.Currency}0,0.00`)}
                     </TableCell>
                   </TableRow>
                 );
@@ -411,7 +391,7 @@ const TemplateListTable = (props) => {
           </Table>
           <TablePagination
             component="div"
-            count={filteredProducts.length}
+            count={filteredTemplates.length}
             onPageChange={handlePageChange}
             onRowsPerPageChange={handleLimitChange}
             page={page}
@@ -425,7 +405,7 @@ const TemplateListTable = (props) => {
 };
 
 TemplateListTable.propTypes = {
-  products: PropTypes.array.isRequired
+  templates: PropTypes.array.isRequired
 };
 
 export default TemplateListTable;

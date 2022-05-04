@@ -11,7 +11,7 @@ import {
   Divider,
 //  IconButton,
   InputAdornment,
-  Link,
+//  Link,
   Tab,
   Table,
   TableBody,
@@ -36,34 +36,34 @@ const tabs = [
   },
   {
     label: 'Active',
-    value: 'hasAcceptedMarketing'
+    value: 'activeCases'
   },
   {
     label: 'Completed',
-    value: 'isReturning'
+    value: 'completedCases'
   },
   {
     label: 'Prospect',
-    value: 'isProspect'
+    value: 'isSignUp'
   }
 ];
 
 const sortOptions = [
   {
-    label: 'Last Added (newest)',
-    value: 'updatedAt|desc'
+    label: 'Name (A-Z)',
+    value: 'firstName|desc'
   },
   {
-    label: 'Last added (oldest)',
-    value: 'updatedAt|asc'
+    label: 'Name (Z-A)',
+    value: 'firstName|asc'
   },
   {
-    label: 'Total cases (highest)',
-    value: 'orders|desc'
+    label: 'Total Amount',
+    value: 'totalAmount|desc'
   },
   {
-    label: 'Total cases (lowest)',
-    value: 'orders|asc'
+    label: 'Active Cases',
+    value: 'activeCasesCount|desc'
   }
 ];
 
@@ -72,7 +72,7 @@ const applyFilters = (customers, query, filters) => customers
     let matches = true;
 
     if (query) {
-      const properties = ['email', 'name'];
+      const properties = ['email', 'firstName'];
       let containsQuery = false;
 
       properties.forEach((property) => {
@@ -88,6 +88,10 @@ const applyFilters = (customers, query, filters) => customers
 
     Object.keys(filters).forEach((key) => {
       const value = filters[key];
+      console.log(key);
+      console.log(value);
+      console.log(customer);
+      console.log(customer[key]);
 
       if (value && customer[key] !== value) {
         matches = false;
@@ -143,17 +147,17 @@ const CustomerListTable = (props) => {
   const [query, setQuery] = useState('');
   const [sort, setSort] = useState(sortOptions[0].value);
   const [filters, setFilters] = useState({
-    hasAcceptedMarketing: null,
-    isProspect: null,
-    isReturning: null
+    activeCases: null,
+    completedCases: null,
+    isSignUp: null
   });
 
   const handleTabsChange = (event, value) => {
     const updatedFilters = {
       ...filters,
-      hasAcceptedMarketing: null,
-      isProspect: null,
-      isReturning: null
+      activeCases: null,
+      completedCases: null,
+      isSignUp: null
     };
 
     if (value !== 'all') {
@@ -248,7 +252,7 @@ const CustomerListTable = (props) => {
               )
             }}
             onChange={handleQueryChange}
-            placeholder="Search customers"
+            placeholder="Search Name and Email"
             value={query}
             variant="outlined"
           />
@@ -309,16 +313,19 @@ const CustomerListTable = (props) => {
                   Name
                 </TableCell>
                 <TableCell>
-                  Location
+                  Contact
                 </TableCell>
                 <TableCell>
-                  Orders
+                  Location
                 </TableCell>
                 <TableCell>
                   Total Amount
                 </TableCell>
                 <TableCell>
-                  Cases
+                  Active Cases
+                </TableCell>
+                <TableCell>
+                  Complete Cases
                 </TableCell>
                 <TableCell>
                   Current CPA
@@ -336,7 +343,7 @@ const CustomerListTable = (props) => {
                     selected={isCustomerSelected}
                     style={{ textDecoration: 'none' }}
                     component={RouterLink}
-                    to={['/orders/details/?oid=', customer.id].join('')}
+                    to={['/clients/details/?cid=', customer.customerID].join('')}
                   >
                     <TableCell>
                       <Box
@@ -352,43 +359,62 @@ const CustomerListTable = (props) => {
                             width: 42
                           }}
                         >
-                          {getInitials(customer.firstName)}
+                          {getInitials(`${customer.firstName}, ${customer.lastName}`)}
                         </Avatar>
                         <Box sx={{ ml: 1 }}>
-                          <Link
-                            color="inherit"
-                            component={RouterLink}
-                            to="/dashboard/customers/1"
-                            variant="subtitle2"
+                          <Typography
+                            color="textPrimary"
+                            variant="h6"
                           >
+                            {customer.title}
+                            {' '}
                             {customer.firstName}
                             {' '}
                             {customer.lastName}
-                          </Link>
+                          </Typography>
                           <Typography
                             color="textSecondary"
                             variant="body2"
                           >
-                            {customer.email}
+                            {customer.userName}
                           </Typography>
                         </Box>
                       </Box>
                     </TableCell>
                     <TableCell>
+                      <Typography
+                        color="textSecondary"
+                        variant="body2"
+                      >
+                        {customer.phone}
+                      </Typography>
+                      <Typography
+                          color="textSecondary"
+                          variant="body2"
+                      >
+                          {customer.email}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography
+                        color="textSecondary"
+                        variant="body2"
+                      >
                       {`${customer.city}, ${customer.state}, ${customer.country}`}
+                      </Typography>
                     </TableCell>
                     <TableCell>
-                      {customer.totalOrders}
-                    </TableCell>
-                    <TableCell>
-                      {numeral(customer.totalAmountSpent)
+                      {numeral(customer.totalAmount / 100)
                         .format(`${customer.currency}0,0.00`)}
                     </TableCell>
                     <TableCell>
-                      {customer.totalOrders}
+                      {customer.activeCasesCount}
                     </TableCell>
                     <TableCell>
-                      {customer.name}
+                      {customer.completedCasesCount}
+                    </TableCell>
+                    <TableCell>
+                      {customer.currentCpa}
                     </TableCell>
                   </TableRow>
                 );

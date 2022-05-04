@@ -1,4 +1,4 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import * as Yup from 'yup';
@@ -9,81 +9,125 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Checkbox,
-  FormControlLabel,
+//  Checkbox,
+//  FormControlLabel,
   FormHelperText,
   Grid,
   TextField,
-  Typography
+//  Typography
 } from '@material-ui/core';
-import FileDropzone from '../../FileDropzone';
-import QuillEditor from '../../QuillEditor';
+// import FileDropzone from '../../FileDropzone';
+// import QuillEditor from '../../QuillEditor';
+import { templateApi } from '../../../__fakeApi__/templateApi';
+import PropTypes from 'prop-types';
 
-const categoryOptions = [
+const paymentMethodOptions = [
   {
-    value: 'tax',
-    label: 'Tax'
+    value: '',
+    label: ''
   },
   {
-    label: 'Accounting',
-    value: 'accounting'
+    label: 'Card',
+    value: 'card'
   },
   {
-    label: 'Payrole',
-    value: 'payrole'
+    label: 'Bank Transfer',
+    value: 'banktransfer'
+  },
+  {
+    label: 'Check',
+    value: 'check'
+  },
+  {
+    label: 'Other',
+    value: 'other'
   }
 ];
 
+const statusOptions = [
+    {
+        value: '',
+        label: ''
+      },
+      {
+        label: 'Active',
+        value: 'active'
+      },
+      {
+        label: 'On Hold',
+        value: 'onhold'
+      },
+      {
+        label: 'Inactive',
+        value: 'inactive'
+      },
+      {
+      label: 'Obsolete',
+      value: 'obsolete'
+      }
+];
+
+const createProjectOptions = [
+    {
+        label: 'Yes',
+        value: 'yes'
+      },
+      {
+        label: 'No',
+        value: 'no'
+      }
+];
+
 const TemplateCreateForm = (props) => {
+  const { user } = props;
   const navigate = useNavigate();
-  const [files, setFiles] = useState([]);
-
-  const handleDrop = (newFiles) => {
-    setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-  };
-
-  const handleRemove = (file) => {
-    setFiles((prevFiles) => prevFiles.filter((_file) => _file.path
-      !== file.path));
-  };
-
-  const handleRemoveAll = () => {
-    setFiles([]);
-  };
+  console.log(user);
 
   return (
     <Formik
       initialValues={{
-        category: '',
-        description: '',
-        images: [],
-        includesTaxes: false,
-        isTaxable: false,
-        name: '',
-        price: '',
-        productSubCategory: '',
-        salePrice: '',
+        templateID: '',
+        templateName: '',
+        templateDescription: '',
+        templateStatus: 'active',
+        productID: '',
+        customerID: '',
+        webKey: '',
+        subscriptionRate: '',
+        salesAmount: '',
+        paymentMethod: 'card',
+        paymentInstructions: '',
+        createProject: 'yes',
+        note: '',
         submit: null
       }}
       validationSchema={Yup
         .object()
         .shape({
-          category: Yup.string().max(255),
-          description: Yup.string().max(5000),
-          images: Yup.array(),
-          includesTaxes: Yup.bool().required(),
-          isTaxable: Yup.bool().required(),
-          name: Yup.string().max(255).required(),
-          price: Yup.number().min(0).required(),
-          productSubCategory: Yup.string().max(255),
-          salePrice: Yup.number().min(0)
+          templateName: Yup.string().max(200).required(),
+          templateDescription: Yup.string().max(500).required(),
+          templateStatus: Yup.string().max(20).required(),
+          productID: Yup.string().max(50).required(),
+          customerID: Yup.string().max(50),
+          webKey: Yup.string().max(50),
+          subscriptionRate: Yup.number().min(0).required(),
+          salesAmount: Yup.number().min(0).required(),
+          paymentMethod: Yup.string().max(20),
+          paymentInstructions: Yup.string().max(200),
+          createProject: Yup.string().max(20).required(),
+          note: Yup.string().max(200),
         })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
           // NOTE: Make API request
+          values.cpaID = user.id; // set logged in cpa user as owner
+          values.accountID = user.accountID; // set cpa user org and account
+          values.Currency = 'USD'; // hardcode USD for now
+          console.log(values);
+          await templateApi.newTemplate(values);
           setStatus({ success: true });
           setSubmitting(false);
-          toast.success('Template created!');
+          toast.success('Template updated/created!');
           navigate('/templates/browse');
         } catch (err) {
           console.error(err);
@@ -100,7 +144,7 @@ const TemplateCreateForm = (props) => {
         handleChange,
         handleSubmit,
         isSubmitting,
-        setFieldValue,
+//        setFieldValue,
         touched,
         values
       }) => (
@@ -119,135 +163,47 @@ const TemplateCreateForm = (props) => {
               xs={12}
             >
               <Card>
+                <CardHeader title="Template Description" />
                 <CardContent>
                   <TextField
-                    error={Boolean(touched.name && errors.name)}
+                    error={Boolean(touched.templateName && errors.templateName)}
                     fullWidth
-                    helperText={touched.name && errors.name}
-                    label="Product Name"
-                    name="name"
+                    helperText={touched.templateName && errors.templateName}
+                    label="Template Name"
+                    name="templateName"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    value={values.name}
+                    value={values.templateName}
                     variant="outlined"
                   />
-                  <Typography
-                    color="textSecondary"
-                    sx={{
-                      mb: 2,
-                      mt: 3
-                    }}
-                    variant="subtitle2"
-                  >
-                    Description
-                  </Typography>
-                  <QuillEditor
-                    onChange={(value) => setFieldValue('description', value)}
-                    placeholder="Write description of product"
-                    sx={{ height: 150 }}
-                    value={values.description}
+                  <Box sx={{ mt: 3 }}>
+                  <TextField
+                    error={Boolean(touched.templateDescription && errors.templateDescription)}
+                    fullWidth
+                    helperText={touched.templateDescription && errors.templateDescription}
+                    label="Template Description"
+                    name="templateDescription"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.templateDescription}
+                    variant="outlined"
                   />
-                  {(touched.description && errors.description) && (
-                    <Box sx={{ mt: 2 }}>
-                      <FormHelperText error>
-                        {errors.description}
-                      </FormHelperText>
-                    </Box>
-                  )}
+                  </Box>
+                  <Box sx={{ mt: 3 }}>
+                  <TextField
+                    error={Boolean(touched.note && errors.note)}
+                    fullWidth
+                    helperText={touched.note && errors.note}
+                    label="Internal Template Note"
+                    name="note"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.note}
+                    variant="outlined"
+                  />
+                  </Box>
                 </CardContent>
               </Card>
-              <Box sx={{ mt: 3 }}>
-                <Card>
-                  <CardHeader title="Prices" />
-                  <CardContent>
-                    <Grid
-                      container
-                      spacing={3}
-                    >
-                      <Grid
-                        item
-                        md={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={Boolean(touched.price && errors.price)}
-                          fullWidth
-                          helperText={touched.price && errors.price
-                            ? errors.price
-                            : 'If you have a sale price this will be shown as old price'}
-                          label="Price"
-                          name="price"
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          type="number"
-                          value={values.price}
-                          variant="outlined"
-                        />
-                      </Grid>
-                      <Grid
-                        item
-                        md={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={Boolean(touched.salePrice && errors.salePrice)}
-                          fullWidth
-                          helperText={touched.salePrice && errors.salePrice}
-                          label="Sale price"
-                          name="salePrice"
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          type="number"
-                          value={values.salePrice}
-                          variant="outlined"
-                        />
-                      </Grid>
-                    </Grid>
-                    <Box sx={{ mt: 2 }}>
-                      <FormControlLabel
-                        control={(
-                          <Checkbox
-                            checked={values.isTaxable}
-                            color="primary"
-                            name="isTaxable"
-                            onChange={handleChange}
-                            value={values.isTaxable}
-                          />
-                        )}
-                        label="Product is taxable"
-                      />
-                    </Box>
-                    <Box sx={{ mt: 2 }}>
-                      <FormControlLabel
-                        control={(
-                          <Checkbox
-                            checked={values.includesTaxes}
-                            color="primary"
-                            name="includesTaxes"
-                            onChange={handleChange}
-                            value={values.includesTaxes}
-                          />
-                        )}
-                        label="Price includes taxes"
-                      />
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Box>
-              <Box sx={{ mt: 3 }}>
-                <Card>
-                  <CardHeader title="Upload Images" />
-                  <CardContent>
-                    <FileDropzone
-                      accept="image/*"
-                      files={files}
-                      onDrop={handleDrop}
-                      onRemove={handleRemove}
-                      onRemoveAll={handleRemoveAll}
-                    />
-                  </CardContent>
-                </Card>
-              </Box>
             </Grid>
             <Grid
               item
@@ -256,39 +212,148 @@ const TemplateCreateForm = (props) => {
               xs={12}
             >
               <Card>
-                <CardHeader title="Product Category" />
+                <CardHeader title="Template Info" />
                 <CardContent>
                   <TextField
                     fullWidth
-                    label="Category"
-                    name="category"
+                    label="Template Status"
+                    name="templateStatus"
                     onChange={handleChange}
                     select
                     SelectProps={{ native: true }}
-                    value={values.category}
+                    value={values.templateStatus}
                     variant="outlined"
                   >
-                    {categoryOptions.map((category) => (
+                    {statusOptions.map((templateStatus) => (
                       <option
-                        key={category.value}
-                        value={category.value}
+                        key={templateStatus.value}
+                        value={templateStatus.value}
                       >
-                        {category.label}
+                        {templateStatus.label}
                       </option>
                     ))}
                   </TextField>
-                  <Box sx={{ mt: 2 }}>
+                  <Box sx={{ mt: 3 }}>
                     <TextField
-                      error={Boolean(touched.productSubCategory && errors.productSubCategory)}
+                      error={Boolean(touched.productID && errors.productID)}
                       fullWidth
-                      helperText={touched.productSubCategory && errors.productSubCategory}
-                      label="Sub Category"
-                      name="productSubCategory"
+                      helperText={touched.productID && errors.productID}
+                      label="Product ID"
+                      name="productID"
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      value={values.productSubCategory}
+                      value={values.productID}
                       variant="outlined"
                     />
+                  </Box>
+                  <Box sx={{ mt: 3 }}>
+                    <TextField
+                      error={Boolean(touched.customerID && errors.customerID)}
+                      fullWidth
+                      helperText={touched.customerID && errors.customerID}
+                      label="Customer ID (optonal)"
+                      name="customerID"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.customerID}
+                      variant="outlined"
+                    />
+                  </Box>
+                  <Box sx={{ mt: 3 }}>
+                    <TextField
+                      error={Boolean(touched.webKey && errors.webKey)}
+                      fullWidth
+                      helperText={touched.webKey && errors.webKey}
+                      label="Web Key (optonal)"
+                      name="webKey"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.webKey}
+                      variant="outlined"
+                    />
+                  </Box>
+                  <Box sx={{ mt: 3 }}>
+                    <TextField
+                          error={Boolean(touched.subscriptionRate && errors.subscriptionRate)}
+                          fullWidth
+                          helperText={touched.subscriptionRate && errors.subscriptionRate}
+                          label="Subscription Rate"
+                          name="subscriptionRate"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          type="number"
+                          value={values.subscriptionRate}
+                          variant="outlined"
+                    />
+                  </Box>
+                  <Box sx={{ mt: 3 }}>
+                    <TextField
+                          error={Boolean(touched.salesAmount && errors.salesAmount)}
+                          fullWidth
+                          helperText={touched.salesAmount && errors.salesAmount}
+                          label="Sales Amount"
+                          name="salesAmount"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          type="number"
+                          value={values.salesAmount}
+                          variant="outlined"
+                    />
+                  </Box>
+                  <Box sx={{ mt: 3 }}>
+                  <TextField
+                    fullWidth
+                    label="Payment Method"
+                    name="paymentMethod"
+                    onChange={handleChange}
+                    select
+                    SelectProps={{ native: true }}
+                    value={values.paymentMethod}
+                    variant="outlined"
+                  >
+                    {paymentMethodOptions.map((paymentMethod) => (
+                      <option
+                        key={paymentMethod.value}
+                        value={paymentMethod.value}
+                      >
+                        {paymentMethod.label}
+                      </option>
+                    ))}
+                  </TextField>
+                  </Box>
+                  <Box sx={{ mt: 3 }}>
+                    <TextField
+                      error={Boolean(touched.paymentInstructions && errors.paymentInstructions)}
+                      fullWidth
+                      helperText={touched.paymentInstructions && errors.paymentInstructions}
+                      label="Payment Instructions"
+                      name="paymentInstructions"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.paymentInstructions}
+                      variant="outlined"
+                    />
+                  </Box>
+                  <Box sx={{ mt: 3 }}>
+                  <TextField
+                    fullWidth
+                    label="Create Project"
+                    name="createProject"
+                    onChange={handleChange}
+                    select
+                    SelectProps={{ native: true }}
+                    value={values.paymentMethod}
+                    variant="outlined"
+                  >
+                    {createProjectOptions.map((createProject) => (
+                      <option
+                        key={createProject.value}
+                        value={createProject.value}
+                      >
+                        {createProject.label}
+                      </option>
+                    ))}
+                  </TextField>
                   </Box>
                 </CardContent>
               </Card>
@@ -312,7 +377,7 @@ const TemplateCreateForm = (props) => {
                   type="submit"
                   variant="contained"
                 >
-                  Create Product
+                  Save Template
                 </Button>
               </Box>
             </Grid>
@@ -322,5 +387,9 @@ const TemplateCreateForm = (props) => {
     </Formik>
   );
 };
+
+TemplateCreateForm.propTypes = {
+    user: PropTypes.any.isRequired
+  };
 
 export default TemplateCreateForm;

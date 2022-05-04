@@ -7,9 +7,11 @@ import useSettings from '../../hooks/useSettings';
 import ArrowLeftIcon from '../../icons/ArrowLeft';
 import ChevronRightIcon from '../../icons/ChevronRight';
 import gtm from '../../lib/gtm';
+import useAuth from '../../hooks/useAuth';
 
 const TemplateCreate = () => {
   const { settings } = useSettings();
+  const { user } = useAuth();
 
   useEffect(() => {
     gtm.push({ event: 'page_view' });
@@ -55,7 +57,7 @@ const TemplateCreate = () => {
                   color="textSecondary"
                   variant="subtitle2"
                 >
-                  Order Templates
+                  Templates
                 </Typography>
                 <Typography
                   color="textSecondary"
@@ -81,7 +83,7 @@ const TemplateCreate = () => {
             </Grid>
           </Grid>
           <Box sx={{ mt: 3 }}>
-            <TemplateCreateForm />
+            <TemplateCreateForm user={user} />
           </Box>
         </Container>
       </Box>

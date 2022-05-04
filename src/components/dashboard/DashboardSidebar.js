@@ -1,14 +1,15 @@
-import { useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+// import { useEffect } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Avatar, Box, Button, Divider, Drawer, Typography } from '@material-ui/core';
+import { Box, Button, Divider, Drawer, Typography, CardMedia } from '@material-ui/core';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useAuth from '../../hooks/useAuth';
 import BriefcaseIcon from '../../icons/Briefcase';
 // import CalendarIcon from '../../icons/Calendar';
 // import ChartSquareBarIcon from '../../icons/ChartSquareBar';
 import ChatAltIcon from '../../icons/ChatAlt';
-import ClipboardListIcon from '../../icons/ClipboardList';
+// import ClipboardListIcon from '../../icons/ClipboardList';
 import FolderOpenIcon from '../../icons/FolderOpen';
 import UserIcon from '../../icons/User';
 import UsersIcon from '../../icons/Users';
@@ -17,73 +18,29 @@ import ProductIcon from '../../icons/Product';
 import TemplateIcon from '../../icons/Template';
 import MailIcon from '../../icons/Mail';
 import HomeIcon from '../../icons/Home';
-import Logo from '../Logo';
+// import Logo from '../Logo';
 import NavSection from '../NavSection';
 import Scrollbar from '../Scrollbar';
+import { vendorApi } from '../../__fakeApi__/vendorApi';
 
 const sections = [
   {
     title: 'Account',
     items: [
       {
-        title: 'My User',
+        title: 'My Profile',
         path: '/account',
         icon: <UserIcon fontSize="small" />
       },
       {
-        title: 'Organization',
-        path: '/',
+        title: 'Organization Account',
+        path: '/orgaccount',
         icon: <HomeIcon fontSize="small" />
       },
       {
-        title: 'All CPA Users',
+        title: 'CPA List',
         path: '/cpas/browse',
         icon: <UsersIcon fontSize="small" />
-      },
-    ]
-  },
-  {
-    title: 'Engagements',
-    items: [
-        {
-            title: 'Orders',
-            path: '/orders/browse',
-            icon: <FolderOpenIcon fontSize="small" />
-        },
-        {
-            title: 'Cases',
-            path: '/projects/browse',
-            icon: <BriefcaseIcon fontSize="small" />,
-        },
-        {
-            title: 'Clients',
-            path: '/clients/browse',
-            icon: <UsersIcon fontSize="small" />
-        },
-        {
-            title: 'Actions',
-            path: '/kanban',
-            icon: <ClipboardListIcon fontSize="small" />
-        },
-        {
-            title: 'Chats',
-            path: '/chat',
-            icon: <ChatAltIcon fontSize="small" />
-        },
-    ]
-  },
-  {
-    title: 'Prospects',
-    items: [
-      {
-        title: 'Contact Us',
-        path: '/projects/browse',
-        icon: <MailIcon fontSize="small" />,
-      },
-      {
-        title: 'Sign Up',
-        path: '/projects/browse',
-        icon: <UserAdd fontSize="small" />,
       },
     ]
   },
@@ -102,6 +59,51 @@ const sections = [
       },
     ]
   },
+  {
+    title: 'Engagements',
+    items: [
+        {
+            title: 'Clients',
+            path: '/clients/browse',
+            icon: <UsersIcon fontSize="small" />
+        },
+        {
+            title: 'Client Orders',
+            path: '/orders/browse',
+            icon: <FolderOpenIcon fontSize="small" />
+        },
+        {
+            title: 'Client Cases',
+            path: '/projects/browse',
+            icon: <BriefcaseIcon fontSize="small" />,
+        },
+//        {
+//            title: 'My Actions',
+//            path: '/kanban',
+//            icon: <ClipboardListIcon fontSize="small" />
+//        },
+        {
+            title: 'My Chats',
+            path: '/chat',
+            icon: <ChatAltIcon fontSize="small" />
+        },
+    ]
+  },
+  {
+    title: 'Prospects',
+    items: [
+      {
+        title: 'Contact Us',
+        path: '/error/501',
+        icon: <MailIcon fontSize="small" />,
+      },
+      {
+        title: 'Sign Up',
+        path: '/error/501',
+        icon: <UserAdd fontSize="small" />,
+      },
+    ]
+  }
 ];
 
 const DashboardSidebar = (props) => {
@@ -109,12 +111,26 @@ const DashboardSidebar = (props) => {
   const location = useLocation();
   const { user } = useAuth();
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
+  const [logo, setLogo] = useState(null);
 
   useEffect(() => {
     if (openMobile && onMobileClose) {
       onMobileClose();
     }
   }, [location.pathname]);
+
+  const getLogo = useCallback(async () => {
+    try {
+        const data = await vendorApi.getLogo(user.accountID);
+        setLogo(data);
+    } catch (err) {
+        console.error(err);
+    }
+  }, []);
+
+  useEffect(() => {
+    getLogo();
+  }, [getLogo]);
 
   const content = (
     <Box
@@ -128,7 +144,7 @@ const DashboardSidebar = (props) => {
         <Box
           sx={{
             display: {
-              lg: 'none',
+              lg: 'flex',
               xs: 'flex'
             },
             justifyContent: 'center',
@@ -136,56 +152,23 @@ const DashboardSidebar = (props) => {
           }}
         >
           <RouterLink to="/">
-            <Logo
+            <Box
               sx={{
-                height: 40,
-                width: 40
+                alignItems: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                textAlign: 'center',
+                p: 2
               }}
-            />
-          </RouterLink>
-        </Box>
-        <Box sx={{ p: 2 }}>
-          <Box
-            sx={{
-              alignItems: 'center',
-              backgroundColor: 'background.default',
-              borderRadius: 1,
-              display: 'flex',
-              overflow: 'hidden',
-              p: 2
-            }}
-          >
-            <RouterLink to="/account">
-              <Avatar
-                src={user.avatar}
-                sx={{
-                  cursor: 'pointer',
-                  height: 48,
-                  width: 48
-                }}
+            >
+
+              <CardMedia
+                component="img"
+                image={logo}
+                alt="Logo Image"
               />
-            </RouterLink>
-            <Box sx={{ ml: 2 }}>
-              <Typography
-                color="textPrimary"
-                variant="subtitle2"
-              >
-                {user.firstName}
-                {' '}
-                {user.middleInitial}
-                {' '}
-                {user.lastName}
-              </Typography>
-              <Typography
-                color="textSecondary"
-                variant="body2"
-              >
-                {user.city}
-                {', '}
-                {user.state}
-              </Typography>
             </Box>
-          </Box>
+          </RouterLink>
         </Box>
         <Divider />
         <Box sx={{ p: 2 }}>

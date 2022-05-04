@@ -16,37 +16,45 @@ export const serverConnection = {
     // Cpa API
     cpaUrl: '/api/purple/cpa',
     indCpaUrl: '/api/purple/cpa/ind',
+    avatarUrl: '/api/purple/cpa/avatar',
 
     // Client API
-//    clientUrl: '/api/purple/client',
-    accountClientUrl: '/api/purple/account/client',
+    clientUrl: '/api/purple/client',
+    accountClientUrl: '/api/purple/client/account',
+    accountClientCpaPickListUrl: '/api/purple/client/pick',
 
     // Product API
     newProductUrl: '/api/purple/product',
+    getProductUrl: '/api/purple/product/acc',
+
+    // Template API
+    newTemplateUrl: '/api/purple/template',
+    getTemplateUrl: '/api/purple/template',
+    getTemplateListUrl: '/api/purple/template/acc',
 
     // Order API
-    orderAccontUrl: '/api/sm/order',
-//    orderAccontUrl: '/api/purple/order/acc',
+    orderUrl: '/api/purple/order',
+    orderAccontUrl: '/api/purple/order/acc',
 
  // ---------------------------
 
     // Org Account API
     orgUrl: '/api/purple/account',
+    logoUrl: '/api/purple/account/logo',
 
     // Chat API
     chatUrl: '/api/sm/chat',
 
     // Kanban API
-    actionUrl: '/api/sm/action',
-    actionClientUrl: '/api/sm/action/client',
-    projectClientUrl: '/api/sm/action/project',
-    commentClientUrl: '/api/sm/action/comment',
+    actionUrl: '/api/purple/action',
+    actionProjectUrl: '/api/purple/action/project',
+    actionCommentUrl: '/api/purple/action/comment',
+    actionColumnUrl: '/api/purple/action/column',
 
     // Notification API
     notificationUrl: '/api/sm/notification',
 
     // Project API
-    fileUrl: '/api/sm/document',
-    clientUrl: '/api/sm/project/client',
-    caseUrl: '/api/sm/project',
+    projectUrl: '/api/purple/project',
+    fileUrl: '/api/purple/document',
 };

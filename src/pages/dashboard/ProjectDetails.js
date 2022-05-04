@@ -4,11 +4,12 @@ import { Helmet } from 'react-helmet-async';
 import { parse } from 'query-string';
 // import { formatDistanceToNowStrict } from 'date-fns';
 import { Badge, Box, Button, Container, Divider, Grid, Tab, Tabs, Typography } from '@material-ui/core';
-import ChatIcon from '@material-ui/icons/Chat';
+// import ChatIcon from '@material-ui/icons/Chat';
+import BriefcaseIcon from '../../icons/Briefcase';
 import { projectApi } from '../../__fakeApi__/projectApi';
 import {
   ProjectActivities2,
-  ProjectApplicationModal,
+//  ProjectApplicationModal,
   ProjectOverview,
   ProjectFileList,
   ProjectFileListVendor,
@@ -21,6 +22,7 @@ import useSettings from '../../hooks/useSettings';
 // import ShareIcon from '../../icons/Share';
 import gtm from '../../lib/gtm';
 import Label from '../../components/Label';
+import { Link as RouterLink } from 'react-router-dom';
 
 const tabs = [
   { label: 'Overview', value: 'overview' },
@@ -29,62 +31,54 @@ const tabs = [
   { label: 'Actions', value: 'actions' }
 ];
 
-const getStatusLabel = (actionStatus) => {
-  const map = {
-    urgent: {
-      color: 'error',
-      text: 'Urgent Action'
-    },
-    ongoing: {
-      color: 'success',
-      text: 'Active'
-    },
-    noAction: {
-        color: 'success',
-        text: 'No Action'
-      },
-      active: {
-        color: 'success',
-        text: 'Active'
-      },
-    new: {
-        color: 'success',
-        text: 'New'
-    },
-    complete: {
-      color: 'success',
-      text: 'Completed'
-    },
-    stopped: {
-      color: 'error',
-      text: 'Stopped'
-    },
-    client: {
-      color: 'warning',
-      text: 'Action Required',
-    }
-  };
-
-  const { text, color } = map[actionStatus];
+const getCpaStatusLabel = (count1, count2) => {
+  let myText = '';
+  let myColor = '';
+  if (count1 > 0) {
+    myText = 'cpa';
+    myColor = 'error';
+  } else if (count1 === 0 && count2 === 0) {
+        myText = 'No Action';
+        myColor = 'success';
+  } else {
+    return (
+        <></>
+    );
+  }
 
   return (
-    <Label color={color}>
-      {text}
+    <Label color={myColor}>
+      {myText}
     </Label>
   );
 };
 
+const getClientStatusLabel = (count1, count2) => {
+    let myText = '';
+    let myColor = '';
+    if (count2 > 0) {
+      myText = 'client';
+      myColor = 'warning';
+    } else {
+        return (
+            <></>
+        );
+    }
+
+    return (
+      <Label color={myColor}>
+        {myText}
+      </Label>
+    );
+};
+
 const ProjectDetails = () => {
-  const mounted = useMounted();
   const { settings } = useSettings();
   const [currentTab, setCurrentTab] = useState('overview');
   const [project, setProject] = useState(null);
-  const [isApplicationOpen, setIsApplicationOpen] = useState(false);
   const [caseId] = useState(parse(window.location.search).cid);
 
-  useEffect(() => {
-    gtm.push({ event: 'page_view' });
-  }, []);
+  const mounted = useMounted();
 
   const getProject = useCallback(async () => {
     try {
@@ -100,16 +94,14 @@ const ProjectDetails = () => {
   }, [mounted]);
 
   useEffect(() => {
-    getProject();
+    gtm.push({ event: 'page_view' });
+  }, []);
+
+  useEffect(() => {
+    if (caseId) {
+        getProject();
+    }
   }, [getProject]);
-
-  const handleApplyModalOpen = () => {
-    setIsApplicationOpen(true);
-  };
-
-  const handleApplyModalClose = () => {
-    setIsApplicationOpen(false);
-  };
 
   const handleTabsChange = (event, value) => {
     setCurrentTab(value);
@@ -166,22 +158,14 @@ const ProjectDetails = () => {
                     sx={{ ml: 1 }}
                     variant="subtitle2"
                   >
-                    {getStatusLabel(project.status)}
+                    {getCpaStatusLabel(project.actionCountCpa, project.actionCountClient)}
                   </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    alignItems: 'center',
-                    display: 'flex',
-                    m: 2
-                  }}
-                >
                   <Typography
                     color="inherit"
                     sx={{ ml: 1 }}
                     variant="subtitle2"
                   >
-                    {getStatusLabel(project.action)}
+                    {getClientStatusLabel(project.actionCountCpa, project.actionCountClient)}
                   </Typography>
                 </Box>
               </Box>
@@ -190,12 +174,13 @@ const ProjectDetails = () => {
               <Box sx={{ m: -1 }}>
                 <Button
                   color="primary"
-                  onClick={handleApplyModalOpen}
-                  startIcon={<ChatIcon fontSize="small" />}
+                  startIcon={<BriefcaseIcon fontSize="small" />}
                   sx={{ m: 1 }}
                   variant="contained"
+                  component={RouterLink}
+                  to={['/project/details/?pid=', project.caseID].join('')}
                 >
-                  New Case Inquiry
+                  Update Case
                 </Button>
               </Box>
             </Grid>
@@ -226,25 +211,18 @@ const ProjectDetails = () => {
             {currentTab === 'mydocuments'
             && (
               <ProjectFileList
-                files={project.clientFiles}
+                files={project.vendorFiles}
                 caseID={project.caseID}
                 projectStatus={project.status}
               />
               )}
             {currentTab === 'documentstome'
-            && <ProjectFileListVendor files={project.vendorFiles} />}
+            && <ProjectFileListVendor files={project.clientFiles} />}
             {currentTab === 'actions'
             && <ProjectActivities2 caseID={project.caseID} />}
           </Box>
         </Container>
       </Box>
-      <ProjectApplicationModal
-        authorAvatar={project.owner.avatar}
-        authorName={project.owner.name}
-        onApply={handleApplyModalClose}
-        onClose={handleApplyModalClose}
-        open={isApplicationOpen}
-      />
     </>
   );
 };
