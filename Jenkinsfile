@@ -13,7 +13,7 @@ pipeline {
     stage('Build') {
       agent any
       steps {
-        echo 'Building Smartmaster Client portal'
+        echo 'Building Smartmaster ADMIN portal'
         sh 'pwd'
         sh 'npm install'
         sh 'npm run build'
@@ -29,20 +29,20 @@ pipeline {
         script {
           sh 'ls -l'
           sh 'ls -l ./build'
-          sh "scp -r ./build/* root@138.197.199.177:/webaps/www/sm_New"
+          sh "scp -r ./build/* root@138.197.199.177:/webaps/www/admin_New"
         }
 
         script {
           echo 'Move new version to prod and save fallback'
           sh """
           ssh root@138.197.199.177 << ENDSSH
-          rm -r /webaps/www/sm_Fallback
-          mv /webaps/www/mysmartmaster /webaps/www/sm_Fallback
-          mv /webaps/www/sm_New /webaps/www/mysmartmaster
-          mkdir /webaps/www/sm_New
+          rm -r /webaps/www/admin_Fallback
+          mv /webaps/www/adminsmartmaster /webaps/www/admin_Fallback
+          mv /webaps/www/admin_New /webaps/www/adminsmartmaster
+          mkdir /webaps/www/admin_New
           cd /webaps/www
           ls -l
-          cd /webaps/www/mysmartmaster
+          cd /webaps/www/adminsmartmaster
           ls -l
           exit
           ENDSSH """

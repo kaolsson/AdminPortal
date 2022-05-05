@@ -3,8 +3,8 @@
 //
 export const serverConnection = {
     // server base url -- NEED TO MAKE THIS AUTOMATIC
-    baseUrl: 'http://localhost:6543',
-//    baseUrl: 'https://api.copper-wired.com',
+//    baseUrl: 'http://localhost:6543',
+    baseUrl: 'https://apitest.copper-wired.com',
 
     slash: '/',
 
