@@ -35,7 +35,14 @@ class ProjectApi {
           }
         };
 
-        axios.post(apiUrl, formData, theHeaders)
+        const hello = 'hello';
+        const formData2 = JSON.stringify(
+            {
+                hello
+            }
+          );
+
+        axios.post(apiUrl, formData2, theHeaders)
           .then((response) => {
             resolve(response);
           })
