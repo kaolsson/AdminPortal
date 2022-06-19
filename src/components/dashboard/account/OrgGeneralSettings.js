@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 import toast from 'react-hot-toast';
 import * as Yup from 'yup';
@@ -32,6 +33,7 @@ const OrgGeneralSettings = (props) => {
   const [organization, setOrganization] = useState(null);
   const [logo, setLogo] = useState(null);
   const [upload, setUpload] = useState(false);
+  const navigate = useNavigate();
 
   const handleUpload = () => {
       setUpload(true);
@@ -269,6 +271,7 @@ const OrgGeneralSettings = (props) => {
                 setStatus({ success: true });
                 setSubmitting(false);
                 toast.success('Organization data updated!');
+                navigate('/orgaccount');
             } catch (err) {
                 console.error(err);
                 toast.error('Something went wrong!');

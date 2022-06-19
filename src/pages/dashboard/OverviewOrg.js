@@ -175,7 +175,7 @@ const OverviewOrg = () => {
             </Grid>
             <Grid
               item
-              md={6}
+              md={8}
               xs={12}
             >
               <WidgetPreviewer

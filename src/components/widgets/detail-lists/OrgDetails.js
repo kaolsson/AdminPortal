@@ -95,7 +95,25 @@ const OrgDetails = (props) => {
                   color="textPrimary"
                   variant="subtitle2"
                 >
-                  Contact Email
+                  Contact Us Email
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  color="textSecondary"
+                  variant="body2"
+                >
+                  {vendor.contactEmail}
+                </Typography>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>
+                <Typography
+                  color="textPrimary"
+                  variant="subtitle2"
+                >
+                  Order Email
                 </Typography>
               </TableCell>
               <TableCell>
@@ -113,7 +131,7 @@ const OrgDetails = (props) => {
                   color="textPrimary"
                   variant="subtitle2"
                 >
-                  Admin Email
+                  Misc Email
                 </Typography>
               </TableCell>
               <TableCell>
@@ -224,6 +242,24 @@ const OrgDetails = (props) => {
                   variant="body2"
                 >
                   {vendor.paymentRef}
+                </Typography>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>
+                <Typography
+                  color="textPrimary"
+                  variant="subtitle2"
+                >
+                 Org UUID
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  color="textSecondary"
+                  variant="body2"
+                >
+                  {vendor.accountID}
                 </Typography>
               </TableCell>
             </TableRow>

@@ -79,10 +79,13 @@ const CpaListTable = (props) => {
               <TableHead>
                 <TableRow>
                   <TableCell>
-                    Name
+                    CPA Name
                   </TableCell>
                   <TableCell>
-                    Phone & Email
+                    Role
+                  </TableCell>
+                  <TableCell>
+                    Contact Details
                   </TableCell>
                   <TableCell>
                     Address
@@ -134,29 +137,21 @@ const CpaListTable = (props) => {
                             {cpa.lastName}
                           </Link>
                           <Typography
-                            color="textSecondary"
-                            variant="body2"
+                            color="textPrimary"
+                            variant="subtitle2"
                           >
-                            {cpa.emailAddress}
+                            {cpa.userName}
                           </Typography>
                         </Box>
                       </Box>
                       </TableCell>
                       <TableCell>
-                        <Typography
-                          color="textPrimary"
-                          variant="subtitle2"
-                        >
-                          {cpa.firstName}
-                          {' '}
-                          {cpa.lastName}
-                        </Typography>
-                        <Typography
-                          color="textSecondary"
-                          variant="body2"
-                        >
-                          {cpa.userRole.toUpperCase()}
-                        </Typography>
+                         <Typography
+                            color="textSecondary"
+                            variant="body2"
+                         >
+                            {cpa.userRole.toUpperCase()}
+                         </Typography>
                       </TableCell>
                       <TableCell>
                         <Typography

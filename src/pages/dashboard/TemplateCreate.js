@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Box, Breadcrumbs, Button, Container, Grid, Typography } from '@material-ui/core';
@@ -8,10 +8,38 @@ import ArrowLeftIcon from '../../icons/ArrowLeft';
 import ChevronRightIcon from '../../icons/ChevronRight';
 import gtm from '../../lib/gtm';
 import useAuth from '../../hooks/useAuth';
+import useMounted from '../../hooks/useMounted';
+import { productApi } from '../../__fakeApi__/productApi';
 
 const TemplateCreate = () => {
   const { settings } = useSettings();
   const { user } = useAuth();
+  const mounted = useMounted();
+  const [products, setProducts] = useState([]);
+
+  const getPickLists = useCallback(async () => {
+    try {
+      const data = await productApi.getProductPicklist(user.accountID);
+
+      if (mounted.current) {
+        setProducts(data.products);
+        console.log(data.products);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [mounted]);
+
+  useEffect(() => {
+    const initProductsOptions = [
+        {
+            value: '',
+            label: ''
+        }
+    ];
+    setProducts(initProductsOptions);
+    getPickLists();
+  }, [getPickLists]);
 
   useEffect(() => {
     gtm.push({ event: 'page_view' });
@@ -83,7 +111,10 @@ const TemplateCreate = () => {
             </Grid>
           </Grid>
           <Box sx={{ mt: 3 }}>
-            <TemplateCreateForm user={user} />
+            <TemplateCreateForm
+                user={user}
+                productOptions={products}
+            />
           </Box>
         </Container>
       </Box>

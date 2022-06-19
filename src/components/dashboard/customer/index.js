@@ -1,3 +1,4 @@
+export { default as CustomerAdd } from './CustomerAdd';
 export { default as CustomerContactDetails } from './CustomerContactDetails';
 export { default as CustomerDataManagement } from './CustomerDataManagement';
 export { default as CustomerEditForm } from './CustomerEditForm';
@@ -7,3 +8,4 @@ export { default as CustomerCases } from './CustomerCases';
 export { default as CustomerInvoicesSummary } from './CustomerInvoicesSummary';
 export { default as CustomerListTable } from './CustomerListTable';
 export { default as CustomerNotes } from './CustomerNotes';
+export { default as AddNoteModal } from './AddNoteModal';

@@ -106,15 +106,15 @@ const ProjectCreateForm = (props) => {
       validationSchema={Yup
         .object()
         .shape({
-          title: Yup.string().max(200),
-          description: Yup.string().max(500),
-          caseOutcome: Yup.string().max(500),
+          title: Yup.string().max(200).required(),
+          description: Yup.string().max(500).required(),
+          caseOutcome: Yup.string().max(500).required(),
           note: Yup.string().max(500),
-          cpaID: Yup.string().max(50),
-          customerID: Yup.string().max(50),
-          status: Yup.string().max(20),
-          caseType: Yup.string().max(100),
-          location: Yup.string().max(100),
+          cpaID: Yup.string().max(50).required(),
+          customerID: Yup.string().max(50).required(),
+          status: Yup.string().max(20).required(),
+          caseType: Yup.string().max(100).required(),
+          location: Yup.string().max(100).required(),
 //          customerSaving: Yup.number().min(0).required(),
           customerSaving: Yup.number().min(0),
           orderID: Yup.string().max(50),
@@ -237,7 +237,9 @@ const ProjectCreateForm = (props) => {
                 <CardHeader title="Case Data" />
                 <CardContent>
                   <TextField
+                    error={Boolean(touched.cpaID && errors.cpaID)}
                     fullWidth
+                    helperText={touched.cpaID && errors.cpaID}
                     label="Case Owner"
                     name="cpaID"
                     onChange={handleChange}
@@ -257,7 +259,9 @@ const ProjectCreateForm = (props) => {
                   </TextField>
                   <Box sx={{ mt: 3 }}>
                   <TextField
+                    error={Boolean(touched.customerID && errors.customerID)}
                     fullWidth
+                    helperText={touched.customerID && errors.customerID}
                     label="Client"
                     name="customerID"
                     onChange={handleChange}
@@ -278,7 +282,9 @@ const ProjectCreateForm = (props) => {
                   </Box>
                   <Box sx={{ mt: 3 }}>
                   <TextField
+                    error={Boolean(touched.caseType && errors.caseType)}
                     fullWidth
+                    helperText={touched.caseType && errors.caseType}
                     label="Case Type"
                     name="caseType"
                     onChange={handleChange}
@@ -299,7 +305,9 @@ const ProjectCreateForm = (props) => {
                   </Box>
                   <Box sx={{ mt: 3 }}>
                   <TextField
+                    error={Boolean(touched.location && errors.location)}
                     fullWidth
+                    helperText={touched.location && errors.location}
                     label="Location"
                     name="location"
                     onChange={handleChange}
@@ -320,7 +328,9 @@ const ProjectCreateForm = (props) => {
                   </Box>
                   <Box sx={{ mt: 3 }}>
                   <TextField
+                    error={Boolean(touched.status && errors.status)}
                     fullWidth
+                    helperText={touched.status && errors.status}
                     label="Case Status"
                     name="status"
                     onChange={handleChange}

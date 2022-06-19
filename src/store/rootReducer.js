@@ -5,6 +5,7 @@ import { reducer as kanbanReducer } from '../slices/kanban';
 import { reducer as mailReducer } from '../slices/mail';
 import { reducer as orderReducer } from '../slices/order';
 import { reducer as cpaReducer } from '../slices/cpa';
+import { reducer as messageReducer } from '../slices/message';
 
 const rootReducer = combineReducers({
   calendar: calendarReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   kanban: kanbanReducer,
   mail: mailReducer,
   order: orderReducer,
-  cpa: cpaReducer
+  cpa: cpaReducer,
+  message: messageReducer
 });
 
 export default rootReducer;

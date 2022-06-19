@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { format } from 'date-fns';
+// import { format } from 'date-fns';
 import {
   Box,
   Button,
@@ -15,34 +15,49 @@ import {
 import { customerApi } from '../../../__fakeApi__/customerApi';
 import useMounted from '../../../hooks/useMounted';
 // import Label from '../../Label';
-import MoreMenu from '../../MoreMenu';
+// import MoreMenu from '../../MoreMenu';
 import Scrollbar from '../../Scrollbar';
 import PropTypes from 'prop-types';
 import PlusIcon from '../../../icons/Plus';
+// import UpdateMessageModal from './UpdateMessageModal';
+import AddNoteModal from './AddNoteModal';
+import toast from 'react-hot-toast';
 
 const CustomerNotes = (props) => {
-    const { customer } = props;
-
+  const { customer } = props;
   const mounted = useMounted();
   const [notes, setNotes] = useState(customer.notes);
+  const [open, setOpen] = useState(false);
 
-  const saveNotes = useCallback(async () => {
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const addNote = useCallback(async (newNote) => {
+    setOpen(false);
     try {
-      const data = await customerApi.saveCustomerNote();
+      const data = await customerApi.updateCustomer(customer.customerID, { note: newNote });
 
       if (mounted.current) {
-        setNotes(data);
+        setNotes(data.notes);
+        toast.success('Note added!');
       }
     } catch (err) {
       console.error(err);
+      toast.error('Something went wrong!');
     }
   }, [mounted]);
 
   return (
+    <box>
     <Card {...props}>
       <CardHeader
-        action={<MoreMenu />}
-        title="Logs"
+//        action={<MoreMenu />}
+        title="Notes on Client"
       />
       <Divider />
       <Scrollbar>
@@ -51,24 +66,13 @@ const CustomerNotes = (props) => {
             <TableBody>
               {notes.map((note) => (
                 <TableRow key={note.id}>
-                  <TableCell width="500">
-                    <Typography
-                      color="textPrimary"
-                      variant="subtitle2"
-                    >
-                      {format(note.createdAt, 'yyyy/MM/dd | HH:mm:ss')}
-                    </Typography>
-                  </TableCell>
                   <TableCell width="300">
                     <Typography
                       color="textPrimary"
                       variant="subtitle2"
                     >
-                      {note.createdBy}
+                      {note}
                     </Typography>
-                  </TableCell>
-                  <TableCell>
-                    {note.text}
                   </TableCell>
                 </TableRow>
               ))}
@@ -86,14 +90,22 @@ const CustomerNotes = (props) => {
               color="inherit"
               startIcon={<PlusIcon fontSize="small" />}
               variant="text"
-              onclick={saveNotes}
+              onClick={() => {
+                handleOpen();
+              }}
             >
-              Send Password Reset
+              Add Note
             </Button>
           </Box>
         </Box>
       </Scrollbar>
     </Card>
+    <AddNoteModal
+            onApply={addNote}
+            onClose={handleClose}
+            open={open}
+    />
+    </box>
   );
 };
 

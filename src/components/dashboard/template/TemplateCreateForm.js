@@ -68,7 +68,11 @@ const statusOptions = [
 ];
 
 const createProjectOptions = [
-    {
+      {
+        label: '',
+        value: ''
+      },
+      {
         label: 'Yes',
         value: 'yes'
       },
@@ -79,7 +83,7 @@ const createProjectOptions = [
 ];
 
 const TemplateCreateForm = (props) => {
-  const { user } = props;
+  const { user, productOptions } = props;
   const navigate = useNavigate();
   console.log(user);
 
@@ -89,15 +93,15 @@ const TemplateCreateForm = (props) => {
         templateID: '',
         templateName: '',
         templateDescription: '',
-        templateStatus: 'active',
+        templateStatus: '',
         productID: '',
         customerID: '',
         webKey: '',
         subscriptionRate: '',
         salesAmount: '',
-        paymentMethod: 'card',
+        paymentMethod: '',
         paymentInstructions: '',
-        createProject: 'yes',
+        createProject: '',
         note: '',
         submit: null
       }}
@@ -194,7 +198,7 @@ const TemplateCreateForm = (props) => {
                     error={Boolean(touched.note && errors.note)}
                     fullWidth
                     helperText={touched.note && errors.note}
-                    label="Internal Template Note"
+                    label="Internal Template Note (optional)"
                     name="note"
                     onBlur={handleBlur}
                     onChange={handleChange}
@@ -215,7 +219,9 @@ const TemplateCreateForm = (props) => {
                 <CardHeader title="Template Info" />
                 <CardContent>
                   <TextField
+                    error={Boolean(touched.templateStatus && errors.templateStatus)}
                     fullWidth
+                    helperText={touched.templateStatus && errors.templateStatus}
                     label="Template Status"
                     name="templateStatus"
                     onChange={handleChange}
@@ -235,23 +241,33 @@ const TemplateCreateForm = (props) => {
                   </TextField>
                   <Box sx={{ mt: 3 }}>
                     <TextField
-                      error={Boolean(touched.productID && errors.productID)}
-                      fullWidth
-                      helperText={touched.productID && errors.productID}
-                      label="Product ID"
-                      name="productID"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.productID}
-                      variant="outlined"
-                    />
+                       error={Boolean(touched.productID && errors.productID)}
+                        fullWidth
+                        helperText={touched.productID && errors.productID}
+                        label="Product"
+                        name="productID"
+                        onChange={handleChange}
+                        select
+                        SelectProps={{ native: true }}
+                        value={values.productID}
+                        variant="outlined"
+                    >
+                        {productOptions.map((productID) => (
+                        <option
+                            key={productID.value}
+                            value={productID.value}
+                        >
+                            {productID.label}
+                        </option>
+                        ))}
+                    </TextField>
                   </Box>
                   <Box sx={{ mt: 3 }}>
                     <TextField
                       error={Boolean(touched.customerID && errors.customerID)}
                       fullWidth
                       helperText={touched.customerID && errors.customerID}
-                      label="Customer ID (optonal)"
+                      label="Customer ID (optional)"
                       name="customerID"
                       onBlur={handleBlur}
                       onChange={handleChange}
@@ -264,7 +280,7 @@ const TemplateCreateForm = (props) => {
                       error={Boolean(touched.webKey && errors.webKey)}
                       fullWidth
                       helperText={touched.webKey && errors.webKey}
-                      label="Web Key (optonal)"
+                      label="Web Key (optional)"
                       name="webKey"
                       onBlur={handleBlur}
                       onChange={handleChange}
@@ -303,7 +319,7 @@ const TemplateCreateForm = (props) => {
                   <Box sx={{ mt: 3 }}>
                   <TextField
                     fullWidth
-                    label="Payment Method"
+                    label="Payment Method (optional)"
                     name="paymentMethod"
                     onChange={handleChange}
                     select
@@ -326,7 +342,7 @@ const TemplateCreateForm = (props) => {
                       error={Boolean(touched.paymentInstructions && errors.paymentInstructions)}
                       fullWidth
                       helperText={touched.paymentInstructions && errors.paymentInstructions}
-                      label="Payment Instructions"
+                      label="Payment Instructions (optional)"
                       name="paymentInstructions"
                       onBlur={handleBlur}
                       onChange={handleChange}
@@ -336,13 +352,15 @@ const TemplateCreateForm = (props) => {
                   </Box>
                   <Box sx={{ mt: 3 }}>
                   <TextField
+                    error={Boolean(touched.createProject && errors.createProject)}
                     fullWidth
+                    helperText={touched.createProject && errors.createProject}
                     label="Create Project"
                     name="createProject"
                     onChange={handleChange}
                     select
                     SelectProps={{ native: true }}
-                    value={values.paymentMethod}
+                    value={values.createProject}
                     variant="outlined"
                   >
                     {createProjectOptions.map((createProject) => (
@@ -389,7 +407,8 @@ const TemplateCreateForm = (props) => {
 };
 
 TemplateCreateForm.propTypes = {
-    user: PropTypes.any.isRequired
+    user: PropTypes.any.isRequired,
+    productOptions: PropTypes.array.isRequired
   };
 
 export default TemplateCreateForm;

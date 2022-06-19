@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import {
-  Box,
-  Button,
+//  Box,
+//  Button,
   Card,
   CardHeader,
   Divider,
@@ -11,9 +11,36 @@ import {
   TableRow,
   Typography
 } from '@material-ui/core';
-import LockIcon from '../../../icons/Lock';
-import UserIcon from '../../../icons/User';
 import Label from '../../Label';
+
+const getStatusLabel = (clientStatus) => {
+    const map = {
+      active: {
+        color: 'success',
+        text: 'Active'
+      },
+      new: {
+        color: 'primary',
+        text: 'New'
+      },
+      complete: {
+        color: 'warning',
+        text: 'Complete'
+      },
+      closed: {
+          color: 'error',
+          text: 'Closed'
+      }
+    };
+
+    const { text, color } = map[clientStatus];
+
+    return (
+      <Label color={color}>
+        {text}
+      </Label>
+    );
+  };
 
 const CustomerContactDetails = (props) => {
   const { customer, isVerified, ...other } = props;
@@ -161,40 +188,29 @@ const CustomerContactDetails = (props) => {
               </Typography>
             </TableCell>
             <TableCell>
+              {getStatusLabel(customer.status)}
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>
+              <Typography
+                color="textPrimary"
+                variant="subtitle2"
+              >
+                UUID
+              </Typography>
+            </TableCell>
+            <TableCell>
               <Typography
                 color="textSecondary"
                 variant="body2"
               >
-                {customer.status.toUpperCase()}
+                {customer.customerID}
               </Typography>
             </TableCell>
           </TableRow>
         </TableBody>
       </Table>
-      <Box
-        sx={{
-          alignItems: 'flex-start',
-          display: 'flex',
-          flexDirection: 'column',
-          p: 1
-        }}
-      >
-        <Button
-          color="inherit"
-          startIcon={<LockIcon fontSize="small" />}
-          variant="text"
-        >
-          Send Password Reset
-        </Button>
-        <Button
-          color="inherit"
-          startIcon={<UserIcon fontSize="small" />}
-          sx={{ mt: 1 }}
-          variant="text"
-        >
-          Login as Customer
-        </Button>
-      </Box>
     </Card>
   );
 };

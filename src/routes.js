@@ -25,6 +25,7 @@ const CpaList = Loadable(lazy(() => import('./pages/dashboard/CpaList')));
 const CpaUserDetails = Loadable(lazy(() => import('./pages/dashboard/CpaUserDetails')));
 const CustomerList = Loadable(lazy(() => import('./pages/dashboard/CustomerList')));
 const CustomerDetails = Loadable(lazy(() => import('./pages/dashboard/CustomerDetails')));
+const NewCustomer = Loadable(lazy(() => import('./pages/dashboard/NewCustomer')));
 const ProjectBrowse = Loadable(lazy(() => import('./pages/dashboard/ProjectBrowse2')));
 const ProjectCreate = Loadable(lazy(() => import('./pages/dashboard/ProjectCreate')));
 const ProjectDetails = Loadable(lazy(() => import('./pages/dashboard/ProjectDetails')));
@@ -33,6 +34,8 @@ const ProductCreate = Loadable(lazy(() => import('./pages/dashboard/ProductCreat
 const TemplateList = Loadable(lazy(() => import('./pages/dashboard/TemplateList')));
 const TemplateCreate = Loadable(lazy(() => import('./pages/dashboard/TemplateCreate')));
 const TemplateDetails = Loadable(lazy(() => import('./pages/dashboard/TemplateDetails')));
+const MessageList = Loadable(lazy(() => import('./pages/dashboard/MessageList')));
+// const MessageDetails = Loadable(lazy(() => import('./pages/dashboard/MessageDetails')));
 const Chat = Loadable(lazy(() => import('./pages/dashboard/Chat')));
 const Calendar = Loadable(lazy(() => import('./pages/dashboard/Calendar')));
 const Kanban = Loadable(lazy(() => import('./pages/dashboard/Kanban')));
@@ -156,7 +159,11 @@ const routes = [
       {
         path: 'order',
         children: [
-          {
+            {
+                path: 'new',
+                element: <UnderConstruction />
+            },
+            {
             path: ':oId',
             element: <OrderUpdate />
           }
@@ -184,7 +191,7 @@ const routes = [
           },
           {
             path: 'new',
-            element: <ProjectCreate />
+            element: <NewCustomer />
           },
           {
             path: ':cid',
@@ -244,6 +251,20 @@ const routes = [
           },
           {
             path: ':tid',
+            element: <TemplateDetails />
+          }
+        ]
+      },
+      {
+        path: 'messages',
+        children: [
+          {
+            path: 'browse',
+            element: <MessageList />
+          },
+          {
+            path: ':mid',
+//            element: <MessageDetails />
             element: <TemplateDetails />
           }
         ]

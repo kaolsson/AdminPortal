@@ -35,16 +35,20 @@ const tabs = [
     value: 'all'
   },
   {
+    label: 'New',
+    value: 'new'
+  },
+  {
     label: 'Active',
-    value: 'activeCases'
+    value: 'active'
   },
   {
     label: 'Completed',
-    value: 'completedCases'
+    value: 'completed'
   },
   {
-    label: 'Prospect',
-    value: 'isSignUp'
+    label: 'Closed',
+    value: 'closed'
   }
 ];
 
@@ -88,11 +92,6 @@ const applyFilters = (customers, query, filters) => customers
 
     Object.keys(filters).forEach((key) => {
       const value = filters[key];
-      console.log(key);
-      console.log(value);
-      console.log(customer);
-      console.log(customer[key]);
-
       if (value && customer[key] !== value) {
         matches = false;
       }
@@ -147,17 +146,19 @@ const CustomerListTable = (props) => {
   const [query, setQuery] = useState('');
   const [sort, setSort] = useState(sortOptions[0].value);
   const [filters, setFilters] = useState({
-    activeCases: null,
-    completedCases: null,
-    isSignUp: null
+    active: null,
+    completed: null,
+    new: null,
+    closed: null
   });
 
   const handleTabsChange = (event, value) => {
     const updatedFilters = {
       ...filters,
-      activeCases: null,
-      completedCases: null,
-      isSignUp: null
+      active: null,
+      completed: null,
+      new: null,
+      closed: null
     };
 
     if (value !== 'all') {

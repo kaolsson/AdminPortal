@@ -14,7 +14,7 @@ const ContactTech = () => {
   return (
     <>
       <Helmet>
-        <title>Contact | MySmartmaster</title>
+        <title>Contact Support | MySmartmaster</title>
       </Helmet>
       <Box
         sx={{
@@ -66,7 +66,7 @@ const ContactTech = () => {
                 color="textPrimary"
                 variant="overline"
               >
-                Contact Tech Support
+                Contact Smatmaster Support
               </Typography>
             </Box>
             <Typography
@@ -74,7 +74,7 @@ const ContactTech = () => {
               sx={{ fontWeight: 'fontWeightBold' }}
               variant="h1"
             >
-              Talk to our tech support
+              Talk to our support
             </Typography>
             <Typography
               color="textPrimary"

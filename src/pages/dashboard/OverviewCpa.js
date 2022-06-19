@@ -58,7 +58,7 @@ const Overview = () => {
   return (
     <>
       <Helmet>
-        <title>MySmartMaster | Overview</title>
+        <title>SmartMaster Admin | My Profile</title>
       </Helmet>
       <Box
         sx={{
@@ -85,7 +85,7 @@ const Overview = () => {
                   color="textSecondary"
                   variant="overline"
                 >
-                  Account
+                  My Profile
                 </Typography>
                 <Typography
                   color="textPrimary"
@@ -185,7 +185,7 @@ const Overview = () => {
             >
               <WidgetPreviewer
                 element={<CpaDetails />}
-                name="My Account"
+                name="Profile Details"
               />
             </Grid>
           </Grid>

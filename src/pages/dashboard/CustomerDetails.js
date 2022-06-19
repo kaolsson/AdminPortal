@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useCallback, useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
@@ -30,6 +31,7 @@ import ChevronRightIcon from '../../icons/ChevronRight';
 import ArrowLeftIcon from '../../icons/ArrowLeft';
 import gtm from '../../lib/gtm';
 import useSettings from '../../hooks/useSettings';
+import PlusIcon from '../../icons/Plus';
 
 const tabs = [
   { label: 'Details', value: 'details' },
@@ -37,6 +39,50 @@ const tabs = [
   { label: 'Cases', value: 'cases' },
   { label: 'Notes', value: 'notes' }
 ];
+
+const ActionButton = (props) => {
+    const { tab } = props;
+    if (tab === 'orders') {
+        return (
+            <Button
+                color="primary"
+                component={RouterLink}
+                startIcon={<ArrowLeftIcon fontSize="small" />}
+                sx={{ m: 1 }}
+                to="/templates/browse"
+                variant="contained"
+            >
+                Select Order Template to Send
+            </Button>
+        );
+    }
+    if (tab === 'cases') {
+        return (
+            <Button
+                color="primary"
+                component={RouterLink}
+                startIcon={<PlusIcon fontSize="small" />}
+                sx={{ m: 1 }}
+                to="/projects/new"
+                variant="contained"
+            >
+                Add Case
+            </Button>
+        );
+    }
+    return (
+        <Button
+            color="primary"
+            component={RouterLink}
+            startIcon={<ArrowLeftIcon fontSize="small" />}
+            sx={{ m: 1 }}
+            to="/clients/browse"
+            variant="outlined"
+        >
+            Back
+        </Button>
+    );
+};
 
 const CustomerDetails = () => {
   const mounted = useMounted();
@@ -140,16 +186,7 @@ const CustomerDetails = () => {
             </Grid>
             <Grid item>
               <Box sx={{ m: -1 }}>
-                <Button
-                  color="primary"
-                  component={RouterLink}
-                  startIcon={<ArrowLeftIcon fontSize="small" />}
-                  sx={{ m: 1 }}
-                  to="/clients/browse"
-                  variant="outlined"
-                >
-                  Back
-                </Button>
+                <ActionButton tab={currentTab} />
               </Box>
             </Grid>
           </Grid>
@@ -206,7 +243,10 @@ const CustomerDetails = () => {
                   xl={settings.compact ? 6 : 3}
                   xs={12}
                 >
-                  <CustomerDataManagement />
+                  <CustomerDataManagement
+                    customerID={customerId}
+                    clientStatus={customer.status}
+                  />
                 </Grid>
               </Grid>
             )}
@@ -219,5 +259,9 @@ const CustomerDetails = () => {
     </>
   );
 };
+
+ActionButton.propTypes = {
+    tab: PropTypes.string.isRequired
+  };
 
 export default CustomerDetails;

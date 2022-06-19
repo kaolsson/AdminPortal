@@ -3,8 +3,8 @@
 //
 export const serverConnection = {
     // server base url -- NEED TO MAKE THIS AUTOMATIC
-    baseUrl: 'http://localhost:6543',
-//    baseUrl: 'https://apitest.copper-wired.com',
+//    baseUrl: 'http://localhost:6543',
+    baseUrl: 'https://apitest.copper-wired.com',
 
     slash: '/',
 
@@ -26,6 +26,7 @@ export const serverConnection = {
     // Product API
     newProductUrl: '/api/purple/product',
     getProductUrl: '/api/purple/product/acc',
+    getProductPicklistUrl: '/api/purple/product/pick',
 
     // Template API
     newTemplateUrl: '/api/purple/template',
@@ -57,4 +58,8 @@ export const serverConnection = {
     // Project API
     projectUrl: '/api/purple/project',
     fileUrl: '/api/purple/document',
+
+    // Message API
+    messageUrl: '/api/purple/message',
+    messageAccountUrl: '/api/purple/message/acc',
 };

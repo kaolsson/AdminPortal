@@ -204,7 +204,6 @@ class ChatApi {
 
           axios.get(apiUrl, theHeaders)
             .then((response) => {
-              console.log(response.data.data.threads);
               resolve(response.data.data.threads);
             })
             .catch((response) => {

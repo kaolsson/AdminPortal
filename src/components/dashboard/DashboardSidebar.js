@@ -13,7 +13,7 @@ import ChatAltIcon from '../../icons/ChatAlt';
 import FolderOpenIcon from '../../icons/FolderOpen';
 import UserIcon from '../../icons/User';
 import UsersIcon from '../../icons/Users';
-import UserAdd from '../../icons/UserAdd';
+// import UserAdd from '../../icons/UserAdd';
 import ProductIcon from '../../icons/Product';
 import TemplateIcon from '../../icons/Template';
 import MailIcon from '../../icons/Mail';
@@ -93,15 +93,10 @@ const sections = [
     title: 'Prospects',
     items: [
       {
-        title: 'Contact Us',
-        path: '/error/501',
+        title: 'Messages',
+        path: '/messages/browse',
         icon: <MailIcon fontSize="small" />,
-      },
-      {
-        title: 'Sign Up',
-        path: '/error/501',
-        icon: <UserAdd fontSize="small" />,
-      },
+      }
     ]
   }
 ];

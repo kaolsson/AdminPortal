@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 import toast from 'react-hot-toast';
 import * as Yup from 'yup';
@@ -30,6 +31,7 @@ const OrgPhoneEmailSettinngs = (props) => {
   const { user } = useAuth();
   const [organization, setOrganization] = useState(null);
   const [logo, setLogo] = useState(null);
+  const navigate = useNavigate();
 
   const getOrganization = useCallback(async () => {
     try {
@@ -191,6 +193,7 @@ const OrgPhoneEmailSettinngs = (props) => {
                 setStatus({ success: true });
                 setSubmitting(false);
                 toast.success('Organization data updated!');
+                navigate('/orgaccount');
             } catch (err) {
                 console.error(err);
                 toast.error('Something went wrong!');

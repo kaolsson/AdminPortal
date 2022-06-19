@@ -37,24 +37,6 @@ const CpaDetailsUser = (props) => {
                   color="textPrimary"
                   variant="subtitle2"
                 >
-                  User ID
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  color="textSecondary"
-                  variant="body2"
-                >
-                  {cpaUser.id}
-                </Typography>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>
-                <Typography
-                  color="textPrimary"
-                  variant="subtitle2"
-                >
                   Name
                 </Typography>
               </TableCell>
@@ -86,6 +68,24 @@ const CpaDetailsUser = (props) => {
                   variant="body2"
                 >
                   {cpaUser.jobTitle}
+                </Typography>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>
+                <Typography
+                  color="textPrimary"
+                  variant="subtitle2"
+                >
+                  User Name
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  color="textSecondary"
+                  variant="body2"
+                >
+                  {cpaUser.userName}
                 </Typography>
               </TableCell>
             </TableRow>
@@ -233,7 +233,25 @@ const CpaDetailsUser = (props) => {
                   color="textPrimary"
                   variant="subtitle2"
                 >
-                  Organization ID
+                  NOTE
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  color="textSecondary"
+                  variant="body2"
+                >
+                  {cpaUser.note}
+                </Typography>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>
+                <Typography
+                  color="textPrimary"
+                  variant="subtitle2"
+                >
+                  Org UUID
                 </Typography>
               </TableCell>
               <TableCell>
@@ -251,7 +269,7 @@ const CpaDetailsUser = (props) => {
                   color="textPrimary"
                   variant="subtitle2"
                 >
-                  NOTE
+                  CPA UUID
                 </Typography>
               </TableCell>
               <TableCell>
@@ -259,7 +277,7 @@ const CpaDetailsUser = (props) => {
                   color="textSecondary"
                   variant="body2"
                 >
-                  {cpaUser.note}
+                  {cpaUser.id}
                 </Typography>
               </TableCell>
             </TableRow>

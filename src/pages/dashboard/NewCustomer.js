@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-// import { Link as RouterLink } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import {
   Box,
@@ -7,29 +6,23 @@ import {
   Container,
   Divider,
   Grid,
-  // Link,
   Tab,
   Tabs,
   Typography
 } from '@material-ui/core';
 import {
-  AccountBillingSettings,
-  AccountGeneralSettings,
-  AccountNotificationsSettings,
-  AccountSecuritySettings
-} from '../../components/dashboard/account';
+  CustomerAdd
+} from '../../components/dashboard/customer';
 import useSettings from '../../hooks/useSettings';
 import ChevronRightIcon from '../../icons/ChevronRight';
 import gtm from '../../lib/gtm';
 
 const tabs = [
   { label: 'Profile', value: 'profile' },
-//  { label: 'Billing', value: 'billing' },
-//  { label: 'Notifications', value: 'notifications' },
-  { label: 'Security', value: 'security' }
+//  { label: 'Security', value: 'security' }
 ];
 
-const Account = () => {
+const NewCustomer = () => {
   const { settings } = useSettings();
   const [currentTab, setCurrentTab] = useState('profile');
 
@@ -44,7 +37,7 @@ const Account = () => {
   return (
     <>
       <Helmet>
-        <title>SmartMaster Admin | Profile</title>
+        <title>SmartMaster Admin | New Customer</title>
       </Helmet>
       <Box
         sx={{
@@ -64,7 +57,7 @@ const Account = () => {
                 color="textPrimary"
                 variant="h5"
               >
-                Update My Profile
+                Add Client
               </Typography>
               <Breadcrumbs
                 aria-label="breadcrumb"
@@ -75,19 +68,13 @@ const Account = () => {
                   color="textSecondary"
                   variant="subtitle2"
                 >
-                  Account
+                  Clients
                 </Typography>
                 <Typography
                   color="textSecondary"
                   variant="subtitle2"
                 >
-                  My Profile
-                </Typography>
-                <Typography
-                  color="textSecondary"
-                  variant="subtitle2"
-                >
-                  Update
+                  Add New
                 </Typography>
               </Breadcrumbs>
             </Grid>
@@ -112,10 +99,8 @@ const Account = () => {
           </Box>
           <Divider />
           <Box sx={{ mt: 3 }}>
-            {currentTab === 'profile' && <AccountGeneralSettings />}
-            {currentTab === 'billing' && <AccountBillingSettings />}
-            {currentTab === 'notifications' && <AccountNotificationsSettings />}
-            {currentTab === 'security' && <AccountSecuritySettings />}
+            {currentTab === 'profile' && <CustomerAdd />}
+            {currentTab === 'security' && <CustomerAdd />}
           </Box>
         </Container>
       </Box>
@@ -123,4 +108,4 @@ const Account = () => {
   );
 };
 
-export default Account;
+export default NewCustomer;

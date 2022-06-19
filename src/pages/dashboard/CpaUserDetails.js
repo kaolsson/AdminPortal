@@ -59,7 +59,7 @@ const CpaUserDetails = () => {
   return (
     <>
       <Helmet>
-        <title>MySmartMaster | CpaDetails</title>
+        <title>SmartMaster Admin | Cpa Details</title>
       </Helmet>
       <Box
         sx={{
