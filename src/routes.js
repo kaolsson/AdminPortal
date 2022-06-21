@@ -35,7 +35,7 @@ const TemplateList = Loadable(lazy(() => import('./pages/dashboard/TemplateList'
 const TemplateCreate = Loadable(lazy(() => import('./pages/dashboard/TemplateCreate')));
 const TemplateDetails = Loadable(lazy(() => import('./pages/dashboard/TemplateDetails')));
 const MessageList = Loadable(lazy(() => import('./pages/dashboard/MessageList')));
-// const MessageDetails = Loadable(lazy(() => import('./pages/dashboard/MessageDetails')));
+const SignupList = Loadable(lazy(() => import('./pages/dashboard/SignupList')));
 const Chat = Loadable(lazy(() => import('./pages/dashboard/Chat')));
 const Calendar = Loadable(lazy(() => import('./pages/dashboard/Calendar')));
 const Kanban = Loadable(lazy(() => import('./pages/dashboard/Kanban')));
@@ -263,9 +263,8 @@ const routes = [
             element: <MessageList />
           },
           {
-            path: ':mid',
-//            element: <MessageDetails />
-            element: <TemplateDetails />
+            path: 'browseSignUp',
+            element: <SignupList />
           }
         ]
       },

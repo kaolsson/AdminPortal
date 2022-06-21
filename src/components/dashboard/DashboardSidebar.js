@@ -10,12 +10,12 @@ import BriefcaseIcon from '../../icons/Briefcase';
 // import ChartSquareBarIcon from '../../icons/ChartSquareBar';
 import ChatAltIcon from '../../icons/ChatAlt';
 // import ClipboardListIcon from '../../icons/ClipboardList';
-import FolderOpenIcon from '../../icons/FolderOpen';
+// import FolderOpenIcon from '../../icons/FolderOpen';
 import UserIcon from '../../icons/User';
 import UsersIcon from '../../icons/Users';
 // import UserAdd from '../../icons/UserAdd';
-import ProductIcon from '../../icons/Product';
-import TemplateIcon from '../../icons/Template';
+// import ProductIcon from '../../icons/Product';
+// import TemplateIcon from '../../icons/Template';
 import MailIcon from '../../icons/Mail';
 import HomeIcon from '../../icons/Home';
 // import Logo from '../Logo';
@@ -44,21 +44,21 @@ const sections = [
       },
     ]
   },
-  {
-    title: 'Products',
-    items: [
-      {
-        title: 'Products',
-        path: '/products/browse',
-        icon: <ProductIcon fontSize="small" />,
-      },
-      {
-        title: 'Order Templates',
-        path: '/templates/browse',
-        icon: <TemplateIcon fontSize="small" />,
-      },
-    ]
-  },
+//  {
+//    title: 'Products',
+//    items: [
+//      {
+//        title: 'Products',
+//        path: '/products/browse',
+//        icon: <ProductIcon fontSize="small" />,
+//      },
+//      {
+//        title: 'Order Templates',
+//        path: '/templates/browse',
+//        icon: <TemplateIcon fontSize="small" />,
+//      },
+//    ]
+//  },
   {
     title: 'Engagements',
     items: [
@@ -67,11 +67,11 @@ const sections = [
             path: '/clients/browse',
             icon: <UsersIcon fontSize="small" />
         },
-        {
-            title: 'Client Orders',
-            path: '/orders/browse',
-            icon: <FolderOpenIcon fontSize="small" />
-        },
+//        {
+//            title: 'Client Orders',
+//            path: '/orders/browse',
+//            icon: <FolderOpenIcon fontSize="small" />
+//        },
         {
             title: 'Client Cases',
             path: '/projects/browse',
@@ -96,6 +96,11 @@ const sections = [
         title: 'Messages',
         path: '/messages/browse',
         icon: <MailIcon fontSize="small" />,
+      },
+      {
+        title: 'Sign Up List',
+        path: '/messages/browseSignUp',
+        icon: <UsersIcon fontSize="small" />,
       }
     ]
   }

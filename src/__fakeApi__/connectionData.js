@@ -62,4 +62,8 @@ export const serverConnection = {
     // Message API
     messageUrl: '/api/purple/message',
     messageAccountUrl: '/api/purple/message/acc',
+
+    // Signup API
+    signupUrl: '/api/purple/signup',
+    signupAccountUrl: '/api/purple/signup/acc',
 };

@@ -35,7 +35,7 @@ import PlusIcon from '../../icons/Plus';
 
 const tabs = [
   { label: 'Details', value: 'details' },
-  { label: 'Orders', value: 'orders' },
+//  { label: 'Orders', value: 'orders' },
   { label: 'Cases', value: 'cases' },
   { label: 'Notes', value: 'notes' }
 ];
