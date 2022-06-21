@@ -318,6 +318,7 @@ const AccountGeneralSettings = (props) => {
                         onBlur={handleBlur}
                         onChange={handleChange}
                         value={values.firstName}
+                        required
                         variant="outlined"
                       />
                     </Grid>
@@ -335,6 +336,7 @@ const AccountGeneralSettings = (props) => {
                         onBlur={handleBlur}
                         onChange={handleChange}
                         value={values.lastName}
+                        required
                         variant="outlined"
                       />
                     </Grid>
@@ -352,7 +354,7 @@ const AccountGeneralSettings = (props) => {
                         onBlur={handleBlur}
                         onChange={handleChange}
                         required
-                        type="emailAddress"
+                        type="email"
                         value={values.emailAddress}
                         variant="outlined"
                       />
@@ -370,6 +372,7 @@ const AccountGeneralSettings = (props) => {
                         name="phoneNumber"
                         onBlur={handleBlur}
                         onChange={handleChange}
+                        required
                         value={values.phoneNumber}
                         variant="outlined"
                       />
