@@ -31,7 +31,7 @@ class ProjectApi {
         const theHeaders = {
           headers: {
             Accept: '*',
-            'Content-type': 'multipart/form-data',
+//            'Content-type': 'multipart/form-data',
             Authorization
           }
         };
