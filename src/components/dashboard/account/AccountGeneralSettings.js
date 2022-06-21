@@ -235,7 +235,7 @@ const AccountGeneralSettings = (props) => {
             .shape({
               city: Yup.string().max(255),
               country: Yup.string().max(255),
-              email: Yup
+              emailAddress: Yup
                 .string()
                 .email('Must be a valid email')
                 .max(255)
@@ -248,7 +248,10 @@ const AccountGeneralSettings = (props) => {
                 .string()
                 .max(255)
                 .required('Last name is required'),
-              phone: Yup.string(),
+              phoneNumber: Yup
+                .string()
+                .max(50)
+                .required('Phone number is required'),
               state: Yup.string()
             })}
           onSubmit={async (values, { resetForm, setErrors, setStatus, setSubmitting }) => {
@@ -341,16 +344,16 @@ const AccountGeneralSettings = (props) => {
                       xs={12}
                     >
                       <TextField
-                        error={Boolean(touched.email && errors.email)}
+                        error={Boolean(touched.emailAddress && errors.emailAddress)}
                         fullWidth
-                        helperText={touched.email && errors.email}
+                        helperText={touched.emailAddress && errors.emailAddress}
                         label="Email Address"
-                        name="email"
+                        name="emailAddress"
                         onBlur={handleBlur}
                         onChange={handleChange}
                         required
-                        type="email"
-                        value={values.email}
+                        type="emailAddress"
+                        value={values.emailAddress}
                         variant="outlined"
                       />
                     </Grid>
@@ -360,14 +363,14 @@ const AccountGeneralSettings = (props) => {
                       xs={12}
                     >
                       <TextField
-                        error={Boolean(touched.phone && errors.phone)}
+                        error={Boolean(touched.phoneNumber && errors.phoneNumber)}
                         fullWidth
-                        helperText={touched.phone && errors.phone}
+                        helperText={touched.phoneNumber && errors.phoneNumber}
                         label="Phone Number"
-                        name="phone"
+                        name="phoneNumber"
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        value={values.phone}
+                        value={values.phoneNumber}
                         variant="outlined"
                       />
                     </Grid>
