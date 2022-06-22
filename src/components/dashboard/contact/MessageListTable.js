@@ -439,6 +439,10 @@ const MessageListTable = (props) => {
                     </TableCell>
                     <TableCell>
                       {message.messageText}
+                      {',  '}
+                      {message.messageText2}
+                      {',  '}
+                      {message.messageText3}
                     </TableCell>
                     <TableCell>
                       {message.siteOrigin.toUpperCase()}
