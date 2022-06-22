@@ -116,8 +116,8 @@ const ProjectCreateForm = (props) => {
           caseType: Yup.string().max(100).required(),
           location: Yup.string().max(100).required(),
 //          customerSaving: Yup.number().min(0).required(),
-          customerSaving: Yup.number().min(0),
-          orderID: Yup.string().max(50),
+          customerSaving: Yup.number().min(0).nullable(),
+          orderID: Yup.string().max(50).nullable(),
         })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         console.log(values);
