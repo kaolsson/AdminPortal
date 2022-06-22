@@ -21,7 +21,7 @@ const CpaList = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(getCpas(user.cpaID));
+    dispatch(getCpas(user.accountID));
   }, []);
 
   return (

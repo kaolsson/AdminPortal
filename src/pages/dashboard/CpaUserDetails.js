@@ -45,7 +45,7 @@ const CpaUserDetails = () => {
 
   useEffect(() => {
     console.log(user);
-    dispatch(getCpas(user.id));
+    dispatch(getCpas(user.accountID));
   }, []);
 
   useEffect(() => {

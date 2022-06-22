@@ -29,7 +29,7 @@ import Scrollbar from '../../Scrollbar';
 import { Link as RouterLink } from 'react-router-dom';
 import getInitials from '../../../utils/getInitials';
 
-const getStatusLabel = (paymentStatus) => {
+const getStatusLabel = (cpaStatus) => {
   const map = {
     inactive: {
       color: 'error',
@@ -38,10 +38,14 @@ const getStatusLabel = (paymentStatus) => {
     active: {
       color: 'success',
       text: 'Active'
-    }
-  };
+    },
+    admin: {
+        color: 'success',
+        text: 'Active'
+      }
+    };
 
-  const { text, color } = map[paymentStatus];
+  const { text, color } = map[cpaStatus];
 
   return (
     <Label color={color}>
@@ -49,6 +53,31 @@ const getStatusLabel = (paymentStatus) => {
     </Label>
   );
 };
+
+const getRoleLabel = (cpaRole) => {
+    const map = {
+      cpa: {
+        color: 'primary',
+        text: 'CPA'
+      },
+      admin: {
+        color: 'success',
+        text: 'Admin'
+      },
+      staff: {
+          color: 'error',
+          text: 'Staff'
+        }
+      };
+
+    const { text, color } = map[cpaRole];
+
+    return (
+      <Label color={color}>
+        {text}
+      </Label>
+    );
+  };
 
 // const applyPagination = (orders, page, limit) => orders
 //   .slice(page * limit, page * limit + limit);
@@ -146,12 +175,7 @@ const CpaListTable = (props) => {
                       </Box>
                       </TableCell>
                       <TableCell>
-                         <Typography
-                            color="textSecondary"
-                            variant="body2"
-                         >
-                            {cpa.userRole.toUpperCase()}
-                         </Typography>
+                        {getRoleLabel(cpa.userRole)}
                       </TableCell>
                       <TableCell>
                         <Typography
