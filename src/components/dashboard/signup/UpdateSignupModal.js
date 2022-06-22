@@ -86,9 +86,7 @@ const UpdateSignupModal = (props) => {
           gutterBottom
           variant="h5"
         >
-            {signup.firstName}
-            {' '}
-            {signup.lastName}
+            CLIENT SIGN-UP
         </Typography>
         <Typography
           align="center"
@@ -103,7 +101,22 @@ const UpdateSignupModal = (props) => {
             color="textSecondary"
             variant="h7"
           >
-            CLIECT INFO:
+            CLIENT INFORMATION:
+          </Typography>
+        </Box>
+        <Box sx={{ mt: 1 }}>
+          <Typography
+            color="textSecondary"
+            variant="subtitle2"
+          >
+            <b>
+              {'Name: '}
+            </b>
+            {signup.title}
+            {' '}
+            {signup.firstName}
+            {' '}
+            {signup.lastName}
           </Typography>
         </Box>
         <Box sx={{ mt: 1 }}>
@@ -148,6 +161,36 @@ const UpdateSignupModal = (props) => {
               {'Client ID: '}
             </b>
             {signup.customerID}
+          </Typography>
+        </Box>
+        <Box sx={{ mt: 3 }}>
+          <Typography
+            color="textSecondary"
+            variant="h7"
+          >
+            DATA:
+          </Typography>
+        </Box>
+        <Box sx={{ mt: 1 }}>
+          <Typography
+            color="textSecondary"
+            variant="subtitle2"
+          >
+            <b>
+              {'Date/Time: '}
+            </b>
+            {`${signup.dateAdded.substring(0, 10)} at ${signup.dateAdded.substring(11, 16)}`}
+          </Typography>
+        </Box>
+        <Box sx={{ mt: 1 }}>
+          <Typography
+            color="textSecondary"
+            variant="subtitle2"
+          >
+            <b>
+              {'Origin: '}
+            </b>
+            {signup.siteOrigin}
           </Typography>
         </Box>
         <Box sx={{ mt: 3 }}>

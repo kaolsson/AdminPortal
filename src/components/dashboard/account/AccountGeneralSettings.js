@@ -218,14 +218,14 @@ const AccountGeneralSettings = (props) => {
           initialValues={{
             city: user.city || '',
             country: user.countryCode || '',
-            email: user.emailAddress || '',
+            emailAddress: user.emailAddress || '',
             firstName: user.firstName || '',
             lastName: user.lastName || '',
             address1: user.address1 || '',
             address2: user.address2 || '',
             zipCode: user.zipCode || '',
             title: user.title || '',
-            phone: user.phoneNumber || '',
+            phoneNumber: user.phoneNumber || '',
             state: user.state || '',
             userRole: user.userRole || '',
             submit: null
