@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core';
 import LabelIcon from '@material-ui/icons/Label';
 import ArchiveIcon from '../../../icons/Archive';
-import ArrowRightIcon from '../../../icons/ArrowRight';
+// import ArrowRightIcon from '../../../icons/ArrowRight';
 import CheckIcon from '../../../icons/Check';
 import DocumentTextIcon from '../../../icons/DocumentText';
 import DuplicateIcon from '../../../icons/Duplicate';
@@ -213,6 +213,7 @@ const KanbanCardModal = (props) => {
               Add to card
             </Typography>
             <KanbanCardAction
+              disabled
               icon={<CheckIcon fontSize="small" />}
               onClick={handleAddChecklist}
             >
@@ -248,12 +249,12 @@ const KanbanCardModal = (props) => {
               >
                 Actions
               </Typography>
-              <KanbanCardAction
+{/*              <KanbanCardAction
                 disabled
                 icon={<ArrowRightIcon fontSize="small" />}
               >
                 Move
-              </KanbanCardAction>
+              </KanbanCardAction> */}
               <KanbanCardAction
                 disabled
                 icon={<DuplicateIcon fontSize="small" />}
@@ -285,6 +286,7 @@ const KanbanCardModal = (props) => {
                   </KanbanCardAction>
                 )}
               <KanbanCardAction
+                disabled
                 icon={<ArchiveIcon fontSize="small" />}
                 onClick={handleDelete}
               >

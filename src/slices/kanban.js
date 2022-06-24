@@ -206,10 +206,6 @@ export const deleteColumn = (columnId) => async (dispatch) => {
 };
 
 export const createCard = (columnId, caseId, title) => async (dispatch) => {
-  console.log(columnId);
-  console.log(caseId);
-  console.log(title);
-
   const data = await kanbanApi.createCard(columnId, caseId, title);
 
   dispatch(slice.actions.createCard(data));

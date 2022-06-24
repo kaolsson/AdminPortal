@@ -186,9 +186,6 @@ class KanbanApi {
 
   createCard(columnID, caseID, title) {
     const apiUrl = serverConnection.baseUrl + serverConnection.actionUrl;
-    console.log(columnID);
-    console.log(caseID);
-    console.log(title);
 
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');

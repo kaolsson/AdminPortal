@@ -27,7 +27,7 @@ const statusOptions = [
     {
         label: 'Complete',
         value: 'complete'
-      }
+    }
 ];
 
 const UpdateMessageModal = (props) => {

@@ -112,9 +112,17 @@ const UpdateMessageModal = (props) => {
             variant="subtitle2"
           >
             {message.messageText}
-            {' '}
+          </Typography>
+          <Typography
+            color="textSecondary"
+            variant="subtitle2"
+          >
             {message.messageText2}
-            {' '}
+          </Typography>
+          <Typography
+            color="textSecondary"
+            variant="subtitle2"
+          >
             {message.messageText3}
           </Typography>
         </Box>
