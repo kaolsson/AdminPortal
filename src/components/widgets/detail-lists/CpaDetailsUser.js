@@ -13,8 +13,10 @@ import {
 // import Label from '../../Label';
 // import LockIcon from '../../../icons/Lock';
 import UserIcon from '../../../icons/User';
+import BanIcon from '../../../icons/Ban';
 // import useAuth from '../../../hooks/useAuth';
 import PropTypes from 'prop-types';
+import { Link as RouterLink } from 'react-router-dom';
 
 const CpaDetailsUser = (props) => {
     const { cpaUser } = props;
@@ -295,10 +297,30 @@ const CpaDetailsUser = (props) => {
             color="inherit"
             startIcon={<UserIcon fontSize="small" />}
             sx={{ mt: 1 }}
-            variant="text"
-            href="/error/501"
+            variant="outlined"
+            component={RouterLink}
+            to={['/cpa/update/?eId=', cpaUser.id].join('')}
           >
             Update Details
+          </Button>
+        </Box>
+        <Box
+          sx={{
+            alignItems: 'flex-start',
+            display: 'flex',
+            flexDirection: 'column',
+            p: 1
+          }}
+        >
+          <Button
+            color="error"
+            startIcon={<BanIcon fontSize="small" />}
+            sx={{ mt: 1 }}
+            variant="contained"
+            component={RouterLink}
+            to={['/cpa/update/?eId=', cpaUser.id].join('')}
+          >
+            Delete User
           </Button>
         </Box>
       </Card>

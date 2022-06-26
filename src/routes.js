@@ -23,6 +23,8 @@ const OrderDetails = Loadable(lazy(() => import('./pages/dashboard/OrderDetails'
 const OrderUpdate = Loadable(lazy(() => import('./pages/dashboard/OrderUpdate')));
 const CpaList = Loadable(lazy(() => import('./pages/dashboard/CpaList')));
 const CpaUserDetails = Loadable(lazy(() => import('./pages/dashboard/CpaUserDetails')));
+const CpaUserAdd = Loadable(lazy(() => import('./pages/dashboard/CpaUserAdd')));
+const CpaUserUpdate = Loadable(lazy(() => import('./pages/dashboard/CpaUserUpdate')));
 const CustomerList = Loadable(lazy(() => import('./pages/dashboard/CustomerList')));
 const CustomerDetails = Loadable(lazy(() => import('./pages/dashboard/CustomerDetails')));
 const NewCustomer = Loadable(lazy(() => import('./pages/dashboard/NewCustomer')));
@@ -177,8 +179,21 @@ const routes = [
             element: <CpaList />
           },
           {
+            path: 'new',
+            element: <CpaUserAdd />
+          },
+          {
             path: ':cId',
             element: <CpaUserDetails />
+          }
+        ]
+      },
+      {
+        path: 'cpa',
+        children: [
+          {
+            path: ':eId',
+            element: <CpaUserUpdate />
           }
         ]
       },

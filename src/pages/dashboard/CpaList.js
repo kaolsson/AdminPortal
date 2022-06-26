@@ -75,7 +75,7 @@ const CpaList = () => {
                   startIcon={<PlusIcon fontSize="small" />}
                   sx={{ m: 1 }}
                   variant="contained"
-                  href="/error/501"
+                  href="/cpas/new"
                 >
                   Create CPA User
                 </Button>

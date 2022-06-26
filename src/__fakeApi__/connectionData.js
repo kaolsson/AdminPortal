@@ -3,8 +3,8 @@
 //
 export const serverConnection = {
     // server base url -- NEED TO MAKE THIS AUTOMATIC
-//    baseUrl: 'http://localhost:6543',
-    baseUrl: 'https://apitest.copper-wired.com',
+    baseUrl: 'http://localhost:6543',
+//    baseUrl: 'https://apitest.copper-wired.com',
 
     slash: '/',
 
@@ -13,10 +13,13 @@ export const serverConnection = {
     authUrl: '/api/purple/auth',
     meUrl: '/api/purple/cpa',
 
-    // Cpa API
-    cpaUrl: '/api/purple/cpa',
-    indCpaUrl: '/api/purple/cpa/ind',
+    // My Cpa API
+    cpaUrl: '/api/purple/cpa', // get myself, update myself, get all for account
     avatarUrl: '/api/purple/cpa/avatar',
+
+    // Cpa Admin API
+    cpaAdminUrl: '/api/purple/cpa/admin', // create, get all
+    indCpaUrl: '/api/purple/cpa/ind', // update, delete, get one
 
     // Client API
     clientUrl: '/api/purple/client',

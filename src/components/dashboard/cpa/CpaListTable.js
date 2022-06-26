@@ -1,16 +1,11 @@
 import { useState } from 'react';
-// import { Link as RouterLink } from 'react-router-dom';
-// import { format } from 'date-fns';
-// import numeral from 'numeral';
 import PropTypes from 'prop-types';
 import {
   Avatar,
   Box,
   Card,
   CardHeader,
-//  Checkbox,
   Divider,
-//  IconButton,
   Link,
   Table,
   TableBody,
@@ -20,28 +15,28 @@ import {
   TableRow,
   Typography
 } from '@material-ui/core';
-// import ArrowRightIcon from '../../../icons/ArrowRight';
-// import PencilAltIcon from '../../../icons/PencilAlt';
 import Label from '../../Label';
-// import MoreMenu from '../../MoreMenu';
 import Scrollbar from '../../Scrollbar';
-// import OrderListBulkActions from './OrderListBulkActions';
 import { Link as RouterLink } from 'react-router-dom';
 import getInitials from '../../../utils/getInitials';
 
 const getStatusLabel = (cpaStatus) => {
   const map = {
     inactive: {
-      color: 'error',
+      color: 'primary',
       text: 'InActive'
     },
     active: {
       color: 'success',
       text: 'Active'
     },
-    admin: {
-        color: 'success',
-        text: 'Active'
+    suspended: {
+        color: 'error',
+        text: 'Suspended'
+    },
+    closed: {
+        color: 'error',
+        text: 'Closed'
       }
     };
 
@@ -56,19 +51,15 @@ const getStatusLabel = (cpaStatus) => {
 
 const getRoleLabel = (cpaRole) => {
     const map = {
-      cpa: {
+      regular: {
         color: 'primary',
-        text: 'CPA'
+        text: 'Regular'
       },
       admin: {
-        color: 'success',
+        color: 'error',
         text: 'Admin'
-      },
-      staff: {
-          color: 'error',
-          text: 'Staff'
-        }
-      };
+      }
+    };
 
     const { text, color } = map[cpaRole];
 
@@ -85,7 +76,7 @@ const getRoleLabel = (cpaRole) => {
 const CpaListTable = (props) => {
   const { cpas, ...other } = props;
   const [page, setPage] = useState(0);
-  const [limit, setLimit] = useState(5);
+  const [limit, setLimit] = useState(10);
 
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
@@ -111,7 +102,10 @@ const CpaListTable = (props) => {
                     CPA Name
                   </TableCell>
                   <TableCell>
-                    Role
+                    Job Title
+                  </TableCell>
+                  <TableCell>
+                    User Level
                   </TableCell>
                   <TableCell>
                     Contact Details
@@ -165,14 +159,16 @@ const CpaListTable = (props) => {
                             {' '}
                             {cpa.lastName}
                           </Link>
-                          <Typography
-                            color="textPrimary"
-                            variant="subtitle2"
-                          >
-                            {cpa.userName}
-                          </Typography>
                         </Box>
                       </Box>
+                      </TableCell>
+                      <TableCell>
+                        <Typography
+                          color="textPrimary"
+                          variant="subtitle2"
+                        >
+                            {cpa.jobTitle}
+                        </Typography>
                       </TableCell>
                       <TableCell>
                         {getRoleLabel(cpa.userRole)}
@@ -231,7 +227,7 @@ const CpaListTable = (props) => {
         </Scrollbar>
         <TablePagination
           component="div"
-          count={cpas.length}
+          count={cpas.count}
           onPageChange={handlePageChange}
           onRowsPerPageChange={handleLimitChange}
           page={page}

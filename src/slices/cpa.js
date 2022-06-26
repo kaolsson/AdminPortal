@@ -7,7 +7,8 @@ const initialState = {
     selectedCpaId: null,
     cpas: {
       byId: {},
-      allIds: []
+      allIds: [],
+      count: 0
     }
 };
 
@@ -17,8 +18,8 @@ const slice = createSlice({
   reducers: {
     getCpas(state, action) {
         const { cpas } = action.payload;
-        console.log(cpas);
         state.cpas.byId = objFromArray(cpas.cpa);
+        state.cpas.count = cpas.cpa.length;
         state.cpas.allIds = Object.keys(state.cpas.byId);
         state.isLoaded = true;
       },
