@@ -4,6 +4,7 @@
 export const serverConnection = {
     // server base url -- NEED TO MAKE THIS AUTOMATIC
 //    baseUrl: 'http://localhost:6543',
+//    baseUrl: 'https://api.mysmartmaster.com',
     baseUrl: 'https://apitest.copper-wired.com',
 
     slash: '/',
