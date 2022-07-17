@@ -147,6 +147,7 @@ const OrgPhoneEmailSettinngs = (props) => {
         <Formik
           enableReinitialize
           initialValues={{
+            adminName: organization.adminName || '',
             contactEmail: organization.contactEmail || '',
             orderEmail: organization.orderEmail || '',
             miscEmail: organization.miscEmail || '',
@@ -158,6 +159,10 @@ const OrgPhoneEmailSettinngs = (props) => {
           validationSchema={Yup
             .object()
             .shape({
+              adminName: Yup
+                .string()
+                .max(100)
+                .required('Admin name (owner) is required'),
               adminEmail: Yup
                 .string()
                 .email('Must be a valid email')
@@ -205,6 +210,42 @@ const OrgPhoneEmailSettinngs = (props) => {
         >
           {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
             <form onSubmit={handleSubmit}>
+              <Card>
+                <CardHeader title="Admin Responsible" />
+                <Divider />
+                <CardContent>
+                  <Grid
+                    container
+                    spacing={4}
+                  >
+                    <Grid
+                      item
+                      md={6}
+                      xs={12}
+                    >
+                      <TextField
+                        error={Boolean(touched.adminName && errors.adminName)}
+                        fullWidth
+                        helperText={touched.adminName && errors.adminName}
+                        label="Admin Name"
+                        name="adminName"
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        required
+                        value={values.adminName}
+                        variant="outlined"
+                      />
+                    </Grid>
+                  </Grid>
+                  {errors.submit && (
+                    <Box sx={{ mt: 3 }}>
+                      <FormHelperText error>
+                        {errors.submit}
+                      </FormHelperText>
+                    </Box>
+                  )}
+                </CardContent>
+              </Card>
               <Card>
                 <CardHeader title="Phone" />
                 <Divider />

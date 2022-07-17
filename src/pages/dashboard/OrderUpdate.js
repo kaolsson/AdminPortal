@@ -13,7 +13,6 @@ import useMounted from '../../hooks/useMounted';
 import { orderApi } from '../../__fakeApi__/orderApi';
 
 function findArrayElementById(array, id) {
-    console.log(array);
     return array.find((element) => (element.id === id));
 }
 
@@ -29,11 +28,8 @@ const OrderUpdate = () => {
     try {
       const data = await orderApi.getOrders(user.accountID);
       if (mounted.current) {
-        console.log(data.orders);
-        console.log(orderId);
         const thisOrder = findArrayElementById(data.orders, orderId);
         setOrder(thisOrder);
-        console.log(thisOrder);
       }
     } catch (err) {
       console.error(err);
@@ -56,7 +52,6 @@ const OrderUpdate = () => {
             note: '',
         };
         setOrder(initOrder);
-        console.log(initOrder);
     }
   }, [getOrders]);
 

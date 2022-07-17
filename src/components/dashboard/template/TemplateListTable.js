@@ -346,8 +346,6 @@ const TemplateListTable = (props) => {
             <TableBody>
               {paginatedTemplates.map((template) => {
                 const isTemplateSelected = false;
-                console.log(paginatedTemplates);
-//                const isTemplateSelected = selectedTemplates.includes(template.templateID);
 
                 return (
                   <TableRow

@@ -24,7 +24,6 @@ class SignupApi {
 
               axios.get(apiUrl, theHeaders)
                 .then((response) => {
-                  console.log(response.data);
                   resolve(response.data);
                 })
                 .catch((response) => {
@@ -57,7 +56,6 @@ class SignupApi {
 
               axios.get(apiUrl, theHeaders)
                 .then((response) => {
-                  console.log(response.data);
                   resolve(response.data);
                 })
                 .catch((response) => {
@@ -73,8 +71,6 @@ class SignupApi {
 
     updateSignup(messageID, signupBody) {
         const apiUrl = serverConnection.baseUrl + serverConnection.signupUrl + serverConnection.slash + messageID;
-        console.log(signupBody);
-        console.log(apiUrl);
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');
 

@@ -18,7 +18,6 @@ import KanbanCardModal from './KanbanCardModal';
 import Label from '../../Label';
 
 const getActionLabel = (actionType) => {
-    console.log(actionType);
     const map = {
       client: {
         text: 'client',

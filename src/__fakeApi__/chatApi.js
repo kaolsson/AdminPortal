@@ -1,12 +1,8 @@
-// import { subDays, subHours, subMinutes } from 'date-fns';
-// import createResourceId from '../utils/createResourceId';
 import deepCopy from '../utils/deepCopy';
 import axios from 'axios';
 import {
     serverConnection,
 } from './connectionData';
-
-// const now = new Date();
 
 const findContactByUsername = (contacts, username) => {
   const contact = contacts.find((_contact) => _contact.username === username);
@@ -36,24 +32,6 @@ const findThreadByOtherParticipantId = (threads, participantId) => {
   return thread || null;
 };
 
-// const findThreadByParticipantIds = (threads, participantIds) => {
-//  const thread = threads.find((_thread) => {
-//    if (_thread.participants.length < participantIds.length) {
-//      return false;
-//    }
-
-//    const foundParticipantIds = new Set();
-
-//    thread.participants.forEach((participant) => {
-//      foundParticipantIds.add(participant.id);
-//    });
-
-//    return foundParticipantIds.size === participantIds.length;
-//  });
-
-//  return thread || null;
-// };
-
 class ChatApi {
   getContacts() {
     const apiUrl = serverConnection.baseUrl + serverConnection.chatUrl;
@@ -74,7 +52,6 @@ class ChatApi {
 
           axios.get(apiUrl, theHeaders)
             .then((response) => {
-              console.log(response.data.data.contacts);
               resolve(response.data.data.contacts);
             })
             .catch((response) => {
@@ -87,9 +64,6 @@ class ChatApi {
         }
     });
 }
-
-//    return Promise.resolve(deepCopy(contacts));
-//  }
 
   searchContacts(query) {
     const apiUrl = serverConnection.baseUrl + serverConnection.chatUrl;
@@ -110,7 +84,6 @@ class ChatApi {
 
           axios.get(apiUrl, theHeaders)
             .then((response) => {
-              console.log(response.data.data.contacts);
               let foundContacts = response.data.data.contacts;
               if (query) {
                 const cleanQuery = query.toLowerCase().trim();
@@ -152,12 +125,8 @@ class ChatApi {
 
         axios.get(apiUrl, theHeaders)
             .then((response) => {
-                console.log(response.data.data);
                 const thread = findThreadById(response.data.data.threads, threadKey);
-                console.log(thread);
-                console.log(threadKey);
                 if (thread) {
-                    console.log(thread.participants);
                     participants.push(...thread.participants);
                 } else {
                     const contact = findContactByUsername(response.data.data.contacts, threadKey);
@@ -171,7 +140,6 @@ class ChatApi {
                         });
                     }
                 }
-                console.log(participants);
                 resolve(deepCopy(participants));
             })
             .catch((response) => {
@@ -235,8 +203,6 @@ class ChatApi {
 
           axios.get(apiUrl, theHeaders)
             .then((response) => {
-              console.log(response.data.data.threads);
-              console.log(threadKey);
               let thread = findThreadById(response.data.data.threads, threadKey);
 
               if (thread) {

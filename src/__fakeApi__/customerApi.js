@@ -1,5 +1,6 @@
 import axios from 'axios';
 import deepCopy from '../utils/deepCopy';
+
 import {
     serverConnection,
 } from './connectionData';
@@ -24,7 +25,6 @@ class CustomerApi {
 
               axios.get(apiUrl, theHeaders)
                 .then((response) => {
-                    console.log(response.data);
                     resolve(response.data);
                 })
                 .catch((response) => {
@@ -57,7 +57,6 @@ class CustomerApi {
 
               axios.get(apiUrl, theHeaders)
                 .then((response) => {
-                    console.log(response.data);
                     resolve(response.data);
                 })
                 .catch((response) => {
@@ -96,7 +95,7 @@ class CustomerApi {
 
               axios.post(apiUrl, theBody, theHeaders)
                 .then((response) => {
-                  resolve(deepCopy(response.data.user));
+                  resolve(deepCopy(response.data));
                 })
                 .catch((response) => {
                   console.log('Fail add new client');
@@ -214,7 +213,6 @@ class CustomerApi {
 
               axios.get(apiUrl, theHeaders)
                 .then((response) => {
-                    console.log(response.data);
                     resolve(response.data);
                 })
                 .catch((response) => {

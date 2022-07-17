@@ -1,18 +1,13 @@
 import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-// import { format } from 'date-fns';
-// import numeral from 'numeral';
 import PropTypes from 'prop-types';
 import toast from 'react-hot-toast';
 import {
   Box,
   Card,
-  // CardContent,
   CardHeader,
-  // Checkbox,
   Divider,
   IconButton,
-  // Link,
   Table,
   TableBody,
   TableCell,
@@ -22,13 +17,9 @@ import {
   Typography
 } from '@material-ui/core';
 import DownloadIcon from '../../../icons/Download';
-// import ArrowRightIcon from '../../../icons/ArrowRight';
 import PencilAltIcon from '../../../icons/PencilAlt';
 import Label from '../../Label';
-// import MoreMenu from '../../MoreMenu';
 import Scrollbar from '../../Scrollbar';
-// import FileListBulkActions from './FileListBulkActions';
-// import FileDropzone from '../../FileDropzone';
 import { projectApi } from '../../../__fakeApi__/projectApi';
 import ConfirmDialog from '../../popups/ConfirmDialog';
 
@@ -70,17 +61,10 @@ const ProjectFileListVendor = (props) => {
   const [limit, setLimit] = useState(5);
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' });
 
-  // const handleSelectAllOrders = (event) => {
-  //  setSelectedOrders(event.target.checked
-  //    ? orders.map((order) => order.id)
-  //    : []);
-  // };
-
   const handleDownload = (documentID) => {
     try {
         projectApi.fileDownload(documentID)
           .then((response) => {
-            console.log(response);
             if (response.status === 200) {
                 const link = document.createElement('a');
                 link.href = response.data;
@@ -111,9 +95,6 @@ const ProjectFileListVendor = (props) => {
   };
 
   const paginatedFiles = applyPagination(files, page, limit);
-  // const enableBulkActions = selectedFiles.length > 0;
-  // const selectedSomeOrders = selectedOrders.length > 0 && selectedOrders.length < orders.length;
-  // const selectedAllOrders = selectedOrders.length === orders.length;
 
   return (
     <>

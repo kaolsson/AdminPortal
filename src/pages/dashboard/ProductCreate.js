@@ -30,7 +30,6 @@ const ProductCreate = () => {
       if (mounted.current) {
         const thisProduct = findArrayElementById(data, prodcutId);
         setProduct(thisProduct);
-        console.log(thisProduct);
       }
     } catch (err) {
       console.error(err);
@@ -61,7 +60,6 @@ const ProductCreate = () => {
             dateUpdated: ''
         };
         setProduct(initProduct);
-        console.log(initProduct);
     }
   }, [getProducts]);
 

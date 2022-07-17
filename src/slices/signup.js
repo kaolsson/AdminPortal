@@ -18,7 +18,6 @@ const slice = createSlice({
   reducers: {
     getSignups(state, action) {
         const signups = action.payload;
-        console.log(signups);
         state.signups.byId = objFromArrayMsg(signups);
         state.signups.allIds = Object.keys(state.signups.byId);
         state.signups.array = action.payload;
@@ -26,7 +25,6 @@ const slice = createSlice({
       },
     updateSignup(state, action) {
         const signups = action.payload;
-        console.log(signups);
         state.signups.byId = objFromArrayMsg(signups);
         state.signups.allIds = Object.keys(state.signups.byId);
         state.signups.array = action.payload;

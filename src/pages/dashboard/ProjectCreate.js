@@ -13,10 +13,6 @@ import useMounted from '../../hooks/useMounted';
 import { projectApi } from '../../__fakeApi__/projectApi';
 import { customerApi } from '../../__fakeApi__/customerApi';
 
-// function findArrayElementById(array, id) {
-//    return array.find((element) => (element.projectID === id));
-// }
-
 const ProjectCreate = () => {
   const { settings } = useSettings();
   const [projectId] = useState(parse(window.location.search).pid);
@@ -34,8 +30,6 @@ const ProjectCreate = () => {
       if (mounted.current) {
         setClients(data.clients);
         setCpas(data.cpas);
-        console.log(data.clients);
-        console.log(data.cpas);
       }
     } catch (err) {
       console.error(err);
@@ -65,7 +59,6 @@ const ProjectCreate = () => {
       const data = await projectApi.getProject(projectId);
       if (mounted.current) {
         setProject(data.project);
-        console.log(data);
       }
     } catch (err) {
       console.error(err);
@@ -77,7 +70,6 @@ const ProjectCreate = () => {
   }, []);
 
   useEffect(() => {
-    console.log('Here-1');
     if (projectId) {
         getProject();
     } else {
@@ -102,7 +94,6 @@ const ProjectCreate = () => {
             dateCompleted: '',
         };
         setProject(initProject);
-        console.log(initProject);
     }
   }, [getProject]);
 

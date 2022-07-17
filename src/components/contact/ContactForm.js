@@ -109,8 +109,6 @@ const ContactForm = () => {
         })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
-          // NOTE: Make API request
-          console.log(values);
           await messageApi.sendMessage(values);
           setStatus({ success: true });
           setSubmitting(false);

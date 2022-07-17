@@ -102,7 +102,6 @@ const PayOrder = () => (
 
 const OrderSummary = (props) => {
   const { order, ...other } = props;
-  console.log(order);
 
   return (
     <Card {...other}>

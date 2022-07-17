@@ -84,7 +84,6 @@ const NotificationsPopover = () => {
       const data = await notificationApi.getNotifications(user.customerID);
       if (mounted.current) {
       setNotifications(data);
-      console.log(data);
       }
     } catch (err) {
       console.error(err);

@@ -12,10 +12,8 @@ const ProjectActivities = (props) => {
   for (const activity of activities) {
     if (isSameDay(activity.createdAt, new Date())) {
       todoAction.push(activity);
-      console.log(activity);
     } else {
       doneAction.push(activity);
-      console.log(activity);
     }
   }
 

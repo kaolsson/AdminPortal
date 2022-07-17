@@ -18,8 +18,6 @@ const AccountNotificationsSettings = (props) => {
   const { user } = useAuth();
   const { update } = useAuth();
 
-  console.log(user.notifications);
-
   const [noteTypes, setNoteTypes] = useState({
     notifyEventEmail: user.notifications.notifyEventEmail,
     notifyEventNote: user.notifications.notifyEventNote,

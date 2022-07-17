@@ -1,12 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-// import { Link as RouterLink } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-// import { useState, useEffect, useCallback } from 'react';
 import toast from 'react-hot-toast';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import {
-//  Autocomplete,
   Avatar,
   Box,
   Button,
@@ -17,53 +14,21 @@ import {
   Divider,
   FormHelperText,
   Grid,
-  // Link,
-  // Switch,
   TextField,
-  // Typography
 } from '@material-ui/core';
-// import useAuth from '../../../hooks/useAuth';
-// import wait from '../../../utils/wait';
 import countries from './countries';
 import states from './states';
-// import { authApi } from '../../../__fakeApi__/authApi';
-// import FileDropzone from '../../FileDropzone';
-// import useMounted from '../../../hooks/useMounted';
 import { cpaApi } from '../../../__fakeApi__/cpaApi';
 import PropTypes from 'prop-types';
 
 const CpaAdd = (props) => {
   const { cpa, add } = props;
-//  const { user } = useAuth();
-//  const { update } = useAuth();
   const [avatar, setAvatar] = useState(null);
   const navigate = useNavigate();
-//  const [upload, setUpload] = useState(false);
-//  const mounted = useMounted();
-
-//  const handleUpload = () => {
-//    setUpload(true);
-//    setUpload(false);
-//  };
-
-//  const getAvatar = useCallback(async () => {
-//    try {
-//        const data = await authApi.getAvatar();
-//        if (mounted.current) {
-//            setAvatar(data);
-//        }
-//    } catch (err) {
-//        console.error(err);
-//    }
-//  }, [mounted]);
 
   useEffect(() => {
     setAvatar(null);
   }, []);
-
-//  useEffect(() => {
-//    getAvatar();
-//  }, [getAvatar]);
 
   return (
     <Grid
@@ -143,23 +108,17 @@ const CpaAdd = (props) => {
           onSubmit={async (values, { resetForm, setErrors, setStatus, setSubmitting }) => {
             try {
               if (!add) {
-                  console.log('update');
-                  console.log(cpa);
                   const newCpa = await cpaApi.updateCpa(cpa.id, values);
                   setStatus({ success: true });
                   setSubmitting(false);
                   toast.success('CPA Updated!');
-                  console.log(newCpa);
-                  console.log(Object.values(newCpa)[0]);
+                  navigate(['/cpa/details/?eid=', newCpa.cpaID].join(''));
               } else {
-                  console.log('add');
                   const newCpa = await cpaApi.addCpa(values);
                   resetForm();
                   setStatus({ success: true });
                   setSubmitting(false);
                   toast.success('New CPA Created!');
-                  console.log(newCpa);
-                  console.log(Object.values(newCpa)[0]);
                   navigate(['/cpa/details/?eid=', newCpa.cpaID].join(''));
               }
             } catch (err) {

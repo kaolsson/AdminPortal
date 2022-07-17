@@ -87,7 +87,6 @@ class VendorApi {
         const Authorization = tokenTitle + accessToken;
         const metaData = ['{"Account": "', accountID, '", "docType": "tax", "description": "This is a document."}'].join('');
 
-        console.log(metaData);
         const formData = new FormData();
         formData.append(
           'document',

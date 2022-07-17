@@ -24,7 +24,6 @@ class MessageApi {
 
               axios.get(apiUrl, theHeaders)
                 .then((response) => {
-                  console.log(response.data);
                   resolve(response.data);
                 })
                 .catch((response) => {
@@ -57,7 +56,6 @@ class MessageApi {
 
               axios.get(apiUrl, theHeaders)
                 .then((response) => {
-                  console.log(response.data);
                   resolve(response.data);
                 })
                 .catch((response) => {
@@ -73,7 +71,6 @@ class MessageApi {
 
     sendMessage(message) {
         const apiUrl = serverConnection.baseUrl + serverConnection.messageUrl;
-        console.log(message);
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');
 
@@ -124,8 +121,6 @@ class MessageApi {
 
     updateMessage(messageID, message) {
         const apiUrl = serverConnection.baseUrl + serverConnection.messageUrl + serverConnection.slash + messageID;
-        console.log(message);
-        console.log(apiUrl);
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');
 

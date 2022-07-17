@@ -121,8 +121,6 @@ const CpaUserAdd = () => {
           </Box>
           <Divider />
           <Box sx={{ mt: 3 }}>
-            {console.log(initialValues)}
-            {console.log(currentTab)}
             {currentTab === 'profile' && <CpaAdd cpa={initialValues} add={add} />}
           </Box>
         </Container>

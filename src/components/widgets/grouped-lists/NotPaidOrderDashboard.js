@@ -35,7 +35,6 @@ const NotPaidOrderDashboard = () => {
       const data = await orderApi.getOrders(user.customerID);
 
       if (mounted.current) {
-        console.log(data.orders.order);
         setOrders(data.orders);
       }
     } catch (err) {

@@ -12,8 +12,6 @@ const memberSelector = (state, memberId) => {
 const KanbanComment = (props) => {
   const { createdAt, memberId, message, ...other } = props;
   const member = useSelector((state) => memberSelector(state, memberId));
-  console.log(memberId);
-  console.log(member);
 
   return (
     <Box

@@ -103,7 +103,6 @@ const CustomerDetails = () => {
       if (mounted.current) {
         setCustomer(data.user);
         setCases(data.cases);
-        console.log(data);
       }
     } catch (err) {
       console.error(err);
@@ -224,7 +223,7 @@ const CustomerDetails = () => {
                 >
                   <CustomerContactDetails
                     customer={customer}
-                    isVerified={1}
+                    isVerified={customer.emailVerified === 'yes' ? 1 : 0}
                   />
                 </Grid>
                 <Grid

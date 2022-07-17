@@ -1,25 +1,17 @@
 import { useCallback, useState, useEffect } from 'react';
-// import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet-async';
 import { parse } from 'query-string';
-// import { formatDistanceToNowStrict } from 'date-fns';
 import { Badge, Box, Button, Container, Divider, Grid, Tab, Tabs, Typography } from '@material-ui/core';
-// import ChatIcon from '@material-ui/icons/Chat';
 import BriefcaseIcon from '../../icons/Briefcase';
 import { projectApi } from '../../__fakeApi__/projectApi';
 import {
   ProjectActivities2,
-//  ProjectApplicationModal,
   ProjectOverview,
   ProjectFileList,
   ProjectFileListVendor,
 } from '../../components/dashboard/project';
 import useMounted from '../../hooks/useMounted';
 import useSettings from '../../hooks/useSettings';
-// import CalendarIcon from '../../icons/Calendar';
-// import CheckIcon from '../../icons/Check';
-// import ExclamationIcon from '../../icons/Exclamation';
-// import ShareIcon from '../../icons/Share';
 import gtm from '../../lib/gtm';
 import Label from '../../components/Label';
 import { Link as RouterLink } from 'react-router-dom';
@@ -82,7 +74,6 @@ const ProjectDetails = () => {
 
   const getProject = useCallback(async () => {
     try {
-      console.log(caseId);
       const data = await projectApi.getProject(caseId);
 
       if (mounted.current) {

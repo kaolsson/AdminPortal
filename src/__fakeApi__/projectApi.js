@@ -16,7 +16,6 @@ class ProjectApi {
         const Authorization = tokenTitle + accessToken;
         const metaData = ['{"caseID": "', caseID, '", "docType": "tax", "description": "This is a document."}'].join('');
 
-        console.log(metaData);
         const formData = new FormData();
         formData.append(
           'document',
@@ -31,17 +30,9 @@ class ProjectApi {
         const theHeaders = {
           headers: {
             Accept: '*',
-//            'Content-type': 'multipart/form-data',
             Authorization
           }
         };
-
-//        const hello = 'hello';
-//        const formData2 = JSON.stringify(
-//            {
-//                hello
-//            }
-//          );
 
         axios.post(apiUrl, formData, theHeaders)
           .then((response) => {
@@ -141,7 +132,6 @@ class ProjectApi {
 
           axios.get(apiUrl, theHeaders)
             .then((response) => {
-              console.log(response.data);
               resolve(response.data);
             })
             .catch((response) => {
@@ -189,7 +179,6 @@ class ProjectApi {
 
     createProject(project) {
         const apiUrl = serverConnection.baseUrl + serverConnection.projectUrl;
-        console.log(project);
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');
 
@@ -228,7 +217,6 @@ class ProjectApi {
     updateProject(project) {
         const apiUrl = serverConnection.baseUrl + serverConnection.projectUrl + serverConnection.slash + project.caseID;
 
-        console.log(project);
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');
 

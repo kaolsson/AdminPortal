@@ -225,8 +225,6 @@ const SignupListTable = (props) => {
     setOpen(false);
   };
 
-  console.log(signups);
-
   const filteredSignups = applyFilters(signups, query, filters);
   const sortedSignups = applySort(filteredSignups, sort);
   const paginatedSignups = applyPagination(sortedSignups, page, limit);

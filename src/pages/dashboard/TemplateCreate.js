@@ -23,7 +23,6 @@ const TemplateCreate = () => {
 
       if (mounted.current) {
         setProducts(data.products);
-        console.log(data.products);
       }
     } catch (err) {
       console.error(err);

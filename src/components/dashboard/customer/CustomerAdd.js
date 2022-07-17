@@ -158,14 +158,11 @@ const CustomerAdd = (props) => {
             })}
           onSubmit={async (values, { resetForm, setErrors, setStatus, setSubmitting }) => {
             try {
-              console.log('here');
               const newClient = await customerApi.addCustomer(values);
               resetForm();
               setStatus({ success: true });
               setSubmitting(false);
               toast.success('New Client Created!');
-              console.log(newClient);
-              console.log(Object.values(newClient)[0]);
               navigate(['/clients/details/?cid=', newClient.customerID].join(''));
             } catch (err) {
               console.error(err);

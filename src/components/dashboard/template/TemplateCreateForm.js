@@ -85,7 +85,6 @@ const createProjectOptions = [
 const TemplateCreateForm = (props) => {
   const { user, productOptions } = props;
   const navigate = useNavigate();
-  console.log(user);
 
   return (
     <Formik
@@ -127,7 +126,6 @@ const TemplateCreateForm = (props) => {
           values.cpaID = user.id; // set logged in cpa user as owner
           values.accountID = user.accountID; // set cpa user org and account
           values.Currency = 'USD'; // hardcode USD for now
-          console.log(values);
           await templateApi.newTemplate(values);
           setStatus({ success: true });
           setSubmitting(false);

@@ -24,7 +24,6 @@ class OrderApi {
 
               axios.get(apiUrl, theHeaders)
                 .then((response) => {
-                  console.log(response.data);
                   resolve(response.data);
                 })
                 .catch((response) => {
@@ -40,8 +39,6 @@ class OrderApi {
 
     updateOrder(order) {
         const apiUrl = serverConnection.baseUrl + serverConnection.orderUrl + serverConnection.slash + order.orderID;
-        console.log(order);
-        console.log(apiUrl);
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');
 

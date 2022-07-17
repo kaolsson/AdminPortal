@@ -54,7 +54,6 @@ const CpaUserUpdate = () => {
   };
 
   if (!cpaUser) {
-    console.log(cpaId);
     return <div> </div>;
   }
 

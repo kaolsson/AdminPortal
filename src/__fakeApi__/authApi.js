@@ -128,8 +128,6 @@ class AuthApi {
     const apiUrl = serverConnection.baseUrl + serverConnection.meUrl;
     const actionType = type; // update
 
-    console.log(type);
-
     const theBody = JSON.stringify(
       {
         actionType,
@@ -152,11 +150,11 @@ class AuthApi {
         };
         axios.put(apiUrl, theBody, theHeaders)
           .then((response) => {
-            console.log(response.data.user);
             resolve(response.data.user);
           })
           .catch((response) => {
             reject(new Error(response.data));
+            console.log(response.data.user);
           });
       } else {
         reject(new Error('No token'));
@@ -268,7 +266,6 @@ class AuthApi {
         const Authorization = tokenTitle + accessToken;
         const metaData = ['{"userID": "', cpaID, '", "docType": "tax", "description": "This is a document."}'].join('');
 
-        console.log(metaData);
         const formData = new FormData();
         formData.append(
           'document',

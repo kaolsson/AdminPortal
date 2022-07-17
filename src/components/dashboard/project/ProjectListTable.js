@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-// import numeral from 'numeral';
 import PropTypes from 'prop-types';
 import {
   Box,
@@ -119,7 +118,6 @@ const actionOptions = [
 ];
 
 const getActionLabel = (actionType) => {
-  console.log(actionType);
   const map = {
     client: {
       text: 'client',
@@ -163,13 +161,6 @@ const applyFilters = (projects, query, filters) => projects
     if (filters.action && project.action !== filters.action) {
         matches = false;
     }
-
-//    if (filters.status && ![
-//        'active'
-//       ].includes(project.status)) {
-//        matches = false;
-//    }
-
     return matches;
   });
 

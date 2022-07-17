@@ -13,7 +13,6 @@ const MarkdownWrapper = experimentalStyled('div')(({ theme }) => ({
 
 const ProjectBrief = (props) => {
   const { description, note, tags, title, ...other } = props;
-  console.log(tags);
 
   return (
     <Card {...other}>

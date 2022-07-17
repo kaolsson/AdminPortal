@@ -36,7 +36,6 @@ const UpdateMessageModal = (props) => {
   const [value, setValue] = useState('');
 
   const handleDetailsUpdate = debounce(async (update) => {
-    console.log(message);
     try {
       await messageApi.updateMessage(message.messageID, update);
       toast.success('Message updated!');

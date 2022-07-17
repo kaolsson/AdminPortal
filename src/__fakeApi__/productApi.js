@@ -11,7 +11,6 @@ import {
 class ProductsApi {
     getProducts(accountID) {
       const apiUrl = serverConnection.baseUrl + serverConnection.getProductUrl + serverConnection.slash + accountID;
-      console.log(apiUrl);
       return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
 
@@ -74,7 +73,6 @@ class ProductsApi {
 
     editProduct(record) {
       const apiUrl = serverConnection.baseUrl + serverConnection.newProductUrl;
-      console.log(record);
       return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
 

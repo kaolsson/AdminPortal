@@ -8,15 +8,10 @@ import {
   Card,
   CardContent,
   CardHeader,
-//  Checkbox,
-//  FormControlLabel,
   FormHelperText,
   Grid,
   TextField,
-//  Typography
 } from '@material-ui/core';
-// import FileDropzone from '../../FileDropzone';
-// import QuillEditor from '../../QuillEditor';
 import { projectApi } from '../../../__fakeApi__/projectApi';
 import PropTypes from 'prop-types';
 import stateOptions from './states';
@@ -71,8 +66,6 @@ const ProjectCreateForm = (props) => {
   const { project, clientoptions, cpaoptions } = props;
   const navigate = useNavigate();
 
-  console.log(cpaoptions);
-
   return (
     <Formik
       initialValues={{
@@ -115,20 +108,15 @@ const ProjectCreateForm = (props) => {
           status: Yup.string().max(20).required(),
           caseType: Yup.string().max(100).required(),
           location: Yup.string().max(100).required(),
-//          customerSaving: Yup.number().min(0).required(),
           customerSaving: Yup.number().min(0).nullable(),
           orderID: Yup.string().max(50).nullable(),
         })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-        console.log(values);
         try {
             if (values.caseID !== '') {
-                console.log('updateProject');
-                console.log(values);
                 await projectApi.updateProject(values);
             } else {
-                console.log('createProject');
-                await projectApi.createProject(values);
+                values.caseID = await projectApi.createProject(values);
             }
             setStatus({ success: true });
             setSubmitting(false);
@@ -137,8 +125,7 @@ const ProjectCreateForm = (props) => {
             } else {
                 toast.success('Project created!');
             }
-//            navigate('/projects/browse');
-              navigate(['/projects/details/?cid=', project.caseID].join(''));
+              navigate(['/projects/details/?cid=', values.caseID].join(''));
         } catch (err) {
             console.error(err);
             toast.error('Something went wrong!');

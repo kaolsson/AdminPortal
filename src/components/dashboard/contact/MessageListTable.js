@@ -247,8 +247,6 @@ const MessageListTable = (props) => {
     setOpen(false);
   };
 
-  console.log(messages);
-
   const filteredMessages = applyFilters(messages, query, filters);
   const sortedMessages = applySort(filteredMessages, sort);
   const paginatedMessages = applyPagination(sortedMessages, page, limit);

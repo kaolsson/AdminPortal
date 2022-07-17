@@ -77,6 +77,42 @@ const OrgDetails = (props) => {
                   color="textPrimary"
                   variant="subtitle2"
                 >
+                  Admin Name
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  color="textSecondary"
+                  variant="body2"
+                >
+                  {vendor.adminName}
+                </Typography>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>
+                <Typography
+                  color="textPrimary"
+                  variant="subtitle2"
+                >
+                  Admin Phone
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  color="textSecondary"
+                  variant="body2"
+                >
+                  {vendor.adminPhone}
+                </Typography>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>
+                <Typography
+                  color="textPrimary"
+                  variant="subtitle2"
+                >
                   Admin Email
                 </Typography>
               </TableCell>
@@ -197,7 +233,7 @@ const OrgDetails = (props) => {
                   color="textPrimary"
                   variant="subtitle2"
                 >
-                  Web Potal
+                  Web Portal
                 </Typography>
               </TableCell>
               <TableCell>
@@ -215,7 +251,7 @@ const OrgDetails = (props) => {
                   color="textPrimary"
                   variant="subtitle2"
                 >
-                  Secure Potal
+                  Secure Portal
                 </Typography>
               </TableCell>
               <TableCell>

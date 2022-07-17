@@ -1,8 +1,9 @@
 import axios from 'axios';
+import deepCopy from '../utils/deepCopy';
+
 import {
     serverConnection,
 } from './connectionData';
-import deepCopy from '../utils/deepCopy';
 
 class CpaApi {
   getCpas(orgID) {
@@ -24,7 +25,6 @@ class CpaApi {
 
           axios.get(apiUrl, theHeaders)
             .then((response) => {
-                console.log(response.data);
                 resolve(response.data);
             })
             .catch((response) => {
@@ -57,7 +57,6 @@ class CpaApi {
 
           axios.get(apiUrl, theHeaders)
             .then((response) => {
-                console.log(response.data);
                 resolve(response.data);
             })
             .catch((response) => {
@@ -96,7 +95,6 @@ class CpaApi {
 
           axios.post(apiUrl, theBody, theHeaders)
             .then((response) => {
-              console.log(response.data);
               resolve(deepCopy(response.data));
             })
             .catch((response) => {

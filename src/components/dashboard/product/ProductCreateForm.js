@@ -9,15 +9,12 @@ import {
   Card,
   CardContent,
   CardHeader,
-//  Checkbox,
-//  FormControlLabel,
   FormHelperText,
   Grid,
   TextField,
   Typography
 } from '@material-ui/core';
 import FileDropzone from '../../FileDropzone';
-// import QuillEditor from '../../QuillEditor';
 import { productApi } from '../../../__fakeApi__/productApi';
 import PropTypes from 'prop-types';
 
@@ -114,8 +111,6 @@ const ProductCreateForm = (props) => {
         })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
-          // NOTE: Make API request
-          console.log(values);
           await productApi.editProduct(values);
           setStatus({ success: true });
           setSubmitting(false);
@@ -136,7 +131,6 @@ const ProductCreateForm = (props) => {
         handleChange,
         handleSubmit,
         isSubmitting,
-//        setFieldValue,
         touched,
         values
       }) => (

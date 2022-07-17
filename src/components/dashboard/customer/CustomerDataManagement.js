@@ -54,7 +54,6 @@ const CustomerDataManagement = (props) => {
   }, [mounted]);
 
   const handleExportData = () => {
-    console.log(customerID);
     toast.error('Function not available!');
   };
 
@@ -68,7 +67,6 @@ const CustomerDataManagement = (props) => {
         navigate('/clients/browse');
       }
     } catch (err) {
-      console.log(err);
       if (err === 404) {
         toast.error('Client not found');
       }

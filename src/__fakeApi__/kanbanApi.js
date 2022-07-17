@@ -2,6 +2,7 @@
 import createResourceId from '../utils/createResourceId';
 import deepCopy from '../utils/deepCopy';
 import axios from 'axios';
+
 import {
     serverConnection,
 } from './connectionData';
@@ -253,7 +254,6 @@ class KanbanApi {
           };
 
           const data = update;
-          console.log(data);
           const theBody = JSON.stringify(
             {
               data

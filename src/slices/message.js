@@ -18,7 +18,6 @@ const slice = createSlice({
   reducers: {
     getMessages(state, action) {
         const messages = action.payload;
-        console.log(messages);
         state.messages.byId = objFromArrayMsg(messages);
         state.messages.allIds = Object.keys(state.messages.byId);
         state.messages.array = action.payload;
@@ -26,14 +25,10 @@ const slice = createSlice({
       },
     updateMessage(state, action) {
         const messages = action.payload;
-        console.log(messages);
         state.messages.byId = objFromArrayMsg(messages);
         state.messages.allIds = Object.keys(state.messages.byId);
         state.messages.array = action.payload;
         state.isLoaded = true;
-//      const message = action.payload;
-//      console.log(message);
-//      Object.assign(state.messages.byId[message.messageID], action.payload);
     },
   }
 });

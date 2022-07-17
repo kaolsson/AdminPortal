@@ -6,12 +6,9 @@ import {
     serverConnection,
 } from './connectionData';
 
-// const now = new Date();
-
 class TemplatesApi {
     getTemplates(accountID) {
         const apiUrl = serverConnection.baseUrl + serverConnection.getTemplateListUrl + serverConnection.slash + accountID;
-        console.log(apiUrl);
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');
 
@@ -28,7 +25,6 @@ class TemplatesApi {
 
             axios.get(apiUrl, theHeaders)
                 .then((response) => {
-                console.log(response.data);
                 resolve(deepCopy(response.data));
                 })
                 .catch((response) => {
@@ -44,7 +40,6 @@ class TemplatesApi {
 
     getTemplate(templateID) {
         const apiUrl = serverConnection.baseUrl + serverConnection.getTemplateUrl + serverConnection.slash + templateID;
-        console.log(apiUrl);
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');
 
@@ -61,7 +56,6 @@ class TemplatesApi {
 
               axios.get(apiUrl, theHeaders)
                 .then((response) => {
-                  console.log(response.data);
                   resolve(deepCopy(response.data));
                 })
                 .catch((response) => {
@@ -77,7 +71,6 @@ class TemplatesApi {
 
   newTemplate(record) {
     const apiUrl = serverConnection.baseUrl + serverConnection.newTemplateUrl;
-    console.log(record);
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
 

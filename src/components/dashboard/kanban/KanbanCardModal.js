@@ -56,9 +56,7 @@ const KanbanCardModal = (props) => {
 
   const handleSubscribe = async () => {
     try {
-      console.log(card.isSubscribed);
       await dispatch(updateCard(card.id, { isSubscribed: 'True' }));
-      console.log(card);
       toast.success('Subscribed!');
     } catch (err) {
       console.error(err);
@@ -68,9 +66,7 @@ const KanbanCardModal = (props) => {
 
   const handleUnsubscribe = async () => {
     try {
-        console.log(card);
         await dispatch(updateCard(card.id, { isSubscribed: 'False' }));
-        console.log(card);
       toast.success('Unsubscribed!');
     } catch (err) {
       console.error(err);

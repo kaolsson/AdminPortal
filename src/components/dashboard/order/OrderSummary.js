@@ -147,7 +147,6 @@ const SendReminder = () => (
 
 const OrderSummary = (props) => {
   const { order, ...other } = props;
-  console.log(order);
 
   return (
     <div>

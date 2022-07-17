@@ -112,22 +112,17 @@ const CpaAddAccount = (props) => {
           onSubmit={async (values, { resetForm, setErrors, setStatus, setSubmitting }) => {
             try {
               if (!add) {
-                  console.log(cpa);
-                  console.log(values);
                   const newCpa = await cpaApi.updateCpa(cpa.id, values);
                   setStatus({ success: true });
                   setSubmitting(false);
                   toast.success('CPA Updated!');
-                  console.log(newCpa);
-                  console.log(Object.values(newCpa)[0]);
+                  navigate(['/cpa/details/?eid=', newCpa.cpaID].join(''));
               } else {
                   const newCpa = await cpaApi.addCpa(values);
                   resetForm();
                   setStatus({ success: true });
                   setSubmitting(false);
                   toast.success('New CPA Created!');
-                  console.log(newCpa);
-                  console.log(Object.values(newCpa)[0]);
                   navigate(['/cpa/details/?eid=', newCpa.cpaID].join(''));
               }
             } catch (err) {

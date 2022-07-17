@@ -92,7 +92,6 @@ const ProjectFileList = (props) => {
     try {
         projectApi.fileDownload(documentID)
           .then((response) => {
-            console.log(response);
             if (response.status === 200) {
                 const link = document.createElement('a');
                 link.href = response.data;
@@ -122,7 +121,6 @@ const ProjectFileList = (props) => {
     try {
         projectApi.fileDelete(documentID)
           .then((response) => {
-            console.log(response);
             if (response.status === 204) {
                 toast.dismiss();
                 toast.success('File deleted!');

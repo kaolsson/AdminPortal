@@ -9,7 +9,6 @@ class NotificationApi {
 
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
-        console.log('Here 1');
 
         if (accessToken) {
           const tokenTitle = 'token: ';
@@ -24,7 +23,6 @@ class NotificationApi {
 
           axios.get(apiUrl, theHeaders)
             .then((response) => {
-                console.log(response.data);
                 resolve(response.data);
             })
             .catch((response) => {

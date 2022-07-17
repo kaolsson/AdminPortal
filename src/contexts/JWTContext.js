@@ -142,7 +142,6 @@ export const AuthProvider = (props) => {
             }
           });
           resolve(user);
-          console.log(user);
         } catch (e) {
           console.error(e);
           reject(new Error(e));
