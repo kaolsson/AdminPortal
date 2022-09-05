@@ -1,13 +1,13 @@
 import axios from 'axios';
 import deepCopy from '../utils/deepCopy';
-
 import {
     serverConnection,
 } from './connectionData';
+import getBaseUrl from './baseUrl';
 
 class CustomerApi {
     getCustomers(orgID) {
-        const apiUrl = serverConnection.baseUrl + serverConnection.accountClientUrl + serverConnection.slash + orgID;
+        const apiUrl = getBaseUrl() + serverConnection.accountClientUrl + serverConnection.slash + orgID;
 
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');
@@ -39,7 +39,7 @@ class CustomerApi {
       }
 
       getCustomer(customerID) {
-        const apiUrl = serverConnection.baseUrl + serverConnection.clientUrl + serverConnection.slash + customerID;
+        const apiUrl = getBaseUrl() + serverConnection.clientUrl + serverConnection.slash + customerID;
 
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');
@@ -71,7 +71,7 @@ class CustomerApi {
       }
 
       addCustomer(customer) {
-        const apiUrl = serverConnection.baseUrl + serverConnection.clientUrl;
+        const apiUrl = getBaseUrl() + serverConnection.clientUrl;
 
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');
@@ -109,7 +109,7 @@ class CustomerApi {
       }
 
       updateCustomer(customerID, customer) {
-        const apiUrl = serverConnection.baseUrl + serverConnection.clientUrl + serverConnection.slash + customerID;
+        const apiUrl = getBaseUrl() + serverConnection.clientUrl + serverConnection.slash + customerID;
 
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');
@@ -147,7 +147,7 @@ class CustomerApi {
       }
 
       deleteCustomer(customerID) {
-        const apiUrl = serverConnection.baseUrl + serverConnection.clientUrl + serverConnection.slash + customerID;
+        const apiUrl = getBaseUrl() + serverConnection.clientUrl + serverConnection.slash + customerID;
 
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');
@@ -195,7 +195,7 @@ class CustomerApi {
       }
 
       getCustomerCpaPickList(orgID) {
-        const apiUrl = serverConnection.baseUrl + serverConnection.accountClientCpaPickListUrl + serverConnection.slash + orgID;
+        const apiUrl = getBaseUrl() + serverConnection.accountClientCpaPickListUrl + serverConnection.slash + orgID;
 
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');

@@ -233,7 +233,7 @@ const CustomerDetails = () => {
                   xl={settings.compact ? 6 : 3}
                   xs={12}
                 >
-                  <CustomerInvoicesSummary />
+                  <CustomerInvoicesSummary projects={cases} />
                 </Grid>
                 <Grid
                   item

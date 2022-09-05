@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import {
   Box,
   Button,
@@ -13,9 +14,22 @@ import {
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import CurrencyDollarIcon from '../../../icons/CurrencyDollar';
 
-const CustomerInvoicesSummary = (props) => (
-  <Card {...props}>
-    <CardHeader title="Orders/Invoices" />
+const totalSum = (projects) => {
+    let total = 0;
+    let i = 0;
+    for (i = 0; i < projects.length; i++) {
+        total += projects[i].customerSaving;
+    }
+    return (total);
+};
+
+const CustomerInvoicesSummary = (props) => {
+  const { projects, ...other } = props;
+  const totalSaved = totalSum(projects);
+
+  return (
+   <Card {...other}>
+    <CardHeader title="Projects" />
     <Divider />
     <Table>
       <TableBody>
@@ -25,7 +39,7 @@ const CustomerInvoicesSummary = (props) => (
               color="textPrimary"
               variant="subtitle2"
             >
-              Paid
+              Total Savings for Customer
             </Typography>
           </TableCell>
           <TableCell>
@@ -33,7 +47,7 @@ const CustomerInvoicesSummary = (props) => (
               color="textSecondary"
               variant="body2"
             >
-              2 ($50.00)
+              {totalSaved}
             </Typography>
           </TableCell>
         </TableRow>
@@ -43,7 +57,7 @@ const CustomerInvoicesSummary = (props) => (
               color="textPrimary"
               variant="subtitle2"
             >
-              Unpaid
+              Paid Invoices
             </Typography>
           </TableCell>
           <TableCell>
@@ -51,7 +65,7 @@ const CustomerInvoicesSummary = (props) => (
               color="textSecondary"
               variant="body2"
             >
-              1 ($12.00)
+              4 ($5500.00)
             </Typography>
           </TableCell>
         </TableRow>
@@ -61,7 +75,7 @@ const CustomerInvoicesSummary = (props) => (
               color="textPrimary"
               variant="subtitle2"
             >
-              Expired/Over Due
+              Unpaid Invoices
             </Typography>
           </TableCell>
           <TableCell>
@@ -69,7 +83,7 @@ const CustomerInvoicesSummary = (props) => (
               color="textSecondary"
               variant="body2"
             >
-              1 ($12.00)
+              1 ($5612.00)
             </Typography>
           </TableCell>
         </TableRow>
@@ -135,7 +149,12 @@ const CustomerInvoicesSummary = (props) => (
         Send Due Order Reminders
       </Button>
     </Box>
-  </Card>
+   </Card>
 );
+};
+
+CustomerInvoicesSummary.propTypes = {
+  projects: PropTypes.object.isRequired
+};
 
 export default CustomerInvoicesSummary;

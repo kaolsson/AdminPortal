@@ -3,10 +3,11 @@ import deepCopy from '../utils/deepCopy';
 import {
     serverConnection,
 } from './connectionData';
+import getBaseUrl from './baseUrl';
 
 class SignupApi {
     getSignups(accountID) {
-        const apiUrl = serverConnection.baseUrl + serverConnection.signupAccountUrl + serverConnection.slash + accountID;
+        const apiUrl = getBaseUrl() + serverConnection.signupAccountUrl + serverConnection.slash + accountID;
 
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');
@@ -38,7 +39,7 @@ class SignupApi {
     }
 
     getSignup(messageID) {
-        const apiUrl = serverConnection.baseUrl + serverConnection.signupUrl + serverConnection.slash + messageID;
+        const apiUrl = getBaseUrl() + serverConnection.signupUrl + serverConnection.slash + messageID;
 
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');
@@ -70,7 +71,7 @@ class SignupApi {
     }
 
     updateSignup(messageID, signupBody) {
-        const apiUrl = serverConnection.baseUrl + serverConnection.signupUrl + serverConnection.slash + messageID;
+        const apiUrl = getBaseUrl() + serverConnection.signupUrl + serverConnection.slash + messageID;
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');
 

@@ -3,10 +3,11 @@ import deepCopy from '../utils/deepCopy';
 import {
     serverConnection,
 } from './connectionData';
+import getBaseUrl from './baseUrl';
 
 class ProjectApi {
   fileUpload(fileObj, caseID) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.fileUrl;
+    const apiUrl = getBaseUrl() + serverConnection.fileUrl;
 
     return new Promise((resolve, reject) => {
       const accessToken = window.localStorage.getItem('accessToken');
@@ -50,7 +51,7 @@ class ProjectApi {
   }
 
   fileDelete(documentID) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.fileUrl + serverConnection.slash + documentID;
+    const apiUrl = getBaseUrl() + serverConnection.fileUrl + serverConnection.slash + documentID;
 
     return new Promise((resolve, reject) => {
       const accessToken = window.localStorage.getItem('accessToken');
@@ -82,7 +83,7 @@ class ProjectApi {
   }
 
   fileDownload(documentID) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.fileUrl + serverConnection.slash + documentID;
+    const apiUrl = getBaseUrl() + serverConnection.fileUrl + serverConnection.slash + documentID;
 
     return new Promise((resolve, reject) => {
       const accessToken = window.localStorage.getItem('accessToken');
@@ -114,7 +115,7 @@ class ProjectApi {
   }
 
   getProjects() {
-    const apiUrl = serverConnection.baseUrl + serverConnection.projectUrl;
+    const apiUrl = getBaseUrl() + serverConnection.projectUrl;
 
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
@@ -146,7 +147,7 @@ class ProjectApi {
     }
 
     getProject(caseID) {
-        const apiUrl = serverConnection.baseUrl + serverConnection.projectUrl + serverConnection.slash + caseID;
+        const apiUrl = getBaseUrl() + serverConnection.projectUrl + serverConnection.slash + caseID;
 
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');
@@ -178,7 +179,7 @@ class ProjectApi {
     }
 
     createProject(project) {
-        const apiUrl = serverConnection.baseUrl + serverConnection.projectUrl;
+        const apiUrl = getBaseUrl() + serverConnection.projectUrl;
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');
 
@@ -215,7 +216,7 @@ class ProjectApi {
     }
 
     updateProject(project) {
-        const apiUrl = serverConnection.baseUrl + serverConnection.projectUrl + serverConnection.slash + project.caseID;
+        const apiUrl = getBaseUrl() + serverConnection.projectUrl + serverConnection.slash + project.caseID;
 
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');

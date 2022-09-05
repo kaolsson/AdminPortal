@@ -2,10 +2,11 @@ import axios from 'axios';
 import {
     serverConnection,
 } from './connectionData';
+import getBaseUrl from './baseUrl';
 
 class VendorApi {
   getVendor(accountID) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.orgUrl + serverConnection.slash + accountID;
+    const apiUrl = getBaseUrl() + serverConnection.orgUrl + serverConnection.slash + accountID;
 
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
@@ -37,7 +38,7 @@ class VendorApi {
   }
 
   updateVendor(accountID, record) {
-        const apiUrl = serverConnection.baseUrl + serverConnection.orgUrl + serverConnection.slash + accountID;
+        const apiUrl = getBaseUrl() + serverConnection.orgUrl + serverConnection.slash + accountID;
 
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');
@@ -77,7 +78,7 @@ class VendorApi {
   }
 
   logoUpload(fileObj, accountID) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.logoUrl + serverConnection.slash + accountID;
+    const apiUrl = getBaseUrl() + serverConnection.logoUrl + serverConnection.slash + accountID;
 
     return new Promise((resolve, reject) => {
       const accessToken = window.localStorage.getItem('accessToken');
@@ -121,7 +122,7 @@ class VendorApi {
   }
 
   getLogo(accountID) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.logoUrl + serverConnection.slash + accountID;
+    const apiUrl = getBaseUrl() + serverConnection.logoUrl + serverConnection.slash + accountID;
 
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');

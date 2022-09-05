@@ -1,16 +1,16 @@
 // import { subDays, subHours } from 'date-fns';
 import deepCopy from '../utils/deepCopy';
 import axios from 'axios';
-
 import {
     serverConnection,
 } from './connectionData';
+import getBaseUrl from './baseUrl';
 
 // const now = new Date();
 
 class ProductsApi {
     getProducts(accountID) {
-      const apiUrl = serverConnection.baseUrl + serverConnection.getProductUrl + serverConnection.slash + accountID;
+      const apiUrl = getBaseUrl() + serverConnection.getProductUrl + serverConnection.slash + accountID;
       return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
 
@@ -41,7 +41,7 @@ class ProductsApi {
     }
 
     getProductPicklist(accountID) {
-        const apiUrl = serverConnection.baseUrl + serverConnection.getProductPicklistUrl + serverConnection.slash + accountID;
+        const apiUrl = getBaseUrl() + serverConnection.getProductPicklistUrl + serverConnection.slash + accountID;
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');
 
@@ -72,7 +72,7 @@ class ProductsApi {
     }
 
     editProduct(record) {
-      const apiUrl = serverConnection.baseUrl + serverConnection.newProductUrl;
+      const apiUrl = getBaseUrl() + serverConnection.newProductUrl;
       return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
 

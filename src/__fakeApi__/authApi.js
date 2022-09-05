@@ -5,6 +5,7 @@ import axios from 'axios';
 import {
     serverConnection,
 } from './connectionData';
+import getBaseUrl from './baseUrl';
 
 const users = [
   {
@@ -35,7 +36,7 @@ const users = [
 
 class AuthApi {
   login({ email, password }) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.loginUrl;
+    const apiUrl = getBaseUrl() + serverConnection.loginUrl;
 
     const loginBody = JSON.stringify(
       {
@@ -98,7 +99,7 @@ class AuthApi {
   }
 
   me(accessToken) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.meUrl;
+    const apiUrl = getBaseUrl() + serverConnection.meUrl;
 
     const tokenTitle = 'token: ';
     const Authorization = tokenTitle + accessToken;
@@ -125,7 +126,7 @@ class AuthApi {
   }
 
   update(type, user) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.meUrl;
+    const apiUrl = getBaseUrl() + serverConnection.meUrl;
     const actionType = type; // update
 
     const theBody = JSON.stringify(
@@ -164,7 +165,7 @@ class AuthApi {
 
   forgotPassword(userEmail) {
     console.log(userEmail);
-    const apiUrl = serverConnection.baseUrl + serverConnection.authUrl;
+    const apiUrl = getBaseUrl() + serverConnection.authUrl;
     const authType = 1;
 
     const theBody = JSON.stringify(
@@ -194,7 +195,7 @@ class AuthApi {
   }
 
   forgotPasswordSubmit(userEmail, code, newPassword) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.authUrl;
+    const apiUrl = getBaseUrl() + serverConnection.authUrl;
     const authType = 2;
 
     const theBody = JSON.stringify(
@@ -226,7 +227,7 @@ class AuthApi {
   }
 
   resendCode(userEmail) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.authUrl;
+    const apiUrl = getBaseUrl() + serverConnection.authUrl;
     const authType = 3;
 
     const theBody = JSON.stringify(
@@ -256,7 +257,7 @@ class AuthApi {
   }
 
   uploadAvatar(fileObj, cpaID) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.avatarUrl;
+    const apiUrl = getBaseUrl() + serverConnection.avatarUrl;
 
     return new Promise((resolve, reject) => {
       const accessToken = window.localStorage.getItem('accessToken');
@@ -300,7 +301,7 @@ class AuthApi {
   }
 
   getAvatar() {
-    const apiUrl = serverConnection.baseUrl + serverConnection.avatarUrl;
+    const apiUrl = getBaseUrl() + serverConnection.avatarUrl;
 
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');

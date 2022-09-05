@@ -2,10 +2,11 @@ import axios from 'axios';
 import {
     serverConnection,
 } from './connectionData';
+import getBaseUrl from './baseUrl';
 
 class NotificationApi {
   getNotifications(customerID) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.notificationUrl + serverConnection.slash + customerID;
+    const apiUrl = getBaseUrl() + serverConnection.notificationUrl + serverConnection.slash + customerID;
 
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');

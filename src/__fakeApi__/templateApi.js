@@ -1,14 +1,14 @@
 // import { subDays, subHours } from 'date-fns';
 import deepCopy from '../utils/deepCopy';
 import axios from 'axios';
-
 import {
     serverConnection,
 } from './connectionData';
+import getBaseUrl from './baseUrl';
 
 class TemplatesApi {
     getTemplates(accountID) {
-        const apiUrl = serverConnection.baseUrl + serverConnection.getTemplateListUrl + serverConnection.slash + accountID;
+        const apiUrl = getBaseUrl() + serverConnection.getTemplateListUrl + serverConnection.slash + accountID;
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');
 
@@ -39,7 +39,7 @@ class TemplatesApi {
     }
 
     getTemplate(templateID) {
-        const apiUrl = serverConnection.baseUrl + serverConnection.getTemplateUrl + serverConnection.slash + templateID;
+        const apiUrl = getBaseUrl() + serverConnection.getTemplateUrl + serverConnection.slash + templateID;
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');
 
@@ -70,7 +70,7 @@ class TemplatesApi {
     }
 
   newTemplate(record) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.newTemplateUrl;
+    const apiUrl = getBaseUrl() + serverConnection.newTemplateUrl;
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
 

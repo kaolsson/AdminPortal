@@ -3,6 +3,7 @@ import axios from 'axios';
 import {
     serverConnection,
 } from './connectionData';
+import getBaseUrl from './baseUrl';
 
 const findContactByUsername = (contacts, username) => {
   const contact = contacts.find((_contact) => _contact.username === username);
@@ -34,7 +35,7 @@ const findThreadByOtherParticipantId = (threads, participantId) => {
 
 class ChatApi {
   getContacts() {
-    const apiUrl = serverConnection.baseUrl + serverConnection.chatUrl;
+    const apiUrl = getBaseUrl() + serverConnection.chatUrl;
 
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
@@ -66,7 +67,7 @@ class ChatApi {
 }
 
   searchContacts(query) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.chatUrl;
+    const apiUrl = getBaseUrl() + serverConnection.chatUrl;
 
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
@@ -108,7 +109,7 @@ class ChatApi {
 
     // Thread key might be an ID if thread type is GROUP
     // otherwise it represents an username
-    const apiUrl = serverConnection.baseUrl + serverConnection.chatUrl;
+    const apiUrl = getBaseUrl() + serverConnection.chatUrl;
 
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
@@ -154,7 +155,7 @@ class ChatApi {
   }
 
   getThreads() {
-    const apiUrl = serverConnection.baseUrl + serverConnection.chatUrl;
+    const apiUrl = getBaseUrl() + serverConnection.chatUrl;
 
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
@@ -186,7 +187,7 @@ class ChatApi {
 }
 
   getThread(threadKey) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.chatUrl;
+    const apiUrl = getBaseUrl() + serverConnection.chatUrl;
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
 
@@ -204,7 +205,6 @@ class ChatApi {
           axios.get(apiUrl, theHeaders)
             .then((response) => {
               let thread = findThreadById(response.data.data.threads, threadKey);
-
               if (thread) {
                 resolve(deepCopy(thread));
                 return;
@@ -214,7 +214,6 @@ class ChatApi {
               // If no contact found, the user is trying a shady route
               // If contact exists, user might want to start a new conversation
               const contact = findContactByUsername(response.data.data.contacts, threadKey);
-
               if (!contact) {
                 reject(new Error('Unable to find the contact'));
                 return;
@@ -222,7 +221,6 @@ class ChatApi {
 
               // This could return a null if no thread found
               thread = findThreadByOtherParticipantId(response.data.data.threads, contact.id);
-
               resolve(deepCopy(thread));
             })
             .catch((response) => {
@@ -238,7 +236,7 @@ class ChatApi {
   }
 
   markThreadAsSeen(threadId) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.chatUrl + serverConnection.slash + threadId;
+    const apiUrl = getBaseUrl() + serverConnection.chatUrl + serverConnection.slash + threadId;
 
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
@@ -282,7 +280,7 @@ class ChatApi {
     // 1) By specifying a thread id, this means that the thread already exists
     // 2) By specifying the other user id (if ONE_TO_ONE thread), thread might exist
     // 3) By specifying a list of recipients, thread might already exist
-    const apiUrl = serverConnection.baseUrl + serverConnection.chatUrl;
+    const apiUrl = getBaseUrl() + serverConnection.chatUrl;
     console.log(threadId, participants, body);
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');

@@ -3,10 +3,11 @@ import deepCopy from '../utils/deepCopy';
 import {
     serverConnection,
 } from './connectionData';
+import getBaseUrl from './baseUrl';
 
 class OrderApi {
     getOrders(accountID) {
-        const apiUrl = serverConnection.baseUrl + serverConnection.orderAccontUrl + serverConnection.slash + accountID;
+        const apiUrl = getBaseUrl() + serverConnection.orderAccontUrl + serverConnection.slash + accountID;
 
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');
@@ -38,7 +39,7 @@ class OrderApi {
     }
 
     updateOrder(order) {
-        const apiUrl = serverConnection.baseUrl + serverConnection.orderUrl + serverConnection.slash + order.orderID;
+        const apiUrl = getBaseUrl() + serverConnection.orderUrl + serverConnection.slash + order.orderID;
         return new Promise((resolve, reject) => {
             const accessToken = window.localStorage.getItem('accessToken');
 

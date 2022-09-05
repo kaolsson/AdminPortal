@@ -3,8 +3,8 @@
 //
 export const serverConnection = {
     // server base url -- NEED TO MAKE THIS AUTOMATIC
-//    baseUrl: 'http://localhost:6543',
-    baseUrl: 'https://api.mysmartmaster.com',
+    baseUrlDev: 'http://localhost:6543',
+    baseUrlProd: 'https://api.mysmartmaster.com',
 
     slash: '/',
 

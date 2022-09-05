@@ -1,13 +1,13 @@
 import axios from 'axios';
 import deepCopy from '../utils/deepCopy';
-
 import {
     serverConnection,
 } from './connectionData';
+import getBaseUrl from './baseUrl';
 
 class CpaApi {
   getCpas(orgID) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.cpaUrl + serverConnection.slash + orgID;
+    const apiUrl = getBaseUrl() + serverConnection.cpaUrl + serverConnection.slash + orgID;
 
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
@@ -39,7 +39,7 @@ class CpaApi {
   }
 
   getCpa(cpaID) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.indCpaUrl + serverConnection.slash + cpaID;
+    const apiUrl = getBaseUrl() + serverConnection.indCpaUrl + serverConnection.slash + cpaID;
 
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
@@ -71,7 +71,7 @@ class CpaApi {
   }
 
   addCpa(cpa) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.cpaAdminUrl;
+    const apiUrl = getBaseUrl() + serverConnection.cpaAdminUrl;
 
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
@@ -109,7 +109,7 @@ class CpaApi {
   }
 
   updateCpa(cpaID, cpa) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.indCpaUrl + serverConnection.slash + cpaID;
+    const apiUrl = getBaseUrl() + serverConnection.indCpaUrl + serverConnection.slash + cpaID;
 
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
@@ -147,7 +147,7 @@ class CpaApi {
   }
 
   deleteCpa(cpaID) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.indCpaUrl + serverConnection.slash + cpaID;
+    const apiUrl = getBaseUrl() + serverConnection.indCpaUrl + serverConnection.slash + cpaID;
 
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');

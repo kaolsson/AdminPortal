@@ -161,7 +161,6 @@ const DashboardSidebar = (props) => {
                 p: 2
               }}
             >
-
               <CardMedia
                 component="img"
                 image={logo}

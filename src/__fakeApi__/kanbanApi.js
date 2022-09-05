@@ -2,10 +2,10 @@
 import createResourceId from '../utils/createResourceId';
 import deepCopy from '../utils/deepCopy';
 import axios from 'axios';
-
 import {
     serverConnection,
 } from './connectionData';
+import getBaseUrl from './baseUrl';
 
 let board = {
   cards: [],
@@ -20,9 +20,9 @@ class KanbanApi {
   getBoard(userId, caseId) {
     let apiUrl = '';
     if (userId !== null) {
-        apiUrl = serverConnection.baseUrl + serverConnection.actionUrl;
+        apiUrl = getBaseUrl() + serverConnection.actionUrl;
     } else if (caseId !== null) {
-        apiUrl = serverConnection.baseUrl + serverConnection.actionProjectUrl + serverConnection.slash + caseId;
+        apiUrl = getBaseUrl() + serverConnection.actionProjectUrl + serverConnection.slash + caseId;
     } else {
         return new Promise((reject) => {
             reject(new Error('Missing input parameters'));
@@ -186,7 +186,7 @@ class KanbanApi {
 //
 
   createCard(columnID, caseID, title) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.actionUrl;
+    const apiUrl = getBaseUrl() + serverConnection.actionUrl;
 
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
@@ -237,7 +237,7 @@ class KanbanApi {
   }
 
   updateCard({ cardId, update }) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.actionUrl + serverConnection.slash + cardId;
+    const apiUrl = getBaseUrl() + serverConnection.actionUrl + serverConnection.slash + cardId;
 
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
@@ -276,7 +276,7 @@ class KanbanApi {
   }
 
   moveCard({ cardId, position, columnId }) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.actionUrl + serverConnection.slash + cardId;
+    const apiUrl = getBaseUrl() + serverConnection.actionUrl + serverConnection.slash + cardId;
 
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
@@ -317,7 +317,7 @@ class KanbanApi {
   }
 
   deleteCard(cardId) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.actionUrl + serverConnection.slash + cardId;
+    const apiUrl = getBaseUrl() + serverConnection.actionUrl + serverConnection.slash + cardId;
 
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
@@ -350,7 +350,7 @@ class KanbanApi {
   }
 
   addComment({ cardId, message, userId }) {
-    const apiUrl = serverConnection.baseUrl + serverConnection.actionCommentUrl;
+    const apiUrl = getBaseUrl() + serverConnection.actionCommentUrl;
 
     return new Promise((resolve, reject) => {
         const accessToken = window.localStorage.getItem('accessToken');
