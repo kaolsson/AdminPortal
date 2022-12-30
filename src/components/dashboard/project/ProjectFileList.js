@@ -17,12 +17,17 @@ import {
   Typography
 } from '@material-ui/core';
 import DownloadIcon from '../../../icons/Download';
+import EyeIcon from '../../../icons/Eye';
 import TrashIcon from '../../../icons/Trash';
 import Label from '../../Label';
 import Scrollbar from '../../Scrollbar';
 import FileDropzone from '../../FileDropzone';
 import { projectApi } from '../../../__fakeApi__/projectApi';
+import { activityLogApi } from '../../../__fakeApi__/activityLogApi';
 import ConfirmDialog from '../../popups/ConfirmDialog';
+import ConfirmEsign from '../../popups/ConfirmEsign';
+import ActivityLogModal from './ActivityLogModal';
+import EsignModal from './EsignModal';
 
 const getStatusLabel = (fileStatus) => {
   const map = {
@@ -51,7 +56,53 @@ const getStatusLabel = (fileStatus) => {
   );
 };
 
-const applyPagination = (files, page, limit) => files
+const getESignStatusLabel = (eSignStatus) => {
+    const map = {
+      none: {
+        color: 'NoBackground',
+        text: 'Start eSign Request'
+      },
+      sent: {
+        color: 'ongoing',
+        text: 'Sent to Client'
+      },
+      created: {
+        color: 'warning',
+        text: 'Created but not Sent'
+      },
+      due: {
+        color: 'error',
+        text: 'Due'
+      },
+      completed: {
+        color: 'success',
+        text: 'eSign Completed'
+      },
+      aborted: {
+        color: 'error',
+        text: 'Aborted'
+      },
+      unknown: {
+        color: 'error',
+        text: 'Unknown'
+      }
+    };
+    const { text, color } = map[eSignStatus];
+//    if (eSignStatus === 'none') {
+//        return (
+//            <Label color={color}>
+//                {text}
+//            </Label>
+//          );
+//    }
+    return (
+      <Label color={color} style={{ cursor: 'pointer' }}>
+        {text}
+      </Label>
+    );
+  };
+
+  const applyPagination = (files, page, limit) => files
   .slice(page * limit, page * limit + limit);
 
 const ProjectFileList = (props) => {
@@ -59,6 +110,12 @@ const ProjectFileList = (props) => {
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(5);
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' });
+  const [confirmEsign, setConfirmEsign] = useState({ isOpen: false, title: '', subTitle: '', document: {} });
+  const [open, setOpen] = useState(false);
+  const [openEsign, setOpenEsign] = useState(false);
+  const [activityLog, setActivityLog] = useState([]);
+  const [eSignRecord, setESignRecord] = useState([]);
+  const [thisDocument, setThisDocument] = useState({});
 
   const onDrop = useCallback((acceptedFiles) => {
     if (acceptedFiles[0].name) {
@@ -113,6 +170,32 @@ const ProjectFileList = (props) => {
       }
   };
 
+  const onEsign = (file) => {
+    console.log(file.eSignStatus);
+    setConfirmEsign({
+        ...confirmEsign,
+        isOpen: false
+    });
+    try {
+        toast.success('CREATING eSinature request, please wait.....');
+        projectApi.eSignRequest(file)
+          .then((response) => {
+            toast.dismiss();
+            toast.success('eSinature request sent!');
+            window.open(response.redirect_url, '_blank', 'noopener,noreferrer');
+          })
+          .catch((response) => {
+            toast.dismiss();
+            toast.error('eSinature request  failed - 2');
+            console.error(response);
+          });
+      } catch (err) {
+        toast.dismiss();
+        toast.error('eSinature request  failed! - 3');
+        console.error(err);
+      }
+  };
+
   const onDelete = (documentID) => {
     setConfirmDialog({
         ...confirmDialog,
@@ -137,7 +220,7 @@ const ProjectFileList = (props) => {
           });
       } catch (err) {
         toast.dismiss();
-        toast.error('Upload failed!');
+        toast.error('Delete failed!');
         console.error(err);
       }
   };
@@ -168,6 +251,57 @@ const ProjectFileList = (props) => {
 
   const paginatedFiles = applyPagination(files, page, limit);
 
+  const handleOpenModal = (document) => {
+    try {
+        activityLogApi.getActivityLog(document.documentID)
+          .then((response) => {
+            console.log(response.log);
+            setActivityLog(response.log);
+            setThisDocument(document);
+            setOpen(true);
+          })
+          .catch((response) => {
+            toast.dismiss();
+            toast.error('Get activity log failed - 2');
+            console.error(response);
+          });
+    } catch (err) {
+        toast.dismiss();
+        toast.error('Get activity log failed! - 3');
+        console.error(err);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setOpen(false);
+  };
+
+  const handleOpenEsignModal = (document) => {
+    try {
+        activityLogApi.getActivityLog(document.documentID)
+          .then((response) => {
+            console.log(response.log);
+            setActivityLog(response.log);
+            setESignRecord(document.eSignature);
+            setThisDocument(document);
+            setOpenEsign(true);
+          })
+          .catch((response) => {
+            toast.dismiss();
+            toast.error('Get activity log failed - 2');
+            console.error(response);
+          });
+    } catch (err) {
+        toast.dismiss();
+        toast.error('Get activity log failed! - 3');
+        console.error(err);
+    }
+  };
+
+  const handleCloseEsignModal = () => {
+    setOpenEsign(false);
+  };
+
   return (
     <>
       <Card {...other}>
@@ -179,7 +313,7 @@ const ProjectFileList = (props) => {
           <Box sx={{ minWidth: 1150 }}>
             <Table>
               <TableHead>
-                <TableRow>
+                <TableRow sx={{ '& th': { fontSize: '1rem' } }}>
                   <TableCell>
                     Document Name
                   </TableCell>
@@ -195,13 +329,19 @@ const ProjectFileList = (props) => {
                   <TableCell>
                     Unique File ID
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="center">
                     Status
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="center">
+                    Activity Log
+                  </TableCell>
+                  <TableCell align="center">
                     Download
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="center">
+                    eSignature
+                  </TableCell>
+                  <TableCell align="center">
                     Remove
                   </TableCell>
                 </TableRow>
@@ -249,10 +389,19 @@ const ProjectFileList = (props) => {
                           {file.documentID}
                         </Typography>
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">
                         {getStatusLabel(file.status)}
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">
+                        <IconButton
+                          onClick={() => {
+                            handleOpenModal(file);
+                          }}
+                        >
+                          <EyeIcon fontSize="small" />
+                        </IconButton>
+                      </TableCell>
+                      <TableCell align="center">
                         <IconButton
                           onClick={() => {
                               handleDownload(file.documentID);
@@ -261,7 +410,25 @@ const ProjectFileList = (props) => {
                           <DownloadIcon fontSize="small" />
                         </IconButton>
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell
+                         align="center"
+                         onClick={() => {
+                            if (file.eSignature.eSignStatus === 'none') {
+                                setConfirmEsign({
+                                    isOpen: true,
+                                    title: 'Create a eSignature request to the client.',
+                                    document: file,
+                                    subTitle: 'A new window will open in DocuSign.',
+                                    onConfirm: () => { onEsign(file); }
+                                });
+                            } else {
+                                handleOpenEsignModal(file);
+                            }
+                         }}
+                      >
+                        {getESignStatusLabel(file.eSignature.eSignStatus)}
+                      </TableCell>
+                      <TableCell align="center">
                         <IconButton
                           onClick={() => {
                             setConfirmDialog({
@@ -297,6 +464,22 @@ const ProjectFileList = (props) => {
       <ConfirmDialog
         confirmDialog={confirmDialog}
         setConfirmDialog={setConfirmDialog}
+      />
+      <ConfirmEsign
+        confirmEsign={confirmEsign}
+        setConfirmEsign={setConfirmEsign}
+      />
+      <ActivityLogModal
+        activityLog={activityLog}
+        thisDocument={thisDocument}
+        onClose={handleCloseModal}
+        open={open}
+      />
+      <EsignModal
+        eSignRecord={eSignRecord}
+        thisDocument={thisDocument}
+        onClose={handleCloseEsignModal}
+        openEsign={openEsign}
       />
     </>
   );
