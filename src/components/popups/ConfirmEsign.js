@@ -1,7 +1,9 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, makeStyles, Typography } from '@material-ui/core';
 // import ExclamationCircleIcon from '../../icons/Download';
 import React from 'react';
-import NotListedLocationIcon from '@material-ui/icons/NotListedLocation';
+// import PencilAltIcon from '@material-ui/icons/PencilAlt';
+import PencilAltIcon from '../../icons/PencilAlt';
+
 import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
@@ -30,13 +32,13 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function ConfirmDialog(props) {
-    const { confirmDialog, setConfirmDialog } = props;
+export default function ConfirmEsign(props) {
+    const { confirmEsign, setConfirmEsign } = props;
     const classes = useStyles();
 
     return (
         <Dialog
-            open={confirmDialog.isOpen}
+            open={confirmEsign.isOpen}
             classes={{ paper: classes.dialog }}
         >
             <DialogTitle className={classes.dialogTitle}>
@@ -44,38 +46,51 @@ export default function ConfirmDialog(props) {
                     disableRipple
                     className={classes.titleIcon}
                 >
-                    <NotListedLocationIcon />
+                    <PencilAltIcon />
                 </IconButton>
             </DialogTitle>
             <DialogContent className={classes.dialogContent}>
                 <Typography variant="h6">
-                    {confirmDialog.title}
+                    {confirmEsign.title}
+                </Typography>
+                <Typography variant="h6">
+                    {' '}
+                </Typography>
+                <Typography variant="h6">
+                    {'Document: '}
+                    {confirmEsign.document.fileName}
                 </Typography>
                 <Typography variant="subtitle2">
-                    {confirmDialog.subTitle}
+                    {confirmEsign.subTitle1}
+                </Typography>
+                <Typography variant="subtitle2">
+                    An Email will be sent to the clinet for requesting eSignature.
+                </Typography>
+                <Typography variant="subtitle2">
+                    When completed an email will be sent to you and MySmartmaster will be updated.
                 </Typography>
             </DialogContent>
             <DialogActions className={classes.dialogActions}>
                 <Button
                     color="primary"
-                    variant="contained"
-                    onClick={() => setConfirmDialog({ ...confirmDialog, isOpen: false })}
+                    variant="outlined"
+                    onClick={() => setConfirmEsign({ ...confirmEsign, isOpen: false })}
                 >
                     Cancel
                 </Button>
                 <Button
-                    color="error"
+                    color="success"
                     variant="contained"
-                    onClick={confirmDialog.onConfirm}
+                    onClick={confirmEsign.onConfirm}
                 >
-                    Delete
+                    Send Document for eSignature
                 </Button>
             </DialogActions>
         </Dialog>
     );
 }
 
-ConfirmDialog.propTypes = {
-    confirmDialog: PropTypes.isRequired,
-    setConfirmDialog: PropTypes.isRequired
+ConfirmEsign.propTypes = {
+    confirmEsign: PropTypes.isRequired,
+    setConfirmEsign: PropTypes.isRequired
   };

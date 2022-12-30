@@ -58,7 +58,31 @@ const NotFound = Loadable(lazy(() => import('./pages/NotFound')));
 const UnderConstruction = Loadable(lazy(() => import('./pages/UnderConstruction')));
 const ServerError = Loadable(lazy(() => import('./pages/ServerError')));
 
+// Other pages
+
+const Terms = Loadable(lazy(() => import('./pages/document/Terms')));
+const Security = Loadable(lazy(() => import('./pages/document/Security')));
+const DocuSignComplete = Loadable(lazy(() => import('./pages/DocuSignComplete')));
+const ShowPDF = Loadable(lazy(() => import('./pages/ShowPDF')));
+
 const routes = [
+{
+    path: 'document',
+    children: [
+      {
+        path: 'terms',
+        element: <Terms />
+      },
+      {
+        path: 'security',
+        element: <Security />
+      },
+      {
+        path: 'docusign',
+        element: <DocuSignComplete />
+      }
+    ]
+  },
   {
     path: 'authentication',
     children: [
@@ -211,6 +235,15 @@ const routes = [
           {
             path: ':cid',
             element: <CustomerDetails />
+          }
+        ]
+      },
+      {
+        path: 'esign',
+        children: [
+          {
+            path: ':did',
+            element: <ShowPDF />
           }
         ]
       },

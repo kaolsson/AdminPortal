@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import toast from 'react-hot-toast';
 import {
@@ -17,11 +16,13 @@ import {
   Typography
 } from '@material-ui/core';
 import DownloadIcon from '../../../icons/Download';
-import PencilAltIcon from '../../../icons/PencilAlt';
+import EyeIcon from '../../../icons/Eye';
 import Label from '../../Label';
 import Scrollbar from '../../Scrollbar';
 import { projectApi } from '../../../__fakeApi__/projectApi';
+import { activityLogApi } from '../../../__fakeApi__/activityLogApi';
 import ConfirmDialog from '../../popups/ConfirmDialog';
+import ActivityLogModal from './ActivityLogModal';
 
 const getStatusLabel = (fileStatus) => {
     const map = {
@@ -60,6 +61,9 @@ const ProjectFileListVendor = (props) => {
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(5);
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' });
+  const [open, setOpen] = useState(false);
+  const [activityLog, setActivityLog] = useState([]);
+  const [thisDocument, setThisDocument] = useState({});
 
   const handleDownload = (documentID) => {
     try {
@@ -96,6 +100,31 @@ const ProjectFileListVendor = (props) => {
 
   const paginatedFiles = applyPagination(files, page, limit);
 
+  const handleOpenModal = (document) => {
+    try {
+        activityLogApi.getActivityLog(document.documentID)
+          .then((response) => {
+            console.log(response.log);
+            setActivityLog(response.log);
+            setThisDocument(document);
+            setOpen(true);
+          })
+          .catch((response) => {
+            toast.dismiss();
+            toast.error('Get activity log failed - 2');
+            console.error(response);
+          });
+    } catch (err) {
+        toast.dismiss();
+        toast.error('Get activity log failed! - 3');
+        console.error(err);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setOpen(false);
+  };
+
   return (
     <>
       <Card {...other}>
@@ -107,7 +136,7 @@ const ProjectFileListVendor = (props) => {
           <Box sx={{ minWidth: 1150 }}>
             <Table>
               <TableHead>
-                <TableRow>
+                <TableRow sx={{ '& th': { fontSize: '1rem' } }}>
                   <TableCell>
                     Document Name
                   </TableCell>
@@ -123,14 +152,14 @@ const ProjectFileListVendor = (props) => {
                   <TableCell>
                     Unique File ID
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="center">
                     Status
                   </TableCell>
-                  <TableCell align="right">
-                    Download
+                  <TableCell align="center">
+                    Activity Log
                   </TableCell>
-                  <TableCell align="right">
-                    Sign
+                  <TableCell align="center">
+                    Download
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -177,24 +206,25 @@ const ProjectFileListVendor = (props) => {
                           {file.documentID}
                         </Typography>
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">
                         {getStatusLabel(file.status)}
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">
+                        <IconButton
+                          onClick={() => {
+                            handleOpenModal(file);
+                          }}
+                        >
+                          <EyeIcon fontSize="small" />
+                        </IconButton>
+                      </TableCell>
+                      <TableCell align="center">
                         <IconButton
                           onClick={() => {
                               handleDownload(file.documentID);
                           }}
                         >
                           <DownloadIcon fontSize="small" />
-                        </IconButton>
-                      </TableCell>
-                      <TableCell align="right">
-                        <IconButton
-                          component={RouterLink}
-                          to="/error/404"
-                        >
-                          <PencilAltIcon fontSize="small" />
                         </IconButton>
                       </TableCell>
                     </TableRow>
@@ -216,6 +246,12 @@ const ProjectFileListVendor = (props) => {
       <ConfirmDialog
         confirmDialog={confirmDialog}
         setConfirmDialog={setConfirmDialog}
+      />
+      <ActivityLogModal
+        activityLog={activityLog}
+        thisDocument={thisDocument}
+        onClose={handleCloseModal}
+        open={open}
       />
     </>
   );

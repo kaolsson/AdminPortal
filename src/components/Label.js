@@ -52,7 +52,9 @@ Label.propTypes = {
     'error',
     'warning',
     'success',
-    'invisible'
+    'ongoing',
+    'invisible',
+    'NoBackground'
   ])
 };
 

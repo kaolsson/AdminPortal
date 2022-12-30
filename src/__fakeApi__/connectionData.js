@@ -2,7 +2,7 @@
 // API endpoints to smartmaster client server
 //
 export const serverConnection = {
-    // server base url -- NEED TO MAKE THIS AUTOMATIC
+    // server base url -- Autodetect dev or prod and sets base URL
     baseUrlDev: 'http://localhost:6543',
     baseUrlProd: 'https://api.mysmartmaster.com',
 
@@ -61,6 +61,8 @@ export const serverConnection = {
     // Project API
     projectUrl: '/api/purple/project',
     fileUrl: '/api/purple/document',
+    esign: '/api/purple/esign',
+    esignRefresh: '/api/purple/esign/refresh',
 
     // Message API
     messageUrl: '/api/purple/message',
@@ -69,4 +71,7 @@ export const serverConnection = {
     // Signup API
     signupUrl: '/api/purple/signup',
     signupAccountUrl: '/api/purple/signup/acc',
+
+    // Activity log API
+    activityLogUrl: '/api/sm/activity',
 };

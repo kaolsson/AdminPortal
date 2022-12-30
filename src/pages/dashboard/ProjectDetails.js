@@ -18,8 +18,8 @@ import { Link as RouterLink } from 'react-router-dom';
 
 const tabs = [
   { label: 'Overview', value: 'overview' },
-  { label: 'My Documnets', value: 'mydocuments' },
-  { label: 'Documents to Me', value: 'documentstome' },
+  { label: 'Documents To Client', value: 'mydocuments' },
+  { label: 'Documents From Client', value: 'documentstome' },
   { label: 'Actions', value: 'actions' }
 ];
 

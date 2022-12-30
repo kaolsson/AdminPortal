@@ -157,6 +157,10 @@ const themesOptions = {
         main: MyColors.sapphire_blue,
         appbar: MyColors.sapphire_blue
       },
+      ongoing: {
+        contrastText: MyColors.white,
+        main: MyColors.blue_green,
+      },
       success: {
         contrastText: MyColors.white,
         main: MyColors.green_pantone,
@@ -166,11 +170,15 @@ const themesOptions = {
         secondary: MyColors.independence,
       },
       warning: {
-        contrastText: MyColors.white,
+        contrastText: MyColors.black,
         main: MyColors.orange,
       },
       invisible: {
         contrastText: MyColors.white,
+        main: MyColors.white
+      },
+      NoBackground: {
+        contrastText: MyColors.black,
         main: MyColors.white
       }
     },

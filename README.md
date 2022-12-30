@@ -38,3 +38,5 @@ You can find detailed instructions on using Create React App and many tips in [i
 
 ## Imports
 npm install html-react-parser
+npm install --save react-pdf 
+
