@@ -47,6 +47,10 @@ const tabs = [
   {
     label: 'Tech Support',
     value: 'techsupport'
+  },
+  {
+    label: 'Vulnerability',
+    value: 'vulnerability'
   }
 ];
 
